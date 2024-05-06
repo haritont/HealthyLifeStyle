@@ -29,4 +29,8 @@ class NutritionRepository (context: Context){
     fun getAllNutrition(): List<Nutrition> = runBlocking{
         nutritionMapper.toNutritionList(nutritionDao.getAllNutrition())
     }
+
+    fun deleteNutrition(name: String, value: Double, date: String) = runBlocking{
+        nutritionDao.delete(name, value, date)
+    }
 }

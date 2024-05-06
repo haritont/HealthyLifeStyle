@@ -42,7 +42,6 @@ fun FastKPFC() {
         Dialog(
             onDismissRequest = {  openDialog = false }
         ) {
-
             Column(
                 modifier = Modifier
                     .padding(8.dp),

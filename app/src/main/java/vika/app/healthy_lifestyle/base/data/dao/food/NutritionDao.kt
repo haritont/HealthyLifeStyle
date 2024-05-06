@@ -16,4 +16,6 @@ interface NutritionDao {
 
     @Query("SELECT * FROM Nutrition")
     suspend fun getAllNutrition(): List<NutritionEntity>
+    @Query("DELETE FROM Nutrition WHERE name = :name AND value = :value AND date = :date")
+    suspend fun delete(name: String, value: Double, date: String)
 }

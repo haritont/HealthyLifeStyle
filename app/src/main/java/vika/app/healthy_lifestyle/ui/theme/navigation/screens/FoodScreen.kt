@@ -88,8 +88,8 @@ fun FoodScreen() {
 
             LazyColumn(
                 modifier = Modifier
-                    .width(300.dp)
-                    .height(200.dp)
+                    .height(100.dp)
+                    .padding(8.dp)
             ) {
                 items(selectListProduct) { item ->
                     key(item) {

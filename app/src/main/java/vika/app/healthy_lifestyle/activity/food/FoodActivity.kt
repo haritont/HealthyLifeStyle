@@ -198,4 +198,8 @@ class FoodActivity : ComponentActivity() {
     fun getLastNutrition(context: Context): List<Nutrition> {
         return NutritionRepository(context).getNutritionByDate(DateToday().getToday());
     }
+
+    fun deleteNutrition(context: Context, name: String, value: Double, date: String){
+        NutritionRepository(context).deleteNutrition(name, value, date)
+    }
 }
