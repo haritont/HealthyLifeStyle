@@ -36,7 +36,6 @@ import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.BlueUltraLight
 import vika.app.healthy_lifestyle.ui.theme.app.White
-import vika.app.healthy_lifestyle.ui.theme.food.AddIngredient
 import vika.app.healthy_lifestyle.ui.theme.food.MoreIngredient
 import vika.app.healthy_lifestyle.ui.theme.general.DatePickerWithDialog
 import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
@@ -190,7 +189,8 @@ fun ItemList(
             Row(
                 modifier = Modifier
                     .padding(5.dp)
-                    .weight(1f),
+                    .weight(1f)
+                    .clickable { openDialogAdd = true },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
