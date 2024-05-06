@@ -1,11 +1,9 @@
 package vika.app.healthy_lifestyle.activity.food
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import vika.app.healthy_lifestyle.activity.main.HistoryActivity
 import vika.app.healthy_lifestyle.base.data.repository.food.DishRepository
 import vika.app.healthy_lifestyle.base.data.repository.food.IngredientRepository
 import vika.app.healthy_lifestyle.base.data.repository.food.NutritionRepository
@@ -197,7 +195,7 @@ class FoodActivity : ComponentActivity() {
         )
     }
 
-    fun toHistory(){
-        startActivity(Intent(this@FoodActivity, HistoryActivity::class.java))
+    fun getLastNutrition(context: Context): List<Nutrition> {
+        return NutritionRepository(context).getNutritionByDate(DateToday().getToday());
     }
 }
