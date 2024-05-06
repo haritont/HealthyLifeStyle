@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +35,7 @@ import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
 fun FastKPFC() {
     val context = LocalContext.current
 
-    var openDialog by mutableStateOf(false)
+    var openDialog  by remember { mutableStateOf(false) }
 
     ButtonBlue(text = LocalContext.current.getString(R.string.fast_kpfc)) {
         openDialog = true
@@ -40,136 +43,144 @@ fun FastKPFC() {
 
     if (openDialog){
         Dialog(
-            onDismissRequest = {  openDialog = false }
+            onDismissRequest = {  openDialog = !openDialog }
         ) {
-            Column(
+            Card(
                 modifier = Modifier
-                    .padding(8.dp),
-                verticalArrangement = Arrangement.SpaceAround,
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .height(300.dp)
+                    .padding(16.dp),
+                shape = RoundedCornerShape(16.dp),
             ) {
-                Text(
-                    text = LocalContext.current.getString(R.string.fast_kpfc),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-                val kilocaloriesState = remember { mutableStateOf("") }
-                val proteinsState = remember { mutableStateOf("") }
-                val fatsState = remember { mutableStateOf("") }
-                val carbohydratesState = remember { mutableStateOf("") }
-
-                Row(
-                    horizontalArrangement = Arrangement.SpaceAround,
-                    verticalAlignment = Alignment.CenterVertically
+                Column(
+                    modifier = Modifier
+                        .padding(8.dp),
+                    verticalArrangement = Arrangement.SpaceAround,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Box(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        TextFieldBlue(
-                            value = kilocaloriesState.value,
-                            label = {
-                                Text(
-                                    LocalContext.current.getString(R.string.kilocalories),
-                                    style = MaterialTheme.typography.bodySmall
-                                )
-                            },
-                            onValueChange = { newLogin -> kilocaloriesState.value = newLogin },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            leadingIcon = {
-                                Image(
-                                    painterResource(R.drawable.kilocalories),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(25.dp)
-                                )
-                            }
-                        )
-                    }
-                    Box(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        TextFieldBlue(
-                            value = proteinsState.value,
-                            label = {
-                                Text(
-                                    LocalContext.current.getString(R.string.proteins),
-                                    style = MaterialTheme.typography.bodySmall
-                                )
-                            },
-                            onValueChange = { newLogin -> proteinsState.value = newLogin },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            leadingIcon = {
-                                Image(
-                                    painterResource(R.drawable.proteins),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(25.dp)
-                                )
-                            }
-                        )
-                    }
-                }
-                Row(
-                    horizontalArrangement = Arrangement.SpaceAround,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        TextFieldBlue(
-                            value = fatsState.value,
-                            label = {
-                                Text(
-                                    LocalContext.current.getString(R.string.fats),
-                                    style = MaterialTheme.typography.bodySmall
-                                )
-                            },
-                            onValueChange = { newLogin -> fatsState.value = newLogin },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            leadingIcon = {
-                                Image(
-                                    painterResource(R.drawable.fats),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(25.dp)
-                                )
-                            }
-                        )
-                    }
+                    val kilocaloriesState = remember { mutableStateOf("") }
+                    val proteinsState = remember { mutableStateOf("") }
+                    val fatsState = remember { mutableStateOf("") }
+                    val carbohydratesState = remember { mutableStateOf("") }
 
-                    Box(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        TextFieldBlue(
-                            value = carbohydratesState.value,
-                            label = {
-                                Text(
-                                    LocalContext.current.getString(R.string.carbohydrates),
-                                    style = MaterialTheme.typography.bodySmall
-                                )
-                            },
-                            onValueChange = { newLogin -> carbohydratesState.value = newLogin },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            leadingIcon = {
-                                Image(
-                                    painterResource(R.drawable.carbohydrates),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(25.dp)
-                                )
-                            }
-                        )
-                    }
-                }
-                ButtonBlue(text = LocalContext.current.getString(R.string.add)) {
-                    FoodActivity().addKPFC(
-                        context,
-                        kilocaloriesState.value,
-                        proteinsState.value,
-                        fatsState.value,
-                        carbohydratesState.value,
-                        DateToday().getToday()
+                    Text(
+                        text = LocalContext.current.getString(R.string.fast_kpfc),
+                        style = MaterialTheme.typography.bodyLarge
                     )
-                    openDialog = false
+
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            TextFieldBlue(
+                                value = kilocaloriesState.value,
+                                label = {
+                                    Text(
+                                        LocalContext.current.getString(R.string.kilocalories),
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
+                                },
+                                onValueChange = { newLogin -> kilocaloriesState.value = newLogin },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                leadingIcon = {
+                                    Image(
+                                        painterResource(R.drawable.kilocalories),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(25.dp)
+                                    )
+                                }
+                            )
+                        }
+                        Box(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            TextFieldBlue(
+                                value = proteinsState.value,
+                                label = {
+                                    Text(
+                                        LocalContext.current.getString(R.string.proteins),
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
+                                },
+                                onValueChange = { newLogin -> proteinsState.value = newLogin },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                leadingIcon = {
+                                    Image(
+                                        painterResource(R.drawable.proteins),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(25.dp)
+                                    )
+                                }
+                            )
+                        }
+                    }
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            TextFieldBlue(
+                                value = fatsState.value,
+                                label = {
+                                    Text(
+                                        LocalContext.current.getString(R.string.fats),
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
+                                },
+                                onValueChange = { newLogin -> fatsState.value = newLogin },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                leadingIcon = {
+                                    Image(
+                                        painterResource(R.drawable.fats),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(25.dp)
+                                    )
+                                }
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            TextFieldBlue(
+                                value = carbohydratesState.value,
+                                label = {
+                                    Text(
+                                        LocalContext.current.getString(R.string.carbohydrates),
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
+                                },
+                                onValueChange = { newLogin -> carbohydratesState.value = newLogin },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                leadingIcon = {
+                                    Image(
+                                        painterResource(R.drawable.carbohydrates),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(25.dp)
+                                    )
+                                }
+                            )
+                        }
+                    }
+                    ButtonBlue(text = LocalContext.current.getString(R.string.add)) {
+                        FoodActivity().addKPFC(
+                            context,
+                            kilocaloriesState.value,
+                            proteinsState.value,
+                            fatsState.value,
+                            carbohydratesState.value,
+                            DateToday().getToday()
+                        )
+                        openDialog = false
+                    }
                 }
             }
         }
