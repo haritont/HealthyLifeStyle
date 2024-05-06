@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.bean.Item
 import vika.app.healthy_lifestyle.bean.ItemText
+import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.calculations.MealCalc
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.food.FastKPFC
@@ -88,7 +89,7 @@ fun FoodScreen() {
 
             LazyColumn(
                 modifier = Modifier
-                    .height(100.dp)
+                    .height(200.dp)
                     .padding(8.dp)
             ) {
                 items(selectListProduct) { item ->
@@ -100,6 +101,7 @@ fun FoodScreen() {
                                 selectListProduct.remove(
                                     selectListProduct.find { it.title == title }
                                 )
+                                FoodActivity().deleteNutrition(context, item.title, item.value, DateToday().getToday())
                             }
                         )
                     }
