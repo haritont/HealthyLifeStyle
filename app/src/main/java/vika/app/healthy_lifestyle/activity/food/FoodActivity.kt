@@ -201,5 +201,14 @@ class FoodActivity : ComponentActivity() {
 
     fun deleteNutrition(context: Context, name: String, value: Double, date: String){
         NutritionRepository(context).deleteNutrition(name, value, date)
+        val record = RecordRepository(context).getRecordByDate(date)
+        val ingredient = getIngredient(context, name)
+        RecordRepository(context).updateProgressFoodRecord(
+            date,
+            record!!.progressKilocalories - ingredient.kilocalories / 100 * value,
+            record.progressProteins - ingredient.proteins / 100 * value,
+            record.progressFats - ingredient.fats / 100 * value,
+            record.progressCarbohydrates - ingredient.carbohydrates / 100 * value
+        )
     }
 }
