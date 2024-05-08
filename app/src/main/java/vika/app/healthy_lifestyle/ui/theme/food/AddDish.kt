@@ -2,7 +2,6 @@ package vika.app.healthy_lifestyle.ui.theme.food
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
@@ -42,7 +41,7 @@ import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListDelete
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListText
-import vika.app.healthy_lifestyle.ui.theme.general.list.SearchList
+import vika.app.healthy_lifestyle.ui.theme.general.list.Search
 
 @Composable
 fun AddDish(
@@ -167,7 +166,7 @@ fun AddDish(
                             }
                         )
 
-                        SearchList(itemList = itemListIngredient) {
+                        Search(itemList = itemListIngredient) {
                             filteredListIngredient = it.toMutableList()
                         }
 

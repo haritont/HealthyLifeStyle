@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -39,6 +40,8 @@ fun SportScreen (){
         )
     }
     val filteredListPhysicalExercises by remember { mutableStateOf(itemListPhysicalExercises) }
+
+    var searchKey by remember { mutableStateOf(0) }
 
     val itemListTrainings = mutableListOf<Item>()
     val trainings = SportActivity().getAllTrainings(context)
