@@ -75,7 +75,7 @@ fun SportScreen (){
                     Box(
                         modifier = Modifier
                             .width(350.dp)
-                            .height(500.dp)
+                            .height(520.dp)
                     ) {
                         vika.app.healthy_lifestyle.ui.theme.general.list.List(
                             itemList = filteredListPhysicalExercises,
@@ -87,6 +87,9 @@ fun SportScreen (){
                                     date,
                                     option
                                 )
+                                coroutineScope.launch {
+                                    listState.animateScrollToItem(index = 0)
+                                }
                             },
                             2,
                             updateException = { name, exception ->
@@ -118,7 +121,7 @@ fun SportScreen (){
                     Box(
                         modifier = Modifier
                             .width(350.dp)
-                            .height(500.dp)
+                            .height(520.dp)
                     ) {
                         vika.app.healthy_lifestyle.ui.theme.general.list.List(
                             itemList = filteredListTrainings,
@@ -130,6 +133,9 @@ fun SportScreen (){
                                     date,
                                     option
                                 )
+                                coroutineScope.launch {
+                                    listState.animateScrollToItem(index = 0)
+                                }
                             },
                            3,
                             updateException = { name, exception ->
