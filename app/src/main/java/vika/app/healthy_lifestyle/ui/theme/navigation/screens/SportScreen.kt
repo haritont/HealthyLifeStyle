@@ -2,6 +2,7 @@ package vika.app.healthy_lifestyle.ui.theme.navigation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -22,6 +23,7 @@ import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.activity.sport.SportActivity
 import vika.app.healthy_lifestyle.bean.Item
 import vika.app.healthy_lifestyle.ui.theme.general.Advice
+import vika.app.healthy_lifestyle.ui.theme.general.SwitchButtons
 import vika.app.healthy_lifestyle.ui.theme.tracker.step.StepTracker
 
 
@@ -70,12 +72,30 @@ fun SportScreen (){
             StepTracker()
             Advice(value = FoodActivity().getAdvice())
 
-            LazyRow {
+            val listStateRow = rememberLazyListState()
+            val coroutineScopeRow = rememberCoroutineScope()
+            SwitchButtons(
+                textButton1 = "Упражнения",
+                textButton2 = "Тренировки",
+                clickButton1 = {
+                    coroutineScopeRow.launch {
+                        listStateRow.animateScrollToItem(index = 0)
+                    }
+                },
+                clickButton2 = {
+                    coroutineScopeRow.launch {
+                        listStateRow.animateScrollToItem(index = 1)
+                    }
+                }
+            )
+            LazyRow(
+                state = listStateRow
+            ) {
                 item {
                     Box(
                         modifier = Modifier
                             .width(350.dp)
-                            .height(520.dp)
+                            .height(470.dp)
                     ) {
                         vika.app.healthy_lifestyle.ui.theme.general.list.List(
                             itemList = filteredListPhysicalExercises,
@@ -118,10 +138,12 @@ fun SportScreen (){
                         )
                     }
 
+                    Spacer(Modifier.width(8.dp))
+
                     Box(
                         modifier = Modifier
                             .width(350.dp)
-                            .height(520.dp)
+                            .height(470.dp)
                     ) {
                         vika.app.healthy_lifestyle.ui.theme.general.list.List(
                             itemList = filteredListTrainings,
