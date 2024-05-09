@@ -1,13 +1,18 @@
 package vika.app.healthy_lifestyle.ui.theme.general
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,49 +27,53 @@ fun SwitchButtons(
     clickButton1: () -> Unit,
     clickButton2: () -> Unit
 ) {
-    var selectColor1 = Blue
-    var selectColor2 = White
+    var selectColor1 by remember { mutableStateOf(Blue) }
+    var selectColor2 by remember { mutableStateOf(White) }
 
     Row {
-        Button(
+        Box(
             modifier = Modifier
                 .padding(8.dp)
                 .background(
                     color = selectColor1,
-                    shape = RoundedCornerShape(8.dp)
-                ),
-            onClick = {
-                selectColor1 = Blue
-                selectColor2 = White
-                clickButton1()
-            }
+                    shape = RoundedCornerShape(5.dp)
+                )
+                .clickable {
+                    selectColor1 = Blue
+                    selectColor2 = White
+                    clickButton1()
+                }
         ) {
             Text(
                 text = textButton1,
                 style = MaterialTheme.typography.bodyMedium,
                 color = Black,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(10.dp)
             )
         }
 
-        Button(
+        Box(
             modifier = Modifier
                 .padding(8.dp)
                 .background(
                     color = selectColor2,
-                    shape = RoundedCornerShape(8.dp)
-                ),
-            onClick = {
-                selectColor1 = White
-                selectColor2 = Blue
-                clickButton2()
-            }
+                    shape = RoundedCornerShape(5.dp)
+                )
+                .clickable {
+                    selectColor2 = Blue
+                    selectColor1 = White
+                    clickButton2()
+                }
         ) {
             Text(
                 text = textButton2,
                 style = MaterialTheme.typography.bodyMedium,
                 color = Black,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(10.dp)
             )
         }
     }
