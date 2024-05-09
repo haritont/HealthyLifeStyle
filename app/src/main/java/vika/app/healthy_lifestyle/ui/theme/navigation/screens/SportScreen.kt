@@ -7,15 +7,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.activity.sport.SportActivity
 import vika.app.healthy_lifestyle.bean.Item
@@ -41,7 +43,8 @@ fun SportScreen (){
     }
     val filteredListPhysicalExercises by remember { mutableStateOf(itemListPhysicalExercises) }
 
-    var searchKey by remember { mutableStateOf(0) }
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
 
     val itemListTrainings = mutableListOf<Item>()
     val trainings = SportActivity().getAllTrainings(context)
@@ -58,6 +61,7 @@ fun SportScreen (){
     val filteredListTrainings by remember { mutableStateOf(itemListTrainings) }
 
     LazyColumn (
+        state = listState,
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -102,7 +106,12 @@ fun SportScreen (){
                             textInDialog = "Сколько вы выполняли это упражнение? (мин)",
                             listOf(),
                             "",
-                            2
+                            2,
+                            clickSearch = {
+                                coroutineScope.launch {
+                                    listState.animateScrollToItem(index = 5)
+                                }
+                            }
                         )
                     }
 
@@ -140,7 +149,12 @@ fun SportScreen (){
                             textInDialog = "Сколько вы выполняли эту тренировку? (мин)",
                             listOf(),
                             "",
-                            3
+                            3,
+                            clickSearch = {
+                                coroutineScope.launch {
+                                    listState.animateScrollToItem(index = 5)
+                                }
+                            }
                         )
                     }
                 }

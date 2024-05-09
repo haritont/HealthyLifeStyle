@@ -166,9 +166,12 @@ fun AddDish(
                             }
                         )
 
-                        Search(itemList = itemListIngredient) {
-                            filteredListIngredient = it.toMutableList()
-                        }
+                        Search(
+                            itemList = itemListIngredient,
+                            onSearchResults = {
+                                filteredListIngredient = it.toMutableList()
+                            }
+                        )
 
                         LazyColumn(
                             modifier = Modifier

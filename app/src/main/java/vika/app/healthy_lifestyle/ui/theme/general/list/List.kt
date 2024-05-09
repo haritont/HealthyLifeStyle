@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -32,10 +30,9 @@ fun List(
     options: List<String>,
     firstOption: String,
     typeAdd: Int, //0-ingred, 1-dish, 2-physEx, 3-training
+    clickSearch:() -> Unit
 ) {
     var filteredList by remember { mutableStateOf(itemList) }
-
-    var searchKey by remember { mutableStateOf(0) }
 
     var openDialogAddIngredient by remember { mutableStateOf(false) }
     var openDialogAddDish by remember { mutableStateOf(false) }
@@ -49,11 +46,12 @@ fun List(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Search(
-                itemList = itemList
-            ) {
-                filteredList = it
-                searchKey = 1
-            }
+                itemList = itemList,
+                onSearchResults = {
+                    filteredList = it
+                    clickSearch()
+                }
+            )
             AddIngredient(
                 openDialogAddIngredient,
                 onOpenChange = { openDialogAddIngredient = it }
@@ -85,17 +83,7 @@ fun List(
             }
         }
 
-        val listState = rememberLazyListState()
-
-        if (searchKey == 1) {
-            LaunchedEffect(listState) {
-                listState.scrollToItem(index = 0, 0)
-            }
-        }
-
-        LazyColumn (
-            state = listState
-        ){
+        LazyColumn {
             items(filteredList) { item ->
                 key(item.title) {
                     ItemList(

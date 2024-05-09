@@ -11,18 +11,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.bean.Item
 import vika.app.healthy_lifestyle.bean.ItemText
@@ -67,19 +67,15 @@ fun FoodScreen() {
 
     val selectListProduct = remember { mutableStateListOf<ItemText>() }
 
-    val lastListProduct = FoodActivity().getLastNutrition(context)
+    var lastListProduct = FoodActivity().getLastNutrition(context)
+    lastListProduct = lastListProduct.reversed()
+
     for (nutrition in lastListProduct) {
         selectListProduct.add(ItemText(nutrition.name, nutrition.value))
     }
 
     val listState = rememberLazyListState()
-    var searchKey by remember { mutableStateOf(0) }
-
-    if (searchKey == 0) {
-        LaunchedEffect(listState) {
-            listState.scrollToItem(index = 0)
-        }
-    }
+    val coroutineScope = rememberCoroutineScope()
 
     LazyColumn(
         state = listState,
@@ -88,34 +84,36 @@ fun FoodScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         item {
-            Text(
-                text = "Последние добавленные",
-                modifier = Modifier.padding(8.dp),
-                fontWeight = FontWeight.Bold,
-                color = Black
-            )
-            LazyColumn(
-                modifier = Modifier
-                    .height(200.dp)
-                    .padding(8.dp)
-            ) {
-                items(selectListProduct) { item ->
-                    key(item) {
-                        ItemListDelete(
-                            title = item.title,
-                            value = item.value,
-                            delete = { title ->
-                                selectListProduct.remove(
-                                    selectListProduct.find { it.title == title }
-                                )
-                                FoodActivity().deleteNutrition(
-                                    context,
-                                    item.title,
-                                    item.value,
-                                    DateToday().getToday()
-                                )
-                            }
-                        )
+            if (selectListProduct.size != 0) {
+                Text(
+                    text = "Последние добавленные",
+                    modifier = Modifier.padding(8.dp),
+                    fontWeight = FontWeight.Bold,
+                    color = Black
+                )
+                LazyColumn(
+                    modifier = Modifier
+                        .height(200.dp)
+                        .padding(8.dp)
+                ) {
+                    items(selectListProduct) { item ->
+                        key(item) {
+                            ItemListDelete(
+                                title = item.title,
+                                value = item.value,
+                                delete = { title ->
+                                    selectListProduct.remove(
+                                        selectListProduct.find { it.title == title }
+                                    )
+                                    FoodActivity().deleteNutrition(
+                                        context,
+                                        item.title,
+                                        item.value,
+                                        DateToday().getToday()
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -128,7 +126,7 @@ fun FoodScreen() {
             Box(
                 modifier = Modifier
                     .width(350.dp)
-                    .height(600.dp)
+                    .height(520.dp)
             ) {
                 vika.app.healthy_lifestyle.ui.theme.general.list.List(
                     itemList = filteredListIngredient,
@@ -140,8 +138,10 @@ fun FoodScreen() {
                             date,
                             option
                         )
-                        selectListProduct.add(ItemText(name, value))
-                        searchKey = 0
+                        selectListProduct.add(0, ItemText(name, value))
+                        coroutineScope.launch {
+                            listState.animateScrollToItem(index = 0)
+                        }
                     },
                     typeToMore = 0,
                     updateException = { name, exception ->
@@ -166,7 +166,12 @@ fun FoodScreen() {
                         "Перекус"
                     ),
                     MealCalc().getCurrentMeal(),
-                    0
+                    typeAdd = 0,
+                    clickSearch = {
+                        coroutineScope.launch {
+                            listState.animateScrollToItem(index = 5)
+                        }
+                    }
                 )
             }
 
