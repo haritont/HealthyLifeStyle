@@ -1,13 +1,11 @@
 package vika.app.healthy_lifestyle.ui.theme.navigation.screens.main
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -18,20 +16,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.main.HistoryActivity
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.ui.theme.general.DatePickerWithDialog
-import vika.app.healthy_lifestyle.ui.theme.general.ImageButton
-import vika.app.healthy_lifestyle.ui.theme.general.list.ItemList
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListDelete
 
 @Composable
 fun HistoryScreen() {
     val context = LocalContext.current
 
-    var today = DateToday().getToday()
-    val currentDate by remember { mutableStateOf(today)}
+    var currentDate by remember { mutableStateOf(DateToday().getToday())}
     var historyList by remember { mutableStateOf(HistoryActivity().getHistory(context, currentDate))}
 
     LazyColumn(
@@ -44,20 +38,13 @@ fun HistoryScreen() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                ImageButton(icon = R.drawable.left) {
-                    today = DateToday().subtractDay(today)
-                    historyList = HistoryActivity().getHistory(context, today)
-                }
                 DatePickerWithDialog(
                     currentDate = currentDate,
                     getCurrentTime = { currentTime ->
-                        today = currentTime
+                        currentDate = currentTime
+                        historyList = HistoryActivity().getHistory(context, currentDate)
                     }
                 )
-                ImageButton(icon = R.drawable.right) {
-                    today = DateToday().addDay(today)
-                    historyList = HistoryActivity().getHistory(context, today)
-                }
             }
 
             LazyColumn(
