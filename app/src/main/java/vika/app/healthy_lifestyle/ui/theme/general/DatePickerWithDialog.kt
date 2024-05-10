@@ -44,7 +44,7 @@ fun DatePickerWithDialog(
             showDialog.value = true
         }
         Text(
-            text = currentTime,
+            text = DateToday().formatDateDDMMYYYY(currentTime),
             color = Black
         )
     }
