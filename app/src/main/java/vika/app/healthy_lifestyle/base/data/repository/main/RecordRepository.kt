@@ -87,4 +87,8 @@ class RecordRepository(context: Context) {
     fun burnedKilocalories(today: String): Double {
         return getRecordByDate(today)!!.burnedKilocalories
     }
+
+    fun progressSteps(today: String): Int {
+        return getRecordByDate(today)!!.progressSteps
+    }
 }

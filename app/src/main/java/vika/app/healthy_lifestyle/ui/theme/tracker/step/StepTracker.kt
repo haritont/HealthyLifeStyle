@@ -19,13 +19,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import vika.app.healthy_lifestyle.activity.main.MainActivity
+import vika.app.healthy_lifestyle.activity.sport.SportActivity
 import vika.app.healthy_lifestyle.ui.theme.main.CircularProgressBar
 
 @Composable
 fun StepTracker() {
     val context = LocalContext.current
-    var stepValue by remember { mutableStateOf(0) }
-    var lastStep by remember { mutableStateOf(0) }
+    val sharedPreferences = context.getSharedPreferences("shared_preferences", Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+
+    var stepValue by remember { mutableStateOf(SportActivity().getProgressSteps(context)) }
+    var lastStep by remember { mutableStateOf(sharedPreferences.getString("lastStep", "0")) }
 
     DisposableEffect(Unit) {
         val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -34,9 +38,12 @@ fun StepTracker() {
         val stepSensorListener = object : SensorEventListener {
             override fun onSensorChanged(event: SensorEvent) {
                 if (stepValue == 0){
-                    lastStep = event.values[0].toInt()
+                    lastStep = event.values[0].toInt().toString()
+                    editor.putString("lastStep", lastStep)
+                    editor.apply()
                 }
-                stepValue = event.values[0].toInt() - lastStep + 1
+                stepValue = event.values[0].toInt() - lastStep.toString().toInt() + 1
+                SportActivity().saveProgressSteps(context, stepValue)
             }
 
             override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}

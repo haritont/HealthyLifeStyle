@@ -1,7 +1,6 @@
 package vika.app.healthy_lifestyle.activity.sport
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,6 +10,7 @@ import vika.app.healthy_lifestyle.base.data.repository.sport.ActivismRepository
 import vika.app.healthy_lifestyle.base.data.repository.sport.PhysicalExerciseRepository
 import vika.app.healthy_lifestyle.bean.sport.Activism
 import vika.app.healthy_lifestyle.bean.sport.PhysicalExercise
+import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.navigation.Navigation
 
@@ -80,6 +80,14 @@ class SportActivity : ComponentActivity() {
 
     fun updateException(context: Context, name: String, exception: Boolean){
         PhysicalExerciseRepository(context).updatePhysicalExerciseException(name, exception)
+    }
+
+    fun getProgressSteps(context: Context): Int {
+        return RecordRepository(context).progressSteps(DateToday().getToday())
+    }
+
+    fun saveProgressSteps(context: Context, stepValue: Int) {
+        RecordRepository(context).updateProgressStepsRecord(DateToday().getToday(), stepValue)
     }
 
 }
