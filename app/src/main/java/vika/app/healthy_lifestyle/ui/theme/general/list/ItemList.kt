@@ -36,6 +36,7 @@ import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.BlueUltraLight
 import vika.app.healthy_lifestyle.ui.theme.app.White
+import vika.app.healthy_lifestyle.ui.theme.food.MoreDish
 import vika.app.healthy_lifestyle.ui.theme.food.MoreIngredient
 import vika.app.healthy_lifestyle.ui.theme.general.DatePickerWithDialog
 import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
@@ -67,6 +68,7 @@ fun ItemList(
 
     var openDialogMore by remember { mutableStateOf(false) }
     var openDialogMoreIngredient by remember { mutableStateOf(false) }
+    var openDialogMoreDish by remember { mutableStateOf(false) }
 
     if (openDialogMore){
         MoreIngredient(
@@ -76,12 +78,20 @@ fun ItemList(
                            },
             title = title
         )
+
+        MoreDish(
+            isOpen = openDialogMoreDish,
+            onOpenChange = {
+            openDialogMore = it
+        },
+            title = title
+        )
         when (typeToMore) {
             0 -> {
                 openDialogMoreIngredient = true
             }
             1 -> {
-
+                openDialogMoreDish = true
             }
             2 -> {
 

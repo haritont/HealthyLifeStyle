@@ -29,8 +29,10 @@ class FoodActivity : ComponentActivity() {
         }
     }
 
-    fun addNewDish(context: Context, name: String, type: String,
-                   selectListIngredient: MutableList<ItemText>) {
+    fun addNewDish(
+        context: Context, name: String, type: String,
+        selectListIngredient: MutableList<ItemText>
+    ) {
         val exists = DishRepository(context).isDishExists(name)
         if (!exists) {
             var kilocalories = 0.0
@@ -38,7 +40,7 @@ class FoodActivity : ComponentActivity() {
             var fats = 0.0
             var carbohydrates = 0.0
 
-            for (item in selectListIngredient){
+            for (item in selectListIngredient) {
                 val ingredient = IngredientRepository(context).getIngredientByName(item.title)
 
                 kilocalories += ingredient.kilocalories * item.value / 100
@@ -59,7 +61,7 @@ class FoodActivity : ComponentActivity() {
             )
 
             val dishId = DishRepository(context).getDishByName(name).id
-            for (item in selectListIngredient){
+            for (item in selectListIngredient) {
                 val ingredient = IngredientRepository(context).getIngredientByName(item.title)
 
                 RecipeRepository(context).insertRecipe(
@@ -73,9 +75,11 @@ class FoodActivity : ComponentActivity() {
         }
     }
 
-    fun updateIngredient(context: Context, id: Long, name: String, kilocalories: Double,
-                         proteins: Double, fats: Double, carbohydrates: Double, type: String,
-                         favorite: Boolean, exception: Boolean){
+    fun updateIngredient(
+        context: Context, id: Long, name: String, kilocalories: Double,
+        proteins: Double, fats: Double, carbohydrates: Double, type: String,
+        favorite: Boolean, exception: Boolean
+    ) {
         IngredientRepository(context).insertIngredient(
             Ingredient(
                 id = id,
@@ -91,12 +95,18 @@ class FoodActivity : ComponentActivity() {
         )
     }
 
-    fun getIngredient(context: Context, name:String):Ingredient{
+    fun getIngredient(context: Context, name: String): Ingredient {
         return IngredientRepository(context).getIngredientByName(name)
     }
 
-    fun addNewIngredient(context: Context, name: String, kilocalories: Double,
-                         proteins: Double, fats: Double, carbohydrates: Double, type: String) {
+    fun getIngredient(context: Context, id: Long): Ingredient {
+        return IngredientRepository(context).getIngredientById(id)
+    }
+
+    fun addNewIngredient(
+        context: Context, name: String, kilocalories: Double,
+        proteins: Double, fats: Double, carbohydrates: Double, type: String
+    ) {
         val exists = IngredientRepository(context).isIngredientExists(name)
         if (!exists) {
             IngredientRepository(context).insertIngredient(
@@ -134,15 +144,15 @@ class FoodActivity : ComponentActivity() {
         )
     }
 
-    fun updateFavoriteDish(context: Context, name: String, favorite: Boolean){
+    fun updateFavoriteDish(context: Context, name: String, favorite: Boolean) {
         DishRepository(context).updateDishFavorite(name, favorite)
     }
 
-    fun updateExceptionDish(context: Context, name: String, exception: Boolean){
+    fun updateExceptionDish(context: Context, name: String, exception: Boolean) {
         DishRepository(context).updateDishException(name, exception)
     }
 
-    fun getAllDishes(context: Context):List<Dish>{
+    fun getAllDishes(context: Context): List<Dish> {
         return DishRepository(context).getAllDishes()
     }
 
@@ -168,26 +178,29 @@ class FoodActivity : ComponentActivity() {
         )
     }
 
-    fun updateFavoriteIngredient(context: Context, name: String, favorite: Boolean){
+    fun updateFavoriteIngredient(context: Context, name: String, favorite: Boolean) {
         IngredientRepository(context).updateIngredientFavorite(name, favorite)
     }
 
-    fun updateExceptionIngredient(context: Context, name: String, exception: Boolean){
+    fun updateExceptionIngredient(context: Context, name: String, exception: Boolean) {
         IngredientRepository(context).updateIngredientException(name, exception)
     }
 
-    fun getAllIngredients(context: Context):List<Ingredient>{
+    fun getAllIngredients(context: Context): List<Ingredient> {
         return IngredientRepository(context).getAllIngredients()
     }
 
-    fun getAdvice():String{
+    fun getAdvice(): String {
         return CreateAdvice().getAdvice()
     }
 
-    fun addKPFC(context: Context, kilocaloriesState: String, proteinsState: String,
-                fatsState: String, carbohydratesState: String, date: String){
+    fun addKPFC(
+        context: Context, kilocaloriesState: String, proteinsState: String,
+        fatsState: String, carbohydratesState: String, date: String
+    ) {
         val record = RecordRepository(context).getRecordByDate(date)
-        RecordRepository(context).updateProgressFoodRecord(date,
+        RecordRepository(context).updateProgressFoodRecord(
+            date,
             kilocaloriesState.toDouble() + record!!.progressKilocalories,
             proteinsState.toDouble() + record.progressProteins,
             fatsState.toDouble() + record.progressFats,
@@ -199,7 +212,7 @@ class FoodActivity : ComponentActivity() {
         return NutritionRepository(context).getNutritionByDate(DateToday().getToday());
     }
 
-    fun deleteNutrition(context: Context, name: String, value: Double, date: String){
+    fun deleteNutrition(context: Context, name: String, value: Double, date: String) {
         NutritionRepository(context).deleteNutrition(name, value, date)
         val record = RecordRepository(context).getRecordByDate(date)
         val ingredient = getIngredient(context, name)
@@ -210,5 +223,53 @@ class FoodActivity : ComponentActivity() {
             record.progressFats - ingredient.fats / 100 * value,
             record.progressCarbohydrates - ingredient.carbohydrates / 100 * value
         )
+    }
+
+    fun getDish(context: Context, title: String): Dish {
+        return DishRepository(context).getDishByName(title)
+    }
+
+    fun getRecipe(context: Context, idDish: Long): List<Recipe> {
+        return RecipeRepository(context).getRecipesForDish(idDish)
+    }
+
+    fun updateDish(
+        context: Context,
+        id: Long,
+        name: String,
+        kilocalories: Double,
+        proteins: Double,
+        fats: Double,
+        carbohydrates: Double,
+        type: String,
+        favorite: Boolean,
+        exception: Boolean,
+        selectListIngredient: MutableList<ItemText>
+    ) {
+        DishRepository(context).insertDish(
+            Dish(
+                id = id,
+                name = name,
+                kilocalories = kilocalories,
+                proteins = proteins,
+                fats = fats,
+                carbohydrates = carbohydrates,
+                type = type,
+                favorite = favorite,
+                exception = exception
+            )
+        )
+
+        for (item in selectListIngredient) {
+            val ingredient = IngredientRepository(context).getIngredientByName(item.title)
+
+            RecipeRepository(context).insertRecipe(
+                Recipe(
+                    idDish = id,
+                    idIngredient = ingredient.id,
+                    valueIngredient = item.value
+                )
+            )
+        }
     }
 }

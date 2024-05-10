@@ -47,46 +47,6 @@ fun MoreIngredient(
 
     val context = LocalContext.current
 
-    val ingredient = FoodActivity().getIngredient(context, title)
-
-    val nameState = remember { mutableStateOf(title) }
-    val kilocaloriesState = remember { mutableStateOf(ingredient.kilocalories) }
-    val proteinsState = remember { mutableStateOf(ingredient.proteins) }
-    val fatsState = remember { mutableStateOf(ingredient.fats) }
-    val carbohydratesState = remember { mutableStateOf(ingredient.carbohydrates) }
-
-    val options = listOf(
-        "Без типа",
-        "Напиток",
-        "Фрукт",
-        "Сладкое",
-        "Приправа",
-        "Алкоголь",
-        "Дичь",
-        "Рыба",
-        "Орех",
-        "Ягода",
-        "Вода",
-        "Овощ",
-        "Мучное",
-        "Зелень",
-        "Соус",
-        "Уксус",
-        "Мясо",
-        "Субпродукт",
-        "Сыр",
-        "Боб",
-        "Крупа",
-        "Гриб",
-        "Молочное",
-        "Масло",
-        "Яйцо"
-    )
-    val typeState = remember { mutableStateOf(ingredient.type) }
-
-    var favoriteState by remember { mutableStateOf(ingredient.favorite) }
-    var exceptionState by remember { mutableStateOf(ingredient.exception) }
-
     if (isOpen != openDialog) {
         openDialog = isOpen
     }
@@ -97,6 +57,47 @@ fun MoreIngredient(
     }
 
     if (isOpen) {
+
+        val ingredient = FoodActivity().getIngredient(context, title)
+
+        val nameState = remember { mutableStateOf(title) }
+        val kilocaloriesState = remember { mutableStateOf(ingredient.kilocalories) }
+        val proteinsState = remember { mutableStateOf(ingredient.proteins) }
+        val fatsState = remember { mutableStateOf(ingredient.fats) }
+        val carbohydratesState = remember { mutableStateOf(ingredient.carbohydrates) }
+
+        val options = listOf(
+            "Без типа",
+            "Напиток",
+            "Фрукт",
+            "Сладкое",
+            "Приправа",
+            "Алкоголь",
+            "Дичь",
+            "Рыба",
+            "Орех",
+            "Ягода",
+            "Вода",
+            "Овощ",
+            "Мучное",
+            "Зелень",
+            "Соус",
+            "Уксус",
+            "Мясо",
+            "Субпродукт",
+            "Сыр",
+            "Боб",
+            "Крупа",
+            "Гриб",
+            "Молочное",
+            "Масло",
+            "Яйцо"
+        )
+        val typeState = remember { mutableStateOf(ingredient.type) }
+
+        var favoriteState by remember { mutableStateOf(ingredient.favorite) }
+        var exceptionState by remember { mutableStateOf(ingredient.exception) }
+
         Dialog(
             onDismissRequest = {
                 openDialog = !openDialog
