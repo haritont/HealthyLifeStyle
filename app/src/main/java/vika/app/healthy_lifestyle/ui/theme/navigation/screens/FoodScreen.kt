@@ -96,7 +96,7 @@ fun FoodScreen() {
                 )
                 LazyColumn(
                     modifier = Modifier
-                        .height(200.dp)
+                        .height(150.dp)
                         .padding(8.dp)
                 ) {
                     items(selectListProduct) { item ->
