@@ -289,7 +289,7 @@ fun MoreDish(
                                      modifier = Modifier.weight(1f)
                                  ) {
                                      TextFieldBlue(
-                                         value = kilocaloriesState.value.toString(),
+                                         value = "%.1f".format(kilocaloriesState.value),
                                          label = {
                                              Text(
                                                  LocalContext.current.getString(R.string.kilocalories),
@@ -314,7 +314,7 @@ fun MoreDish(
                                      modifier = Modifier.weight(1f)
                                  ) {
                                      TextFieldBlue(
-                                         value = proteinsState.value.toString(),
+                                         value = "%.1f".format(proteinsState.value),
                                          label = {
                                              Text(
                                                  LocalContext.current.getString(R.string.proteins),
@@ -344,7 +344,7 @@ fun MoreDish(
                                      modifier = Modifier.weight(1f)
                                  ) {
                                      TextFieldBlue(
-                                         value = fatsState.value.toString(),
+                                         value = "%.1f".format(fatsState.value),
                                          label = {
                                              Text(
                                                  LocalContext.current.getString(R.string.fats),
@@ -370,7 +370,7 @@ fun MoreDish(
                                      modifier = Modifier.weight(1f)
                                  ) {
                                      TextFieldBlue(
-                                         value = carbohydratesState.value.toString(),
+                                         value = "%.1f".format(carbohydratesState.value),
                                          label = {
                                              Text(
                                                  LocalContext.current.getString(R.string.carbohydrates),

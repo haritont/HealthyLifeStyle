@@ -25,4 +25,8 @@ class RecipeRepository (context: Context){
     fun getRecipesForDish(idDish: Long): List<Recipe> = runBlocking{
         recipeMapper.toRecipeList(recipeDao.getRecipesForDish(idDish))
     }
+
+    fun deleteAllRecipe(idDish: Long) = runBlocking{
+        recipeDao.deleteAll(idDish)
+    }
 }

@@ -260,9 +260,9 @@ class FoodActivity : ComponentActivity() {
             )
         )
 
+        RecipeRepository(context).deleteAllRecipe(id)
         for (item in selectListIngredient) {
             val ingredient = IngredientRepository(context).getIngredientByName(item.title)
-
             RecipeRepository(context).insertRecipe(
                 Recipe(
                     idDish = id,
