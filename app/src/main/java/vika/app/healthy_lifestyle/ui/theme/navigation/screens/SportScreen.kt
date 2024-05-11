@@ -5,25 +5,35 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.activity.sport.SportActivity
 import vika.app.healthy_lifestyle.bean.Item
+import vika.app.healthy_lifestyle.bean.ItemText
+import vika.app.healthy_lifestyle.calculations.DateToday
+import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.general.Advice
 import vika.app.healthy_lifestyle.ui.theme.general.SwitchButtons
+import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListDelete
 import vika.app.healthy_lifestyle.ui.theme.tracker.step.StepTracker
 
 
@@ -44,6 +54,15 @@ fun SportScreen (){
         )
     }
     val filteredListPhysicalExercises by remember { mutableStateOf(itemListPhysicalExercises) }
+
+    val selectListSports = remember { mutableStateListOf<ItemText>() }
+
+    var lastListSports = SportActivity().getLastActivism(context)
+    lastListSports = lastListSports.reversed()
+
+    for (activism in lastListSports) {
+        selectListSports.add(ItemText(activism.name, activism.value))
+    }
 
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -69,6 +88,40 @@ fun SportScreen (){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
+            if (selectListSports.size != 0) {
+                Text(
+                    text = "Последние добавленные",
+                    modifier = Modifier.padding(8.dp),
+                    fontWeight = FontWeight.Bold,
+                    color = Black
+                )
+                LazyColumn(
+                    modifier = Modifier
+                        .height(150.dp)
+                        .padding(8.dp)
+                ) {
+                    items(selectListSports) { item ->
+                        key(item) {
+                            ItemListDelete(
+                                title = item.title,
+                                value = item.value,
+                                delete = { title ->
+                                    selectListSports.remove(
+                                        selectListSports.find { it.title == title }
+                                    )
+                                    SportActivity().deleteActivism(
+                                        context,
+                                        item.title,
+                                        item.value,
+                                        DateToday().getToday()
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+
             StepTracker()
             Advice(value = FoodActivity().getAdvice())
 
@@ -95,7 +148,7 @@ fun SportScreen (){
                     Box(
                         modifier = Modifier
                             .width(350.dp)
-                            .height(470.dp)
+                            .height(390.dp)
                     ) {
                         vika.app.healthy_lifestyle.ui.theme.general.list.List(
                             itemList = filteredListPhysicalExercises,
@@ -110,6 +163,13 @@ fun SportScreen (){
                                 coroutineScope.launch {
                                     listState.animateScrollToItem(index = 0)
                                 }
+                                selectListSports.add(
+                                    0,
+                                    ItemText(
+                                        name,
+                                        value
+                                    )
+                                )
                             },
                             2,
                             updateException = { name, exception ->
@@ -132,7 +192,7 @@ fun SportScreen (){
                             2,
                             clickSearch = {
                                 coroutineScope.launch {
-                                    listState.animateScrollToItem(index = 5)
+                                    listState.animateScrollToItem(index = 4)
                                 }
                             }
                         )
@@ -143,7 +203,7 @@ fun SportScreen (){
                     Box(
                         modifier = Modifier
                             .width(350.dp)
-                            .height(470.dp)
+                            .height(390.dp)
                     ) {
                         vika.app.healthy_lifestyle.ui.theme.general.list.List(
                             itemList = filteredListTrainings,
@@ -158,6 +218,13 @@ fun SportScreen (){
                                 coroutineScope.launch {
                                     listState.animateScrollToItem(index = 0)
                                 }
+                                selectListSports.add(
+                                    0,
+                                    ItemText(
+                                        name,
+                                        value
+                                    )
+                                )
                             },
                            3,
                             updateException = { name, exception ->
@@ -180,7 +247,7 @@ fun SportScreen (){
                             3,
                             clickSearch = {
                                 coroutineScope.launch {
-                                    listState.animateScrollToItem(index = 5)
+                                    listState.animateScrollToItem(index = 4)
                                 }
                             }
                         )

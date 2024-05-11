@@ -13,4 +13,6 @@ interface ActivismDao {
 
     @Query("SELECT * FROM Activism WHERE date = :date")
     suspend fun getActivismByDate(date: String): List<ActivismEntity>
+    @Query("DELETE FROM Activism WHERE name = :name AND value =:value AND date = :date")
+    suspend fun delete(name: String, value: Double, date: String)
 }

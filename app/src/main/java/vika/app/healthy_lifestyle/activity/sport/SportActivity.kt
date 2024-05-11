@@ -90,4 +90,12 @@ class SportActivity : ComponentActivity() {
         RecordRepository(context).updateProgressStepsRecord(DateToday().getToday(), stepValue)
     }
 
+    fun getLastActivism(context: Context): List<Activism> {
+        return ActivismRepository(context).getActivismByDate(DateToday().getToday())
+    }
+
+    fun deleteActivism(context: Context, title: String, value: Double, today: String) {
+        ActivismRepository(context).deleteActivism(title, value, today)
+    }
+
 }

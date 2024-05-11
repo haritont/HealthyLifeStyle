@@ -25,4 +25,8 @@ class ActivismRepository (context: Context){
     fun getActivismByDate(date: String): List<Activism> = runBlocking{
         activismMapper.toActivismList(activismDao.getActivismByDate(date))
     }
+
+    fun deleteActivism(name: String, value: Double, date: String) = runBlocking{
+        activismDao.delete(name, value, date)
+    }
 }
