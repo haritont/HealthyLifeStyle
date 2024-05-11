@@ -1,6 +1,5 @@
 package vika.app.healthy_lifestyle.activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -20,20 +19,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.main.MainActivity
-import vika.app.healthy_lifestyle.base.data.repository.food.IngredientRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
-import vika.app.healthy_lifestyle.base.data.repository.main.WeightRepository
 import vika.app.healthy_lifestyle.base.data.repository.mood.DreamRepository
-import vika.app.healthy_lifestyle.base.data.repository.sport.PhysicalExerciseRepository
 import vika.app.healthy_lifestyle.bean.main.PersonalData
+import vika.app.healthy_lifestyle.bean.main.Record
+import vika.app.healthy_lifestyle.bean.mood.Dream
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.calculations.PersonalTarget
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
-import vika.app.healthy_lifestyle.bean.main.Record
-import vika.app.healthy_lifestyle.bean.main.Weight
-import vika.app.healthy_lifestyle.bean.mood.Dream
-import vika.app.healthy_lifestyle.server.api.DefaultApiServiceRepository
 
 class LoadingActivity: ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,17 +84,23 @@ class LoadingActivity: ComponentActivity(){
 //            )
 //        )
 
-        saveDream(
-            Dream(
-               date = DateToday().getToday()
+        if (getTodayDream(DateToday().getToday()) == null) {
+            saveDream(
+                Dream(
+                    date = DateToday().getToday()
+                )
             )
-        )
+        }
         //insertNotifications()
 
         setRecordTarget()
 
         startActivity(Intent(this@LoadingActivity, MainActivity::class.java))
         finish()
+    }
+
+    private fun getTodayDream(today: String): Dream? {
+        return DreamRepository(this).getDream(today)
     }
 
     private fun saveDream(dream: Dream) {

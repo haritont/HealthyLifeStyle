@@ -24,7 +24,7 @@ class DreamRepository (context: Context){
     }
 
     fun getDream(today: String): Dream = runBlocking{
-        dreamMapper.toDream(dreamDao.getDream(today))
+        dreamMapper.toDream(dreamDao.getLatestDream(today)!!)
     }
 
     fun getHour(today: String): Int = runBlocking{
