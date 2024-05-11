@@ -72,7 +72,7 @@ fun ItemList(
 
     if (openDialogMore){
         MoreIngredient(
-            openDialogMoreIngredient,
+            isOpen = openDialogMoreIngredient,
             onOpenChange = {
                 openDialogMore = it
                            },

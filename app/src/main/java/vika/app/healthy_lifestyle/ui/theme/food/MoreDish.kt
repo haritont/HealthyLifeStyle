@@ -61,11 +61,11 @@ fun MoreDish(
      }
 
      DisposableEffect(isOpen) {
-         onOpenChange(openDialog)
+         openDialog = isOpen
          onDispose { }
      }
 
-     if (isOpen) {
+     if (openDialog) {
          val dish = FoodActivity().getDish(context, title)
 
          val itemListIngredient = mutableListOf<Item>()
@@ -133,7 +133,7 @@ fun MoreDish(
 
          Dialog(
              onDismissRequest = {
-                 openDialog = !openDialog
+                 openDialog = false
                  onOpenChange(openDialog)
              }
          ) {
@@ -413,7 +413,7 @@ fun MoreDish(
                                      exceptionState,
                                      selectListIngredient
                                  )
-                                 openDialog = !openDialog
+                                 openDialog = false
                                  onOpenChange(openDialog)
                              },
                              modifier = Modifier.padding(8.dp),

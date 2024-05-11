@@ -52,12 +52,11 @@ fun MoreIngredient(
     }
 
     DisposableEffect(isOpen) {
-        onOpenChange(openDialog)
+        openDialog = isOpen
         onDispose { }
     }
 
-    if (isOpen) {
-
+    if (openDialog) {
         val ingredient = FoodActivity().getIngredient(context, title)
 
         val nameState = remember { mutableStateOf(title) }
@@ -100,7 +99,7 @@ fun MoreIngredient(
 
         Dialog(
             onDismissRequest = {
-                openDialog = !openDialog
+                openDialog = false
                 onOpenChange(openDialog)
             }
         ) {
@@ -302,7 +301,7 @@ fun MoreIngredient(
                                     favoriteState,
                                     exceptionState
                                 )
-                                openDialog = !openDialog
+                                openDialog = false
                                 onOpenChange(openDialog)
                             },
                             modifier = Modifier.padding(8.dp),
