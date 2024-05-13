@@ -122,7 +122,7 @@ fun FoodScreen() {
             }
 
             FastKPFC()
-            Advice(value = FoodActivity().getAdvice())
+            Advice(value = FoodActivity().getAdvice(context))
 
             val listStateRow = rememberLazyListState()
             val coroutineScopeRow = rememberCoroutineScope()

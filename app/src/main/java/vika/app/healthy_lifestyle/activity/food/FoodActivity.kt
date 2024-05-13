@@ -8,6 +8,7 @@ import vika.app.healthy_lifestyle.base.data.repository.food.DishRepository
 import vika.app.healthy_lifestyle.base.data.repository.food.IngredientRepository
 import vika.app.healthy_lifestyle.base.data.repository.food.NutritionRepository
 import vika.app.healthy_lifestyle.base.data.repository.food.RecipeRepository
+import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
 import vika.app.healthy_lifestyle.bean.ItemText
 import vika.app.healthy_lifestyle.bean.food.Dish
@@ -16,6 +17,7 @@ import vika.app.healthy_lifestyle.bean.food.Nutrition
 import vika.app.healthy_lifestyle.bean.food.Recipe
 import vika.app.healthy_lifestyle.calculations.CreateAdvice
 import vika.app.healthy_lifestyle.calculations.DateToday
+import vika.app.healthy_lifestyle.calculations.MealCalc
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.navigation.Navigation
 
@@ -190,8 +192,9 @@ class FoodActivity : ComponentActivity() {
         return IngredientRepository(context).getAllIngredients()
     }
 
-    fun getAdvice(): String {
-        return CreateAdvice().getAdvice()
+    fun getAdvice(context: Context): String {
+        val personalData = PersonalDataRepository(context).getPersonalData()
+        return CreateAdvice().getProductAdvice(context, personalData, MealCalc().getCurrentMeal())
     }
 
     fun addKPFC(
@@ -209,7 +212,7 @@ class FoodActivity : ComponentActivity() {
     }
 
     fun getLastNutrition(context: Context): List<Nutrition> {
-        return NutritionRepository(context).getNutritionByDate(DateToday().getToday());
+        return NutritionRepository(context).getNutritionByDate(DateToday().getToday())
     }
 
     fun deleteNutrition(context: Context, name: String, value: Double, date: String) {
