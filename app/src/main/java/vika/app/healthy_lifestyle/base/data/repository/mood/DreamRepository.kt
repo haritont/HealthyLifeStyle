@@ -23,15 +23,15 @@ class DreamRepository (context: Context){
         dreamDao.insert(dreamMapper.toDreamEntity(dream))
     }
 
-    fun getDream(today: String): Dream = runBlocking{
-        dreamMapper.toDream(dreamDao.getLatestDream(today)!!)
+    fun getDream(today: String): Dream? = runBlocking{
+        dreamDao.getLatestDream(today)?.let { dreamMapper.toDream(it) }
     }
 
     fun getHour(today: String): Int = runBlocking{
-        getDream(today).hour
+        getDream(today)?.hour ?: 0
     }
 
     fun getMinute(today: String): Int = runBlocking{
-        getDream(today).minute
+        getDream(today)?.minute ?: 0
     }
 }
