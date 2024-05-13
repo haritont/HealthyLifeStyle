@@ -10,7 +10,7 @@ class CreateAdvice {
     }
 
     fun getProductAdvice(context: Context, data: PersonalData, meal: String): String {
-        val advice = "Попробуйте на ".plus(meal).plus(" ")
+        val advice = "Попробуйте на ".plus(meal.lowercase()).plus(" : ")
 
         val products = RecommendSystem(context, data.target, MealCalc().getIndexMeal(meal)).getProducts(1)
 
