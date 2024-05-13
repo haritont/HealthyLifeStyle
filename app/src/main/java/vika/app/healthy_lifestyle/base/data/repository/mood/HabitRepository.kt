@@ -20,4 +20,8 @@ class HabitRepository (context: Context){
     fun getAllHabits(): List<Habit> = runBlocking{
         habitMapper.toHabitList(habitDao.getAll())
     }
+
+    fun insertHabit(habit: Habit) = runBlocking{
+        habitDao.insert(habitMapper.toHabitEntity(habit))
+    }
 }
