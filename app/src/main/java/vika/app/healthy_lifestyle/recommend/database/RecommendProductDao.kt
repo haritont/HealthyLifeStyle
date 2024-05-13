@@ -15,4 +15,7 @@ interface RecommendProductDao {
 
     @Query("SELECT * FROM RecommendProduct WHERE target =:target AND meal =:meal AND mark >=:mark")
     suspend fun getRecommendProductList(mark: Double, target: Int, meal: Int): List<RecommendProductEntity>
+
+    @Query("SELECT * FROM RecommendProduct WHERE product =:name")
+    suspend fun getRecommendProduct(name: String): RecommendProductEntity
 }
