@@ -6,13 +6,24 @@ import vika.app.healthy_lifestyle.bean.mood.Habit
 interface HabitMapper {
     fun toHabit(habitEntity: HabitEntity): Habit
     fun toHabitList(habitEntityList: List<HabitEntity>): List<Habit>
+    fun toHabitEntity(habit: Habit): HabitEntity
 }
 class DefaultHabitMapper: HabitMapper{
     override fun toHabit(habitEntity: HabitEntity): Habit {
         return Habit(
             habitEntity.id,
             habitEntity.name,
-            habitEntity.image.toString()
+            habitEntity.product,
+            habitEntity.isPositive
+        )
+    }
+
+    override fun toHabitEntity(habit: Habit): HabitEntity {
+        return HabitEntity(
+            habit.id,
+            habit.name,
+            habit.product,
+            habit.isPositive
         )
     }
 
