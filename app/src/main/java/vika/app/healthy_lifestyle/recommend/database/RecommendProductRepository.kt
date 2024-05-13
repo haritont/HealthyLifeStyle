@@ -22,7 +22,7 @@ class RecommendProductRepository (context: Context){
         recommendProductDao.updateMark(name, mark)
     }
 
-    fun getRecommendProductList(mark: Double): List<RecommendProduct> = runBlocking{
-        recommendProductMapper.toRecommendProductList(recommendProductDao.getRecommendProductList(mark))
+    fun getRecommendProductList(mark: Double, target: Int, meal: Int): List<RecommendProduct> = runBlocking{
+        recommendProductMapper.toRecommendProductList(recommendProductDao.getRecommendProductList(mark, target, meal))
     }
 }
