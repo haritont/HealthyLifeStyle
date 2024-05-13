@@ -8,7 +8,7 @@ object ApiServiceHelper {
     val apiService: ApiService by lazy {
         val gson = GsonBuilder().setLenient().create()
         Retrofit.Builder()
-            .baseUrl("http://192.168.0.102:8080")
+            .baseUrl("http://192.168.0.103:8080")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService::class.java)

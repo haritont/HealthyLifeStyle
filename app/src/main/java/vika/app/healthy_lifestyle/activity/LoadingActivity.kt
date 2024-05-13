@@ -65,6 +65,11 @@ class LoadingActivity: ComponentActivity(){
 //            PhysicalExerciseRepository(this).insertPhysicalExercise(physicalExercise)
 //        }
 //
+//        val productRecommend = DefaultApiServiceRepository().getRecommendProductList()
+//
+//        for (product in productRecommend) {
+//            RecommendProductRepository(this).insertRecommendProduct(product)
+//        }
 //        savePersonalData(
 //            PersonalData(
 //                genderId = 1,
