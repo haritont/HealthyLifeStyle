@@ -29,8 +29,8 @@ class MealCalc {
         }
     }
 
-    fun getIndexCurrentMeal(): Int{
-        return when (getCurrentMeal()) {
+    fun getIndexMeal(meal: String): Int{
+        return when (meal) {
             "Завтрак" -> {
                 0
             }
