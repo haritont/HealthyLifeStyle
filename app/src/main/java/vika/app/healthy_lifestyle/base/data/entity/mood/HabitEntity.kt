@@ -8,5 +8,6 @@ class HabitEntity (
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
     var name: String = "",
-    var image: Int = 0
+    var product: String = "",
+    var isPositive: Boolean = false
 )
