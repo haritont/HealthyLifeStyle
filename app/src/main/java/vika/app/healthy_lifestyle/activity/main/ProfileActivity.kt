@@ -20,4 +20,8 @@ class ProfileActivity : ComponentActivity(){
     fun getPersonalData(context: Context): PersonalData {
        return PersonalDataRepository(context).getPersonalData();
     }
+
+    fun insertPersonalData(context: Context, personalData: PersonalData) {
+        PersonalDataRepository(context).insertPersonalData(personalData)
+    }
 }

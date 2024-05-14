@@ -24,6 +24,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.main.ProfileActivity
+import vika.app.healthy_lifestyle.bean.main.PersonalData
+import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
 import vika.app.healthy_lifestyle.ui.theme.general.DatePickerWithDialog
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
 
@@ -139,7 +141,10 @@ fun ProfileScreen() {
                         {
                             RadioButton(
                                 selected = (text == selectedTarget),
-                                onClick = { onTargetSelected(text) }
+                                onClick = {
+                                    onTargetSelected(text)
+                                    targetState.value = targets.indexOf(text)
+                                }
                             )
                             Text(text = text)
                         }
@@ -159,7 +164,10 @@ fun ProfileScreen() {
                         {
                             RadioButton(
                                 selected = (text == selectedGender),
-                                onClick = { onGenderSelected(text) }
+                                onClick = {
+                                    onGenderSelected(text)
+                                    genderState.value = genders.indexOf(text)
+                                }
                             )
                             Text(text = text)
                         }
@@ -172,7 +180,13 @@ fun ProfileScreen() {
                 1.3 to "Средняя активность",
                 1.5 to "Высокая активность"
             )
-            val (selectedActivity, onActivitySelected) = remember { mutableStateOf(activities.getValue(activityRateState.value)) }
+            val (selectedActivity, onActivitySelected) = remember {
+                mutableStateOf(
+                    activities.getValue(
+                        activityRateState.value
+                    )
+                )
+            }
             Column {
                 Text(text = context.getString(R.string.activity))
                 Column(Modifier.selectableGroup()) {
@@ -183,12 +197,31 @@ fun ProfileScreen() {
                         {
                             RadioButton(
                                 selected = (text == selectedActivity),
-                                onClick = { onActivitySelected(text) }
+                                onClick = {
+                                    onActivitySelected(text)
+                                    activityRateState.value = activities.entries.find { it.value == text }!!.key
+                                }
                             )
                             Text(text = text)
                         }
                     }
                 }
+            }
+
+            ButtonBlue(text = "Сохранить изменения") {
+                ProfileActivity().insertPersonalData(
+                    context,
+                    PersonalData(
+                        id = personalData.id,
+                        genderId = genderState.value,
+                        height = heightState.value.toDouble(),
+                        weight = weightState.value.toDouble(),
+                        birthDate = birthDate,
+                        activityRate = activityRateState.value,
+                        name = nameState.value,
+                        target = targetState.value
+                    )
+                )
             }
         }
     }
