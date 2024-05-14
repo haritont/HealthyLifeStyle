@@ -2,12 +2,21 @@ package vika.app.healthy_lifestyle.calculations
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 class DateToday {
     fun getToday(): String {
         val currentDate =
             LocalDate.now()
         return formatDate(currentDate)
+    }
+
+    fun getDistanceDays(startDate: String, endDate: String): Long {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val start = LocalDate.parse(startDate, formatter)
+        val end = LocalDate.parse(endDate, formatter)
+        val days = ChronoUnit.DAYS.between(start, end)
+        return days + 1
     }
 
     fun getYesterday(): String {
