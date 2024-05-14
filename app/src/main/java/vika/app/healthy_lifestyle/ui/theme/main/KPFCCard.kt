@@ -18,11 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import vika.app.healthy_lifestyle.bean.KPFC
-import vika.app.healthy_lifestyle.bean.mood.Habit
 import vika.app.healthy_lifestyle.ui.theme.app.Blue
 import vika.app.healthy_lifestyle.ui.theme.app.BlueUltraLight
 import vika.app.healthy_lifestyle.ui.theme.app.Red
-import vika.app.healthy_lifestyle.ui.theme.mood.HabitCard
 
 @Composable
 fun KPFCCard(
