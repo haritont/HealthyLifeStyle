@@ -28,7 +28,7 @@ import vika.app.healthy_lifestyle.activity.mood.MoodActivity
 import vika.app.healthy_lifestyle.bean.mood.Habit
 import vika.app.healthy_lifestyle.bean.mood.HabitRecord
 import vika.app.healthy_lifestyle.calculations.DateToday
-import vika.app.healthy_lifestyle.ui.theme.app.BlueLight
+import vika.app.healthy_lifestyle.ui.theme.app.BlueUltraLight
 
 @Composable
 fun Habits(
@@ -49,16 +49,18 @@ fun HabitCard(
 ) {
     val context = LocalContext.current
 
-    var habitRecord = MoodActivity().getHabitRecord(context, habit.id, true)
+    val habitRecord = MoodActivity().getHabitRecord(context, habit.id, true)
     var isTrack by remember { mutableStateOf(false)}
-    var trackingDays by remember { mutableStateOf("1 день") }
+    var trackingDays by remember { mutableStateOf("Количество дней: 1") }
     if (habitRecord != null){
         isTrack = habitRecord.tracking
-        trackingDays = DateToday().getDistanceDays(habitRecord.dateStart, DateToday().getToday()).toString()
+        trackingDays = "Количество дней: ".plus(
+            DateToday().getDistanceDays(habitRecord.dateStart, DateToday().getToday()).toString()
+        )
     }
 
     Surface(
-        color = BlueLight,
+        color = BlueUltraLight,
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .padding(5.dp)
@@ -79,7 +81,7 @@ fun HabitCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = trackingDays,
+                text = if (isTrack) trackingDays else "",
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 color = Color.DarkGray
