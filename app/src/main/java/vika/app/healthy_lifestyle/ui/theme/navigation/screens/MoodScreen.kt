@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import vika.app.healthy_lifestyle.activity.mood.MoodActivity
 import vika.app.healthy_lifestyle.bean.mood.Emotion
-import vika.app.healthy_lifestyle.bean.mood.Habit
 import vika.app.healthy_lifestyle.ui.theme.general.Advice
 import vika.app.healthy_lifestyle.ui.theme.mood.Dream
 import vika.app.healthy_lifestyle.ui.theme.mood.Emotions
@@ -15,6 +15,7 @@ import vika.app.healthy_lifestyle.ui.theme.mood.Habits
 
 @Composable
 fun MoodScreen (){
+    val context = LocalContext.current
     Column (
         verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -22,15 +23,11 @@ fun MoodScreen (){
 
         Dream(MoodActivity().getHour(), MoodActivity().getMinute())
 
-        val itemList = listOf(
-            Habit(name = "Привычка 1", image = "😊"),
-            Habit(name = "Привычка 2", image = "☺"),
-            Habit(name = "Привычка 3", image = "🎉")
-        )
+        val habitList = MoodActivity().getHabitList(context)
 
         Advice(value = MoodActivity().getAdvice())
 
-        Habits(itemList)
+        Habits(habitList)
 
         val item = listOf(
             Emotion(type = "\uD83D\uDE00"),

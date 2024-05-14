@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -15,24 +14,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.delay
+import vika.app.healthy_lifestyle.activity.mood.MoodActivity
 import vika.app.healthy_lifestyle.bean.mood.Habit
-import vika.app.healthy_lifestyle.ui.theme.app.Blue
-import vika.app.healthy_lifestyle.ui.theme.app.BlueUltraLight
-import vika.app.healthy_lifestyle.ui.theme.app.Red
+import vika.app.healthy_lifestyle.bean.mood.HabitRecord
+import vika.app.healthy_lifestyle.calculations.DateToday
+import vika.app.healthy_lifestyle.ui.theme.app.BlueLight
 
 @Composable
 fun Habits(
@@ -41,8 +37,7 @@ fun Habits(
     LazyRow {
         items(habitList) { item ->
             HabitCard(
-                title = item.name,
-                emoji = item.image
+               item
             )
         }
     }
@@ -50,12 +45,20 @@ fun Habits(
 
 @Composable
 fun HabitCard(
-    title: String,
-    emoji: String
+    habit: Habit
 ) {
-    var isTrack by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    var habitRecord = MoodActivity().getHabitRecord(context, habit.id, true)
+    var isTrack by remember { mutableStateOf(false)}
+    var trackingDays by remember { mutableStateOf("1 день") }
+    if (habitRecord != null){
+        isTrack = habitRecord.tracking
+        trackingDays = DateToday().getDistanceDays(habitRecord.dateStart, DateToday().getToday()).toString()
+    }
+
     Surface(
-        color = BlueUltraLight,
+        color = BlueLight,
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .padding(5.dp)
@@ -68,7 +71,7 @@ fun HabitCard(
                 .padding(16.dp)
         ) {
             Text(
-                text = "$title $emoji",
+                text = habit.name,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -76,7 +79,7 @@ fun HabitCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text =  if (!isTrack) "" else "1 день",
+                text = trackingDays,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 color = Color.DarkGray
@@ -86,6 +89,16 @@ fun HabitCard(
 
 
             Button(onClick = {
+                if (isTrack){
+                    habitRecord!!.dateEnd = DateToday().getToday()
+                    MoodActivity().insertHabitRecord(context, habitRecord)
+                }
+                else{
+                    MoodActivity().insertHabitRecord(
+                        context,
+                        HabitRecord(idHabit = habit.id, tracking = true, dateStart = DateToday().getToday())
+                    )
+                }
                 isTrack = !isTrack
             }) {
                 Text(

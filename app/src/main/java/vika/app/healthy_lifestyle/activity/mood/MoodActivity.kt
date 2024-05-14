@@ -1,10 +1,15 @@
 package vika.app.healthy_lifestyle.activity.mood
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import vika.app.healthy_lifestyle.base.data.repository.mood.DreamRepository
+import vika.app.healthy_lifestyle.base.data.repository.mood.HabitRecordRepository
+import vika.app.healthy_lifestyle.base.data.repository.mood.HabitRepository
 import vika.app.healthy_lifestyle.bean.mood.Dream
+import vika.app.healthy_lifestyle.bean.mood.Habit
+import vika.app.healthy_lifestyle.bean.mood.HabitRecord
 import vika.app.healthy_lifestyle.calculations.CreateAdvice
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
@@ -40,5 +45,17 @@ class MoodActivity : ComponentActivity() {
 
     fun getAdvice(): String {
         return CreateAdvice().getAdvice()
+    }
+
+    fun getHabitList(context: Context): List<Habit> {
+        return HabitRepository(context).getAllHabits()
+    }
+
+    fun getHabitRecord(context: Context, id: Long, tracking: Boolean): HabitRecord? {
+        return HabitRecordRepository(context).getRecordByIdHabit(id, tracking)
+    }
+
+    fun insertHabitRecord(context: Context, habitRecord: HabitRecord) {
+        HabitRecordRepository(context).insertHabitRecord(habitRecord)
     }
 }
