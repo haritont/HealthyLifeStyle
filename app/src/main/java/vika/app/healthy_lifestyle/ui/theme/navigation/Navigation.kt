@@ -108,7 +108,6 @@ fun Navigation(){
             composable(route = Screens.ProfileScreen.name) {
                 ProfileScreen()
             }
-
             composable(route = Screens.HistoryScreen.name) {
                 HistoryScreen()
             }
