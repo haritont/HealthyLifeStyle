@@ -30,6 +30,10 @@ class FoodActivity : ComponentActivity() {
         }
     }
 
+    fun getAllProducts(context: Context):List<Ingredient>{
+        return IngredientRepository(context).getAllProduct()
+    }
+
     fun addNewDish(
         context: Context, name: String, type: String,
         selectListIngredient: MutableList<ItemText>

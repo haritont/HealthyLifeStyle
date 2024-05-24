@@ -61,4 +61,8 @@ class IngredientRepository(context: Context) {
     fun isIngredientExists(nameIngredient: String): Boolean = runBlocking{
         ingredientDao.isIngredientExists(nameIngredient) != 0
     }
+
+    fun getAllProduct(): List<Ingredient> = runBlocking{
+        ingredientMapper.toIngredientList(ingredientDao.getAll())
+    }
 }

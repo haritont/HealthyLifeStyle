@@ -14,7 +14,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.bean.Item
-import vika.app.healthy_lifestyle.ui.theme.food.AddDish
 import vika.app.healthy_lifestyle.ui.theme.food.AddIngredient
 import vika.app.healthy_lifestyle.ui.theme.general.ImageButton
 
@@ -29,13 +28,12 @@ fun List(
     textInDialog: String,
     options: List<String>,
     firstOption: String,
-    typeAdd: Int, //0-ingred, 1-dish, 2-physEx, 3-training
+    typeAdd: Int, //0-ingred, 1-physEx
     clickSearch:() -> Unit
 ) {
     var filteredList by remember { mutableStateOf(itemList) }
 
     var openDialogAddIngredient by remember { mutableStateOf(false) }
-    var openDialogAddDish by remember { mutableStateOf(false) }
 
     Column (
         verticalArrangement = Arrangement.SpaceAround,
@@ -56,10 +54,7 @@ fun List(
                 openDialogAddIngredient,
                 onOpenChange = { openDialogAddIngredient = it }
             )
-            AddDish(
-                openDialogAddDish,
-                onOpenChange = { openDialogAddDish = it }
-            )
+
             ImageButton(
                 icon = R.drawable.add
             ) {
@@ -69,36 +64,35 @@ fun List(
                     }
 
                     1 -> {
-                        openDialogAddDish = !openDialogAddDish
-                    }
-
-                    2 -> {
-
-                    }
-
-                    3 -> {
 
                     }
                 }
             }
         }
 
-        LazyColumn {
-            items(filteredList) { item ->
-                key(item.title) {
-                    ItemList(
-                        title = item.title,
-                        emoji = item.emoji,
-                        favorite = item.favorite,
-                        exception = item.exception,
-                        add = { name, value, date, option -> add(name, value, date, option) },
-                        typeToMore = typeToMore,
-                        updateException = { name, exception -> updateException(name, exception) },
-                        updateFavorite = { name, favorite -> updateFavorite(name, favorite) },
-                        textInDialog = textInDialog,
-                        options = options,
-                        firstOption = firstOption
-                    )
+        if (filteredList.isNotEmpty()) {
+            LazyColumn {
+                items(filteredList) { item ->
+                    key(item.title) {
+                        ItemList(
+                            title = item.title,
+                            emoji = item.emoji,
+                            favorite = item.favorite,
+                            exception = item.exception,
+                            add = { name, value, date, option -> add(name, value, date, option) },
+                            typeToMore = typeToMore,
+                            updateException = { name, exception ->
+                                updateException(
+                                    name,
+                                    exception
+                                )
+                            },
+                            updateFavorite = { name, favorite -> updateFavorite(name, favorite) },
+                            textInDialog = textInDialog,
+                            options = options,
+                            firstOption = firstOption
+                        )
+                    }
                 }
             }
         }

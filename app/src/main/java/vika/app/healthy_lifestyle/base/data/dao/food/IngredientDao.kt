@@ -40,4 +40,6 @@ interface IngredientDao {
 
     @Query("UPDATE Ingredient SET favorite = :favorite WHERE name = :name")
     suspend fun updateFavorite(name: String, favorite: Boolean)
+   @Query("SELECT * FROM Ingredient")
+    suspend fun getAll(): List<IngredientEntity>
 }

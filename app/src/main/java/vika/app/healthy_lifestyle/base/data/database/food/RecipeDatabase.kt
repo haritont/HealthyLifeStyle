@@ -5,11 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import vika.app.healthy_lifestyle.base.data.dao.food.RecipeDao
-import vika.app.healthy_lifestyle.base.data.entity.food.DishEntity
 import vika.app.healthy_lifestyle.base.data.entity.food.IngredientEntity
 import vika.app.healthy_lifestyle.base.data.entity.food.RecipeEntity
 
-@Database(entities = [DishEntity::class, IngredientEntity::class, RecipeEntity::class], version = 1, exportSchema = false)
+@Database(entities = [IngredientEntity::class, RecipeEntity::class], version = 1, exportSchema = false)
 abstract class RecipeDatabase : RoomDatabase() {
     abstract fun recipeDao(): RecipeDao
 
