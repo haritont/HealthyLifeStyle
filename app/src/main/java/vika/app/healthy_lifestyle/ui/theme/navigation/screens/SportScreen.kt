@@ -38,7 +38,7 @@ fun SportScreen () {
     val context = LocalContext.current
 
     val itemListPhysicalExercises = mutableListOf<Item>()
-    val physicalExercises = SportActivity().getAllPhysicalExercises(context)
+    val physicalExercises = SportActivity().getAll(context)
     for (physicalExercise in physicalExercises) {
         itemListPhysicalExercises.add(
             Item(

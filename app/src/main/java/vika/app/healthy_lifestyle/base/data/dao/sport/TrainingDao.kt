@@ -13,4 +13,6 @@ interface TrainingDao {
 
     @Query("SELECT * FROM Training WHERE idName = :idName")
     suspend fun getTraining(idName: Long): List<TrainingEntity>
+    @Query("DELETE FROM Training WHERE idPhysicalExercise = :idPhysicalExercise")
+    suspend fun deleteAll(idPhysicalExercise: Long)
 }

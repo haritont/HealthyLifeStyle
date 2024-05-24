@@ -44,6 +44,7 @@ import vika.app.healthy_lifestyle.ui.theme.general.ImageButton
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
 import vika.app.healthy_lifestyle.ui.theme.general.emojiMap
 import vika.app.healthy_lifestyle.ui.theme.sport.MorePhysicalExercise
+import vika.app.healthy_lifestyle.ui.theme.sport.MoreTraining
 
 @Composable
 fun ItemList(
@@ -71,6 +72,7 @@ fun ItemList(
     var openDialogMoreIngredient by remember { mutableStateOf(false) }
     var openDialogMoreDish by remember { mutableStateOf(false) }
     var openDialogMorePhysicalExercise by remember { mutableStateOf(false) }
+    var openDialogMoreTraining by remember { mutableStateOf(false) }
 
     if (openDialogMore){
         MoreIngredient(
@@ -97,6 +99,14 @@ fun ItemList(
             title = title
         )
 
+        MoreTraining(
+            isOpen = openDialogMoreTraining,
+            onOpenChange = {
+                openDialogMore = it
+            },
+            title = title
+        )
+
         when (typeToMore) {
             0 -> {
                 openDialogMoreIngredient = true
@@ -108,7 +118,7 @@ fun ItemList(
                 openDialogMorePhysicalExercise = true
             }
             3 -> {
-
+                openDialogMoreTraining = true
             }
         }
     }

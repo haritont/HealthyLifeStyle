@@ -25,4 +25,8 @@ class TrainingRepository (context: Context){
     fun getTraining(idName: Long): List<Training> = runBlocking{
         trainingMapper.toTrainingList(trainingDao.getTraining(idName))
     }
+
+    fun deleteAllTraining(idPhysicalExercise: Long)  = runBlocking{
+        trainingDao.deleteAll(idPhysicalExercise)
+    }
 }
