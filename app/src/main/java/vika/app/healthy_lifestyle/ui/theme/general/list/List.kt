@@ -51,10 +51,12 @@ fun List(
                     clickSearch()
                 }
             )
+
             AddIngredient(
                 openDialogAddIngredient,
                 onOpenChange = { openDialogAddIngredient = it }
             )
+
             AddPhysicalExercise(
                 openDialogAddPhysicalExercise,
                 onOpenChange = { openDialogAddPhysicalExercise = it }
@@ -65,11 +67,11 @@ fun List(
             ) {
                 when (typeAdd) {
                     0 -> {
-                        openDialogAddIngredient = !openDialogAddIngredient
+                        openDialogAddIngredient = true
                     }
 
                     1 -> {
-                        openDialogAddPhysicalExercise = !openDialogAddPhysicalExercise
+                        openDialogAddPhysicalExercise = true
                     }
                 }
             }

@@ -18,6 +18,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import vika.app.healthy_lifestyle.ui.theme.app.Blue
+import vika.app.healthy_lifestyle.ui.theme.app.BlueLight
 import vika.app.healthy_lifestyle.ui.theme.navigation.screens.FoodScreen
 import vika.app.healthy_lifestyle.ui.theme.navigation.screens.MainScreen
 import vika.app.healthy_lifestyle.ui.theme.navigation.screens.MoodScreen
@@ -34,7 +36,9 @@ fun Navigation(){
     val currentDestination = navBackStackEntry?.destination
     Scaffold (
         topBar = {
-            NavigationBar {
+            NavigationBar (
+                contentColor = BlueLight
+            ){
                 listItemsTop.forEach{ navItem ->
                     NavigationBarItem(
                         selected = currentDestination?.hierarchy?.any{it.route == navItem.route} == true,
@@ -59,7 +63,9 @@ fun Navigation(){
             }
         },
         bottomBar = {
-            NavigationBar {
+            NavigationBar (
+                contentColor = Blue
+            ){
                 listItemsBottom.forEach{ navItem ->
                     NavigationBarItem(
                         selected = currentDestination?.hierarchy?.any{it.route == navItem.route} == true,

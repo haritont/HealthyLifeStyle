@@ -87,7 +87,7 @@ class LoadingActivity: ComponentActivity(){
 //                target = 1
 //            )
 //        )
-//
+
 //        WeightRepository(this).insertWeight(
 //            Weight(
 //                date = DateToday().getToday(),

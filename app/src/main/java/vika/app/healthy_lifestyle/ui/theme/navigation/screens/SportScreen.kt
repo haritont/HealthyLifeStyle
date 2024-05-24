@@ -158,7 +158,7 @@ fun SportScreen () {
                     textInDialog = "Сколько вы выполняли это упражнение? (мин)",
                     listOf(),
                     "",
-                    2,
+                    1,
                     clickSearch = {
                         coroutineScope.launch {
                             listState.animateScrollToItem(index = 4)

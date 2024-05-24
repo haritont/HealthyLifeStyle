@@ -53,18 +53,19 @@ fun AddPhysicalExercise(
         onDispose { }
     }
 
+    val nameState = remember { mutableStateOf("") }
+    val metState = remember { mutableStateOf("") }
+
+    val options = listOf(
+        "Без типа"
+    )
+    val typeState = remember { mutableStateOf(options[0]) }
+
+
     if (openDialog) {
-        val nameState = remember { mutableStateOf("") }
-        val metState = remember { mutableStateOf("") }
-
-        val options = listOf(
-            "Без типа"
-        )
-        val typeState = remember { mutableStateOf(options[0]) }
-
         Dialog(
             onDismissRequest = {
-                openDialog = false
+                openDialog = !openDialog
                 onOpenChange(openDialog)
             }
         ) {
@@ -126,7 +127,7 @@ fun AddPhysicalExercise(
                         value = metState.value,
                         label = {
                             Text(
-                                LocalContext.current.getString(R.string.kilocalories),
+                                LocalContext.current.getString(R.string.met),
                                 style = MaterialTheme.typography.bodySmall
                             )
                         },
@@ -153,7 +154,7 @@ fun AddPhysicalExercise(
                                     metState.value.replace(",", ".").toDouble(),
                                     typeState.value
                                 )
-                                openDialog = false
+                                openDialog = !openDialog
                                 onOpenChange(openDialog)
                             },
                             modifier = Modifier.padding(8.dp),
