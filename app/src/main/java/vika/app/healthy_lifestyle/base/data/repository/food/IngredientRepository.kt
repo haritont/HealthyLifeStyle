@@ -35,7 +35,11 @@ class IngredientRepository(context: Context) {
     }
 
     fun getAllIngredients(): List<Ingredient> = runBlocking{
-        ingredientMapper.toIngredientList(ingredientDao.getAll())
+        ingredientMapper.toIngredientList(ingredientDao.getAllIngredients())
+    }
+
+    fun getAllDishes(): List<Ingredient> = runBlocking{
+        ingredientMapper.toIngredientList(ingredientDao.getAllDishes())
     }
 
     fun getIngredientByName(name: String): Ingredient = runBlocking{

@@ -20,7 +20,8 @@ class DefaultIngredientMapper : IngredientMapper {
             carbohydrates = ingredient.carbohydrates,
             favorite = ingredient.favorite,
             exception = ingredient.exception,
-            ingredient.type
+            type = ingredient.type,
+            isDish = ingredient.isDish
         )
     }
 
@@ -34,7 +35,8 @@ class DefaultIngredientMapper : IngredientMapper {
             carbohydrates = ingredientEntity.carbohydrates,
             favorite = ingredientEntity.favorite,
             exception = ingredientEntity.exception,
-            ingredientEntity.type
+            type = ingredientEntity.type,
+            isDish = ingredientEntity.isDish
         )
     }
 

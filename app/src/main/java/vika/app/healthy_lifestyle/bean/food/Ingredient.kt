@@ -10,5 +10,6 @@ data class Ingredient(
     var carbohydrates: Double,
     var favorite: Boolean = false,
     var exception: Boolean = false,
-    var type: String = ""
+    var type: String = "",
+    var isDish: Boolean = false
 )

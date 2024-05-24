@@ -4,14 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import vika.app.healthy_lifestyle.base.data.repository.food.DishRepository
 import vika.app.healthy_lifestyle.base.data.repository.food.IngredientRepository
 import vika.app.healthy_lifestyle.base.data.repository.food.NutritionRepository
 import vika.app.healthy_lifestyle.base.data.repository.food.RecipeRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
 import vika.app.healthy_lifestyle.bean.ItemText
-import vika.app.healthy_lifestyle.bean.food.Dish
 import vika.app.healthy_lifestyle.bean.food.Ingredient
 import vika.app.healthy_lifestyle.bean.food.Nutrition
 import vika.app.healthy_lifestyle.bean.food.Recipe
@@ -36,7 +34,7 @@ class FoodActivity : ComponentActivity() {
         context: Context, name: String, type: String,
         selectListIngredient: MutableList<ItemText>
     ) {
-        val exists = DishRepository(context).isDishExists(name)
+        val exists = IngredientRepository(context).isIngredientExists(name)
         if (!exists) {
             var kilocalories = 0.0
             var proteins = 0.0
@@ -52,18 +50,19 @@ class FoodActivity : ComponentActivity() {
                 carbohydrates += ingredient.carbohydrates * item.value / 100
             }
 
-            DishRepository(context).insertDish(
-                Dish(
+            IngredientRepository(context).insertIngredient(
+                Ingredient(
                     name = name,
                     kilocalories = kilocalories,
                     proteins = proteins,
                     fats = fats,
                     carbohydrates = carbohydrates,
-                    type = type
+                    type = type,
+                    isDish = true
                 )
             )
 
-            val dishId = DishRepository(context).getDishByName(name).id
+            val dishId = IngredientRepository(context).getIngredientByName(name).id
             for (item in selectListIngredient) {
                 val ingredient = IngredientRepository(context).getIngredientByName(item.title)
 
@@ -136,7 +135,7 @@ class FoodActivity : ComponentActivity() {
             )
         )
 
-        val dish = DishRepository(context).getDishByName(name)
+        val dish = IngredientRepository(context).getIngredientByName(name)
         addKPFC(
             context,
             (dish.kilocalories * value / 100.0).toString(),
@@ -148,15 +147,15 @@ class FoodActivity : ComponentActivity() {
     }
 
     fun updateFavoriteDish(context: Context, name: String, favorite: Boolean) {
-        DishRepository(context).updateDishFavorite(name, favorite)
+        IngredientRepository(context).updateIngredientFavorite(name, favorite)
     }
 
     fun updateExceptionDish(context: Context, name: String, exception: Boolean) {
-        DishRepository(context).updateDishException(name, exception)
+        IngredientRepository(context).updateIngredientException(name, exception)
     }
 
-    fun getAllDishes(context: Context): List<Dish> {
-        return DishRepository(context).getAllDishes()
+    fun getAllDishes(context: Context): List<Ingredient> {
+        return IngredientRepository(context).getAllDishes()
     }
 
     fun addIngredient(context: Context, name: String, value: Double, date: String, meal: String) {
@@ -231,8 +230,8 @@ class FoodActivity : ComponentActivity() {
         )
     }
 
-    fun getDish(context: Context, title: String): Dish {
-        return DishRepository(context).getDishByName(title)
+    fun getDish(context: Context, title: String): Ingredient {
+        return IngredientRepository(context).getIngredientByName(title)
     }
 
     fun getRecipe(context: Context, idDish: Long): List<Recipe> {
@@ -252,8 +251,8 @@ class FoodActivity : ComponentActivity() {
         exception: Boolean,
         selectListIngredient: MutableList<ItemText>
     ) {
-        DishRepository(context).insertDish(
-            Dish(
+        IngredientRepository(context).insertIngredient(
+            Ingredient(
                 id = id,
                 name = name,
                 kilocalories = kilocalories,
@@ -262,7 +261,8 @@ class FoodActivity : ComponentActivity() {
                 carbohydrates = carbohydrates,
                 type = type,
                 favorite = favorite,
-                exception = exception
+                exception = exception,
+                isDish = true
             )
         )
 

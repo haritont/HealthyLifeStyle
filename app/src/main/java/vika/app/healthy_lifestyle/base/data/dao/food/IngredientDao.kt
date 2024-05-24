@@ -14,8 +14,11 @@ interface IngredientDao {
     @Query("SELECT name FROM Ingredient WHERE id = :ingredientId")
     suspend fun getName(ingredientId: Long): String
 
-    @Query("SELECT * FROM Ingredient")
-    suspend fun getAll(): List<IngredientEntity>
+    @Query("SELECT * FROM Ingredient WHERE isDish = 0")
+    suspend fun getAllIngredients(): List<IngredientEntity>
+
+    @Query("SELECT * FROM Ingredient WHERE isDish = 1")
+    suspend fun getAllDishes(): List<IngredientEntity>
 
     @Query("SELECT * FROM Ingredient WHERE name = :name")
     suspend fun getByName(name: String): IngredientEntity

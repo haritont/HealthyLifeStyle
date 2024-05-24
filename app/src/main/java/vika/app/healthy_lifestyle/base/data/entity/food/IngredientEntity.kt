@@ -14,5 +14,6 @@ class IngredientEntity (
     var carbohydrates: Double = 0.0,
     var favorite: Boolean = false,
     var exception: Boolean = false,
-    var type: String = ""
+    var type: String = "",
+    var isDish: Boolean = false
 )
