@@ -157,6 +157,9 @@ class FoodActivity : ComponentActivity() {
             if (record != null){
                 record.tracking = false
                 record.dateEnd = DateToday().getToday()
+                HabitRecordRepository(context).insertHabitRecord(
+                    record
+                )
             }
         }
     }
