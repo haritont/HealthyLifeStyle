@@ -71,7 +71,7 @@ class SportActivity : ComponentActivity() {
     }
 
     fun getAllPhysicalExercises(context: Context): List<PhysicalExercise> {
-        return PhysicalExerciseRepository(context).getAllPhysicalExercises()
+        return PhysicalExerciseRepository(context).getAll()
     }
 
     fun updateFavorite(context: Context, name: String, favorite: Boolean){
