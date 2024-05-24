@@ -58,4 +58,14 @@ class MoodActivity : ComponentActivity() {
     fun insertHabitRecord(context: Context, habitRecord: HabitRecord) {
         HabitRecordRepository(context).insertHabitRecord(habitRecord)
     }
+
+    fun insertHabit(context: Context, name: String, type: String) {
+        HabitRepository(context).insertHabit(
+            Habit(
+                name = name,
+                product = type,
+                isPositive = false
+            )
+        )
+    }
 }
