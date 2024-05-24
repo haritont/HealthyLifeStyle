@@ -16,6 +16,7 @@ import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.bean.Item
 import vika.app.healthy_lifestyle.ui.theme.food.AddIngredient
 import vika.app.healthy_lifestyle.ui.theme.general.ImageButton
+import vika.app.healthy_lifestyle.ui.theme.sport.AddPhysicalExercise
 
 
 @Composable
@@ -33,6 +34,7 @@ fun List(
     var filteredList by remember { mutableStateOf(itemList) }
 
     var openDialogAddIngredient by remember { mutableStateOf(false) }
+    var openDialogAddPhysicalExercise by remember { mutableStateOf(false) }
 
     Column (
         verticalArrangement = Arrangement.SpaceAround,
@@ -53,6 +55,10 @@ fun List(
                 openDialogAddIngredient,
                 onOpenChange = { openDialogAddIngredient = it }
             )
+            AddPhysicalExercise(
+                openDialogAddPhysicalExercise,
+                onOpenChange = { openDialogAddPhysicalExercise = it }
+            )
 
             ImageButton(
                 icon = R.drawable.add
@@ -63,7 +69,7 @@ fun List(
                     }
 
                     1 -> {
-
+                        openDialogAddPhysicalExercise = !openDialogAddPhysicalExercise
                     }
                 }
             }

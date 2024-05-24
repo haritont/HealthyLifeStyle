@@ -151,4 +151,16 @@ class SportActivity : ComponentActivity() {
             )
         }
     }
+
+    fun insertPhysicalExercise(context: Context, name: String, met: Double, type: String) {
+        if (!PhysicalExerciseRepository(context).isPhysicalExerciseExists(name)) {
+            PhysicalExerciseRepository(context).insertPhysicalExercise(
+                PhysicalExercise(
+                    name = name,
+                    met = met,
+                    type = type
+                )
+            )
+        }
+    }
 }
