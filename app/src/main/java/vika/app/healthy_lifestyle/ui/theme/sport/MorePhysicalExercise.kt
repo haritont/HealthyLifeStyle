@@ -1,9 +1,8 @@
-package vika.app.healthy_lifestyle.ui.theme.food
+package vika.app.healthy_lifestyle.ui.theme.sport
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -32,17 +31,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import vika.app.healthy_lifestyle.R
-import vika.app.healthy_lifestyle.activity.food.FoodActivity
+import vika.app.healthy_lifestyle.activity.sport.SportActivity
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
 
 @Composable
-fun MoreIngredient(
+fun MorePhysicalExercise(
     isOpen: Boolean,
     onOpenChange: (Boolean) -> Unit,
     title: String
-) {
+){
     var openDialog by remember { mutableStateOf(isOpen) }
 
     val context = LocalContext.current
@@ -57,45 +56,18 @@ fun MoreIngredient(
     }
 
     if (openDialog) {
-        val ingredient = FoodActivity().getIngredient(context, title)
+        val physicalExercise = SportActivity().getPhysicalExerciseByName(context, title)
 
         val nameState = remember { mutableStateOf(title) }
-        val kilocaloriesState = remember { mutableStateOf(ingredient.kilocalories) }
-        val proteinsState = remember { mutableStateOf(ingredient.proteins) }
-        val fatsState = remember { mutableStateOf(ingredient.fats) }
-        val carbohydratesState = remember { mutableStateOf(ingredient.carbohydrates) }
+        val metState = remember { mutableStateOf(physicalExercise.met) }
 
         val options = listOf(
-            "Без типа",
-            "Напиток",
-            "Фрукт",
-            "Сладкое",
-            "Приправа",
-            "Алкоголь",
-            "Дичь",
-            "Рыба",
-            "Орех",
-            "Ягода",
-            "Вода",
-            "Овощ",
-            "Мучное",
-            "Зелень",
-            "Соус",
-            "Уксус",
-            "Мясо",
-            "Субпродукт",
-            "Сыр",
-            "Боб",
-            "Крупа",
-            "Гриб",
-            "Молочное",
-            "Масло",
-            "Яйцо"
+            "Без типа"
         )
-        val typeState = remember { mutableStateOf(ingredient.type) }
+        val typeState = remember { mutableStateOf(physicalExercise.type) }
 
-        var favoriteState by remember { mutableStateOf(ingredient.favorite) }
-        var exceptionState by remember { mutableStateOf(ingredient.exception) }
+        var favoriteState by remember { mutableStateOf(physicalExercise.favorite) }
+        var exceptionState by remember { mutableStateOf(physicalExercise.exception) }
 
         Dialog(
             onDismissRequest = {
@@ -122,8 +94,9 @@ fun MoreIngredient(
                     ) {
                         Dropdown(
                             options,
-                            ingredient.type
-                        ) { currentOption ->
+                            physicalExercise.type
+                        ) {
+                                currentOption ->
                             typeState.value = currentOption
                         }
 
@@ -172,139 +145,44 @@ fun MoreIngredient(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                         leadingIcon = {
                             Image(
-                                painterResource(R.drawable.ingredient),
+                                painterResource(R.drawable.sport),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(25.dp)
                             )
                         }
                     )
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier.weight(1f)
-                        ) {
+
                             TextFieldBlue(
-                                value = kilocaloriesState.value.toString(),
+                                value = metState.value.toString(),
                                 label = {
                                     Text(
                                         LocalContext.current.getString(R.string.kilocalories),
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                 },
-                                onValueChange = { newLogin ->
-                                    kilocaloriesState.value = newLogin.toDouble()
-                                },
+                                onValueChange = { newLogin -> metState.value = newLogin.toDouble() },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 leadingIcon = {
                                     Image(
-                                        painterResource(R.drawable.kilocalories),
+                                        painterResource(R.drawable.sport),
                                         contentDescription = null,
                                         modifier = Modifier
                                             .size(25.dp)
                                     )
                                 }
                             )
-                        }
-                        Box(
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            TextFieldBlue(
-                                value = proteinsState.value.toString(),
-                                label = {
-                                    Text(
-                                        LocalContext.current.getString(R.string.proteins),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                },
-                                onValueChange = { newLogin ->
-                                    proteinsState.value = newLogin.toDouble()
-                                },
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                leadingIcon = {
-                                    Image(
-                                        painterResource(R.drawable.proteins),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(25.dp)
-                                    )
-                                }
-                            )
-                        }
-                    }
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            TextFieldBlue(
-                                value = fatsState.value.toString(),
-                                label = {
-                                    Text(
-                                        LocalContext.current.getString(R.string.fats),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                },
-                                onValueChange = { newLogin ->
-                                    fatsState.value = newLogin.toDouble()
-                                },
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                leadingIcon = {
-                                    Image(
-                                        painterResource(R.drawable.fats),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(25.dp)
-                                    )
-                                }
-                            )
-                        }
-
-                        Box(
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            TextFieldBlue(
-                                value = carbohydratesState.value.toString(),
-                                label = {
-                                    Text(
-                                        LocalContext.current.getString(R.string.carbohydrates),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                },
-                                onValueChange = { newLogin ->
-                                    carbohydratesState.value = newLogin.toDouble()
-                                },
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                leadingIcon = {
-                                    Image(
-                                        painterResource(R.drawable.carbohydrates),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(25.dp)
-                                    )
-                                }
-                            )
-                        }
-                    }
 
                     Row(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         TextButton(
                             onClick = {
-                                FoodActivity().updateIngredient(
+                                SportActivity().updatePhysicalExercise(
                                     context,
-                                    ingredient.id,
+                                    physicalExercise.id,
                                     nameState.value,
-                                    kilocaloriesState.value.toString().replace(",", ".").toDouble(),
-                                    proteinsState.value.toString().replace(",", ".").toDouble(),
-                                    fatsState.value.toString().replace(",", ".").toDouble(),
-                                    carbohydratesState.value.toString().replace(",", ".")
-                                        .toDouble(),
+                                    metState.value.toString().replace(",", ".").toDouble(),
                                     typeState.value,
                                     favoriteState,
                                     exceptionState

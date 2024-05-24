@@ -98,4 +98,23 @@ class SportActivity : ComponentActivity() {
         ActivismRepository(context).deleteActivism(title, value, today)
     }
 
+    fun getPhysicalExerciseByName(context: Context, title: String): PhysicalExercise {
+        return PhysicalExerciseRepository(context).getPhysicalExerciseByName(title)
+    }
+
+    fun updatePhysicalExercise(
+        context: Context, id: Long, name: String, met: Double,
+        type: String, favorite: Boolean, exception: Boolean
+    ) {
+        PhysicalExerciseRepository(context).insertPhysicalExercise(
+            PhysicalExercise(
+                id = id,
+                name = name,
+                met = met,
+                type = type,
+                favorite = favorite,
+                exception = exception
+            )
+        )
+    }
 }
