@@ -22,7 +22,6 @@ import vika.app.healthy_lifestyle.ui.theme.general.ImageButton
 fun List(
     itemList: List<Item>,
     add: (name: String, value: Double, date: String, option: String) -> Unit,
-    typeToMore: Int,
     updateException: (name: String, exception: Boolean) -> Unit,
     updateFavorite: (name: String, favorite: Boolean) -> Unit,
     textInDialog: String,
@@ -80,7 +79,7 @@ fun List(
                             favorite = item.favorite,
                             exception = item.exception,
                             add = { name, value, date, option -> add(name, value, date, option) },
-                            typeToMore = typeToMore,
+                            typeToMore = item.typeIs,
                             updateException = { name, exception ->
                                 updateException(
                                     name,

@@ -46,7 +46,8 @@ fun FoodScreen() {
                 ingredient.name,
                 ingredient.type,
                 ingredient.favorite,
-                ingredient.exception
+                ingredient.exception,
+                if (ingredient.isDish) 1 else 0
             )
         )
     }
@@ -135,7 +136,6 @@ fun FoodScreen() {
                             listState.animateScrollToItem(index = 0)
                         }
                     },
-                    typeToMore = 0,
                     updateException = { name, exception ->
                         FoodActivity().updateExceptionIngredient(
                             context,

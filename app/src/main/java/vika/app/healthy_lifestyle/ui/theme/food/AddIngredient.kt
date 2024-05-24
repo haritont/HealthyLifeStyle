@@ -97,8 +97,7 @@ fun AddIngredient(
         ) {
             Card(
                 modifier = Modifier
-                    .height(400.dp)
-                    .width(500.dp)
+                    .size(500.dp)
                     .padding(16.dp),
                 shape = RoundedCornerShape(16.dp),
             ) {

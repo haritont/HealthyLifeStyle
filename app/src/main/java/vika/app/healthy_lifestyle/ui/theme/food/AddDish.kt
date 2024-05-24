@@ -60,7 +60,8 @@ fun AddDish(
                 ingredient.name,
                 ingredient.type,
                 ingredient.favorite,
-                ingredient.exception
+                ingredient.exception,
+                if (ingredient.isDish) 1 else 0
             )
         )
     }

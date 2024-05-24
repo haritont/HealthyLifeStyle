@@ -49,7 +49,8 @@ fun SportScreen (){
                 physicalExercise.name,
                 physicalExercise.type,
                 physicalExercise.favorite,
-                physicalExercise.exception
+                physicalExercise.exception,
+                if (physicalExercise.training) 3 else 2
             )
         )
     }
@@ -75,7 +76,8 @@ fun SportScreen (){
                 training.name,
                 training.type,
                 training.favorite,
-                training.exception
+                training.exception,
+                if (training.training) 3 else 2
             )
         )
     }
@@ -171,7 +173,6 @@ fun SportScreen (){
                                     )
                                 )
                             },
-                            2,
                             updateException = { name, exception ->
                                 SportActivity().updateException(
                                     context,
@@ -226,7 +227,6 @@ fun SportScreen (){
                                     )
                                 )
                             },
-                           3,
                             updateException = { name, exception ->
                                 SportActivity().updateException(
                                     context,
