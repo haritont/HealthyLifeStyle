@@ -18,8 +18,8 @@ class TrainingRepository (context: Context){
         trainingMapper = DefaultTrainingMapper()
     }
 
-    fun insertTraining(recipe: Training) = runBlocking{
-        trainingDao.insert(trainingMapper.toTrainingEntity(recipe))
+    fun insertTraining(training: Training) = runBlocking{
+        trainingDao.insert(trainingMapper.toTrainingEntity(training))
     }
 
     fun getTraining(idName: Long): List<Training> = runBlocking{

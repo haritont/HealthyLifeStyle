@@ -163,4 +163,30 @@ class SportActivity : ComponentActivity() {
             )
         }
     }
+
+    fun insertTraining(context: Context, name: String, met: Double,
+                       type: String, listPhysicalExercise: List<ItemText>) {
+        if (!PhysicalExerciseRepository(context).isPhysicalExerciseExists(name)) {
+            PhysicalExerciseRepository(context).insertPhysicalExercise(
+                PhysicalExercise(
+                    name = name,
+                    met = met,
+                    type = type,
+                    training = true
+                )
+            )
+
+            val trainingId = PhysicalExerciseRepository(context).getPhysicalExerciseByName(name).id
+            for (item in listPhysicalExercise){
+                val physicalExerciseId = PhysicalExerciseRepository(context).getPhysicalExerciseByName(item.title).id
+                TrainingRepository(context).insertTraining(
+                    Training(
+                        idName = trainingId,
+                        idPhysicalExercise = physicalExerciseId,
+                        valuePhysicalExercise = item.value
+                    )
+                )
+            }
+        }
+    }
 }
