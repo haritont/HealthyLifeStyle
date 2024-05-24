@@ -6,7 +6,7 @@ enum class Screens {
     SportScreen,
     MoodScreen,
     StatisticsScreen,
-    BarcodeScannerScreen,
+    BarcodeScannerScreen,//top
     ProfileScreen,
     HistoryScreen
 }

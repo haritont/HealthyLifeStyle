@@ -8,7 +8,7 @@ data class NavigationItem (
     val route: String
 )
 
-val listItems = listOf(
+val listItemsBottom = listOf(
     NavigationItem(
         label = "Home",
         icon = R.drawable.main,
@@ -33,5 +33,23 @@ val listItems = listOf(
         label = "Statistics",
         icon = R.drawable.statistics,
         route = Screens.StatisticsScreen.name
+    )
+)
+
+val listItemsTop = listOf(
+    NavigationItem(
+        label = "Profile",
+        icon = R.drawable.login,
+        route = Screens.ProfileScreen.name
+    ),
+    NavigationItem(
+        label = "History",
+        icon = R.drawable.history,
+        route = Screens.HistoryScreen.name
+    ),
+    NavigationItem(
+        label = "BarcodeScannerScreen",
+        icon = R.drawable.barcode,
+        route = Screens.BarcodeScannerScreen.name
     )
 )
