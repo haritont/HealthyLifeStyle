@@ -9,6 +9,8 @@ import vika.app.healthy_lifestyle.base.data.repository.food.NutritionRepository
 import vika.app.healthy_lifestyle.base.data.repository.food.RecipeRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
+import vika.app.healthy_lifestyle.base.data.repository.mood.HabitRecordRepository
+import vika.app.healthy_lifestyle.base.data.repository.mood.HabitRepository
 import vika.app.healthy_lifestyle.bean.ItemText
 import vika.app.healthy_lifestyle.bean.food.Ingredient
 import vika.app.healthy_lifestyle.bean.food.Nutrition
@@ -128,40 +130,6 @@ class FoodActivity : ComponentActivity() {
         }
     }
 
-    fun addDish(context: Context, name: String, value: Double, date: String, meal: String) {
-        NutritionRepository(context).insertNutrition(
-            Nutrition(
-                token = "",
-                name = name,
-                value = value,
-                date = date,
-                meal = meal
-            )
-        )
-
-        val dish = IngredientRepository(context).getIngredientByName(name)
-        addKPFC(
-            context,
-            (dish.kilocalories * value / 100.0).toString(),
-            (dish.proteins * value / 100.0).toString(),
-            (dish.fats * value / 100.0).toString(),
-            (dish.carbohydrates * value / 100.0).toString(),
-            date
-        )
-    }
-
-    fun updateFavoriteDish(context: Context, name: String, favorite: Boolean) {
-        IngredientRepository(context).updateIngredientFavorite(name, favorite)
-    }
-
-    fun updateExceptionDish(context: Context, name: String, exception: Boolean) {
-        IngredientRepository(context).updateIngredientException(name, exception)
-    }
-
-    fun getAllDishes(context: Context): List<Ingredient> {
-        return IngredientRepository(context).getAllDishes()
-    }
-
     fun addIngredient(context: Context, name: String, value: Double, date: String, meal: String) {
         NutritionRepository(context).insertNutrition(
             Nutrition(
@@ -182,6 +150,15 @@ class FoodActivity : ComponentActivity() {
             (ingredient.carbohydrates * value / 100.0).toString(),
             date
         )
+
+        val habit = HabitRepository(context).getByProduct(ingredient.type)
+        if (habit != null) {
+            val record = HabitRecordRepository(context).getRecordByIdHabit(habit.id, true)
+            if (record != null){
+                record.tracking = false
+                record.dateEnd = DateToday().getToday()
+            }
+        }
     }
 
     fun updateFavoriteIngredient(context: Context, name: String, favorite: Boolean) {

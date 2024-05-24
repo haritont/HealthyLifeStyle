@@ -24,4 +24,8 @@ class HabitRepository (context: Context){
     fun insertHabit(habit: Habit) = runBlocking{
         habitDao.insert(habitMapper.toHabitEntity(habit))
     }
+
+    fun getByProduct(product: String): Habit? = runBlocking{
+        habitDao.getByProduct(product)?.let { habitMapper.toHabit(it) }
+    }
 }
