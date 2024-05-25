@@ -1,6 +1,7 @@
 package vika.app.healthy_lifestyle.ui.theme.sport
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -27,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +41,7 @@ import vika.app.healthy_lifestyle.activity.sport.SportActivity
 import vika.app.healthy_lifestyle.bean.Item
 import vika.app.healthy_lifestyle.bean.ItemText
 import vika.app.healthy_lifestyle.ui.theme.app.Black
+import vika.app.healthy_lifestyle.ui.theme.app.RedLight
 import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListDelete
@@ -60,6 +64,14 @@ fun AddTraining(
     DisposableEffect(isOpen) {
         openDialog = isOpen
         onDispose { }
+    }
+
+    var colorAdd by remember {
+        mutableStateOf(Color.Transparent)
+    }
+
+    var colorName by remember {
+        mutableStateOf(Color.Transparent)
     }
 
     if (openDialog) {
@@ -125,29 +137,35 @@ fun AddTraining(
                     }
 
                     LazyColumn(
-                        modifier = Modifier.height(500.dp)
+                        modifier = Modifier.height(400.dp)
                     ) {
                         item {
                             Spacer(modifier = Modifier.height(10.dp))
-                            TextFieldBlue(
-                                value = nameState.value,
-                                label = {
-                                    Text(
-                                        LocalContext.current.getString(R.string.input_name),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                },
-                                onValueChange = { newLogin -> nameState.value = newLogin },
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                                leadingIcon = {
-                                    Image(
-                                        painterResource(R.drawable.sport),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(25.dp)
-                                    )
-                                }
-                            )
+                            Surface(
+                                shape = RoundedCornerShape(10.dp),
+                                modifier = Modifier
+                                    .border(3.dp, colorName, RoundedCornerShape(10.dp))
+                            ) {
+                                TextFieldBlue(
+                                    value = nameState.value,
+                                    label = {
+                                        Text(
+                                            LocalContext.current.getString(R.string.input_name),
+                                            style = MaterialTheme.typography.bodySmall
+                                        )
+                                    },
+                                    onValueChange = { newLogin -> nameState.value = newLogin },
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                                    leadingIcon = {
+                                        Image(
+                                            painterResource(R.drawable.sport),
+                                            contentDescription = null,
+                                            modifier = Modifier
+                                                .size(25.dp)
+                                        )
+                                    }
+                                )
+                            }
 
                             Text(
                                 text = "Добавленные упражнения",
@@ -156,28 +174,34 @@ fun AddTraining(
                                 color = Black
                             )
 
-                            LazyColumn(
+                            Surface(
+                                shape = RoundedCornerShape(10.dp),
                                 modifier = Modifier
-                                    .width(300.dp)
-                                    .height(200.dp)
+                                    .border(3.dp, colorAdd, RoundedCornerShape(10.dp))
                             ) {
-                                items(selectListPhysicalExercise) { item ->
-                                    key(item) {
-                                        ItemListDelete(
-                                            title = item.title,
-                                            value = item.value,
-                                            delete = { title ->
-                                                selectListPhysicalExercise.remove(
-                                                    selectListPhysicalExercise.find { it.title == title }
-                                                )
-                                                val physicalExercise =
-                                                    SportActivity().getPhysicalExerciseByName(
-                                                        context,
-                                                        title
+                                LazyColumn(
+                                    modifier = Modifier
+                                        .width(300.dp)
+                                        .height(200.dp)
+                                ) {
+                                    items(selectListPhysicalExercise) { item ->
+                                        key(item) {
+                                            ItemListDelete(
+                                                title = item.title,
+                                                value = item.value,
+                                                delete = { title ->
+                                                    selectListPhysicalExercise.remove(
+                                                        selectListPhysicalExercise.find { it.title == title }
                                                     )
-                                                metState.value -= (item.value / 60.0) * physicalExercise.met
-                                            }
-                                        )
+                                                    val physicalExercise =
+                                                        SportActivity().getPhysicalExerciseByName(
+                                                            context,
+                                                            title
+                                                        )
+                                                    metState.value -= (item.value / 60.0) * physicalExercise.met
+                                                }
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -217,27 +241,6 @@ fun AddTraining(
                                     }
                                 }
                             }
-                            TextFieldBlue(
-                                value = "%.1f".format(metState.value),
-                                label = {
-                                    Text(
-                                        LocalContext.current.getString(R.string.met),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                },
-                                onValueChange = { newLogin ->
-                                    metState.value = newLogin.toDouble()
-                                },
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                leadingIcon = {
-                                    Image(
-                                        painterResource(R.drawable.sport),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(25.dp)
-                                    )
-                                }
-                            )
                         }
                     }
 
@@ -246,15 +249,26 @@ fun AddTraining(
                     ) {
                         TextButton(
                             onClick = {
-                                SportActivity().insertTraining(
-                                    context,
-                                    nameState.value,
-                                    metState.value.toString().replace(",", ".").toDouble(),
-                                    typeState.value,
-                                    selectListPhysicalExercise
-                                )
-                                openDialog = false
-                                onOpenChange(openDialog)
+                                var check = true
+                                if (nameState.value == ""){
+                                    check = false
+                                    colorName = RedLight
+                                }
+                                if (selectListPhysicalExercise.size == 0){
+                                    check = false
+                                    colorAdd = RedLight
+                                }
+                                if (check) {
+                                    SportActivity().insertTraining(
+                                        context,
+                                        nameState.value,
+                                        metState.value.toString().replace(",", ".").toDouble(),
+                                        typeState.value,
+                                        selectListPhysicalExercise
+                                    )
+                                    openDialog = false
+                                    onOpenChange(openDialog)
+                                }
                             },
                             modifier = Modifier.padding(8.dp),
                         ) {
