@@ -70,7 +70,7 @@ class LoadingActivity: ComponentActivity(){
 //        for (product in productRecommend) {
 //            RecommendProductRepository(this).insertRecommendProduct(product)
 //        }
-
+//
 //        val habits = DefaultApiServiceRepository().getAllHabits()
 //
 //        for (habit in habits) {

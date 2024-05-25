@@ -31,6 +31,7 @@ import vika.app.healthy_lifestyle.calculations.MealCalc
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.food.AddDish
 import vika.app.healthy_lifestyle.ui.theme.food.FastKPFC
+import vika.app.healthy_lifestyle.ui.theme.general.Advice
 import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListDelete
 
@@ -111,7 +112,7 @@ fun FoodScreen() {
             }
 
             FastKPFC()
-            //Advice(value = FoodActivity().getAdvice(context))
+            Advice(value = FoodActivity().getAdvice(context))
 
             var openDialogAddDish by remember { mutableStateOf(false) }
 
