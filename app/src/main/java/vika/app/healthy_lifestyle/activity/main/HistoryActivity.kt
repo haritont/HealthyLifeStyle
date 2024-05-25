@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import vika.app.healthy_lifestyle.base.data.repository.food.NutritionRepository
 import vika.app.healthy_lifestyle.base.data.repository.sport.ActivismRepository
 import vika.app.healthy_lifestyle.bean.main.History
-import vika.app.healthy_lifestyle.bean.sport.Activism
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 
 class HistoryActivity : ComponentActivity() {
@@ -16,6 +15,15 @@ class HistoryActivity : ComponentActivity() {
         setContent {
             Healthy_LifestyleTheme {
             }
+        }
+    }
+
+    fun deleteHistoryItem(context: Context, date: String, name: String, value: Double, type: Int){
+        if (type == 0) {
+            NutritionRepository(context).deleteNutrition(name, value, date)
+        }
+        if (type == 1) {
+            ActivismRepository(context).deleteActivism(name, value, date)
         }
     }
 
