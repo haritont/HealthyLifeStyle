@@ -51,5 +51,10 @@ val listItemsTop = listOf(
         label = "BarcodeScannerScreen",
         icon = R.drawable.barcode,
         route = Screens.BarcodeScannerScreen.name
+    ),
+    NavigationItem(
+        label = "Recommend",
+        icon = R.drawable.mood,
+        route = Screens.RecommendScreen.name
     )
 )

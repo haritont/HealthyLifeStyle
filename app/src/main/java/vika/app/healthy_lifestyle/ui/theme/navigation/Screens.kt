@@ -8,5 +8,6 @@ enum class Screens {
     StatisticsScreen,
     BarcodeScannerScreen,//top
     ProfileScreen,
-    HistoryScreen
+    HistoryScreen,
+    RecommendScreen
 }

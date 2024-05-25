@@ -26,6 +26,7 @@ import vika.app.healthy_lifestyle.ui.theme.navigation.screens.StatisticsScreen
 import vika.app.healthy_lifestyle.ui.theme.navigation.screens.main.BarcodeScannerScreen
 import vika.app.healthy_lifestyle.ui.theme.navigation.screens.main.HistoryScreen
 import vika.app.healthy_lifestyle.ui.theme.navigation.screens.main.ProfileScreen
+import vika.app.healthy_lifestyle.ui.theme.navigation.screens.main.RecommendScreen
 
 @Composable
 fun Navigation() {
@@ -113,6 +114,9 @@ fun Navigation() {
             }
             composable(route = Screens.BarcodeScannerScreen.name) {
                 BarcodeScannerScreen()
+            }
+            composable(route = Screens.RecommendScreen.name) {
+                RecommendScreen()
             }
         }
     }
