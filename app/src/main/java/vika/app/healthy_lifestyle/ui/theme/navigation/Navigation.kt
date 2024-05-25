@@ -18,8 +18,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import vika.app.healthy_lifestyle.ui.theme.app.Blue
-import vika.app.healthy_lifestyle.ui.theme.app.BlueLight
 import vika.app.healthy_lifestyle.ui.theme.navigation.screens.FoodScreen
 import vika.app.healthy_lifestyle.ui.theme.navigation.screens.MainScreen
 import vika.app.healthy_lifestyle.ui.theme.navigation.screens.MoodScreen
@@ -30,21 +28,19 @@ import vika.app.healthy_lifestyle.ui.theme.navigation.screens.main.HistoryScreen
 import vika.app.healthy_lifestyle.ui.theme.navigation.screens.main.ProfileScreen
 
 @Composable
-fun Navigation(){
+fun Navigation() {
     val navController: NavHostController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    Scaffold (
+    Scaffold(
         topBar = {
-            NavigationBar (
-                contentColor = BlueLight
-            ){
-                listItemsTop.forEach{ navItem ->
+            NavigationBar {
+                listItemsTop.forEach { navItem ->
                     NavigationBarItem(
-                        selected = currentDestination?.hierarchy?.any{it.route == navItem.route} == true,
+                        selected = currentDestination?.hierarchy?.any { it.route == navItem.route } == true,
                         onClick = {
-                            navController.navigate((navItem.route)){
-                                popUpTo(navController.graph.findStartDestination().id){
+                            navController.navigate((navItem.route)) {
+                                popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
                                 launchSingleTop = true
@@ -61,22 +57,21 @@ fun Navigation(){
                     )
                 }
             }
+
         },
         bottomBar = {
-            NavigationBar (
-                contentColor = Blue
-            ){
-                listItemsBottom.forEach{ navItem ->
+            NavigationBar {
+                listItemsBottom.forEach { navItem ->
                     NavigationBarItem(
-                        selected = currentDestination?.hierarchy?.any{it.route == navItem.route} == true,
+                        selected = currentDestination?.hierarchy?.any { it.route == navItem.route } == true,
                         onClick = {
-                                  navController.navigate((navItem.route)){
-                                      popUpTo(navController.graph.findStartDestination().id){
-                                          saveState = true
-                                      }
-                                      launchSingleTop = true
-                                      restoreState = true
-                                  }
+                            navController.navigate((navItem.route)) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         },
                         icon = {
                             Icon(
@@ -89,26 +84,25 @@ fun Navigation(){
                 }
             }
         }
-    ){
-        paddingValues ->
+    ) { paddingValues ->
         NavHost(
             navController = navController,
             startDestination = Screens.MainScreen.name,
             modifier = Modifier.padding(paddingValues)
-        ){
-            composable(route = Screens.MainScreen.name){
+        ) {
+            composable(route = Screens.MainScreen.name) {
                 MainScreen()
             }
-            composable(route = Screens.FoodScreen.name){
+            composable(route = Screens.FoodScreen.name) {
                 FoodScreen()
             }
-            composable(route = Screens.SportScreen.name){
+            composable(route = Screens.SportScreen.name) {
                 SportScreen()
             }
-            composable(route = Screens.MoodScreen.name){
+            composable(route = Screens.MoodScreen.name) {
                 MoodScreen()
             }
-            composable(route = Screens.StatisticsScreen.name){
+            composable(route = Screens.StatisticsScreen.name) {
                 StatisticsScreen()
             }
             composable(route = Screens.ProfileScreen.name) {
@@ -117,7 +111,7 @@ fun Navigation(){
             composable(route = Screens.HistoryScreen.name) {
                 HistoryScreen()
             }
-            composable(route = Screens.BarcodeScannerScreen.name){
+            composable(route = Screens.BarcodeScannerScreen.name) {
                 BarcodeScannerScreen()
             }
         }
