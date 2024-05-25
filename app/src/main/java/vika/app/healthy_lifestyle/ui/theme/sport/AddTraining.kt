@@ -100,6 +100,15 @@ fun AddTraining(
         )
         val typeState = remember { mutableStateOf(options[0]) }
 
+        fun addItemToSelectList(title: String, value: Double) {
+            val existingItem = selectListPhysicalExercise.find { it.title == title }
+            if (existingItem == null) {
+                selectListPhysicalExercise.add(ItemText(title, value))
+            } else {
+                existingItem.value = value
+            }
+        }
+
         Dialog(
             onDismissRequest = {
                 openDialog = false
@@ -224,12 +233,7 @@ fun AddTraining(
                                             title = item.title,
                                             textInDialog = "Введите время выполнения в мин",
                                             add = { title, value ->
-                                                selectListPhysicalExercise.add(
-                                                    ItemText(
-                                                        title,
-                                                        value
-                                                    )
-                                                )
+                                                addItemToSelectList(title, value)
                                                 val physicalExercise =
                                                     SportActivity().getPhysicalExerciseByName(
                                                         context,

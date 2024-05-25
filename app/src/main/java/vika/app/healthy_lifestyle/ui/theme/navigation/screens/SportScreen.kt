@@ -58,8 +58,12 @@ fun SportScreen () {
     var lastListSports = SportActivity().getLastActivism(context)
     lastListSports = lastListSports.reversed()
 
-    for (activism in lastListSports) {
-        selectListSports.add(ItemText(activism.name, activism.value))
+    remember {
+        lastListSports.forEach { activism ->
+            if (selectListSports.none { it.title == activism.name }) {
+                selectListSports.add(ItemText(activism.name, activism.value))
+            }
+        }
     }
 
     val listState = rememberLazyListState()

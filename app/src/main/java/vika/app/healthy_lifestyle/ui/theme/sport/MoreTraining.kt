@@ -84,16 +84,13 @@ fun MoreTraining(
 
         val trainingList = SportActivity().getTraining(context, training.id)
         val selectListPhysicalExercise = remember { mutableStateListOf<ItemText>() }
-        for (train in trainingList) {
-            selectListPhysicalExercise.add(
-                ItemText(
-                    title = SportActivity().getPhysicalExerciseById(
-                        context,
-                        train.idPhysicalExercise
-                    ).name,
-                    value = train.valuePhysicalExercise
-                )
-            )
+        remember {
+            trainingList.forEach { train ->
+                val exerciseName = SportActivity().getPhysicalExerciseById(context, train.idPhysicalExercise).name
+                if (selectListPhysicalExercise.none { it.title == exerciseName }) {
+                    selectListPhysicalExercise.add(ItemText(exerciseName, train.valuePhysicalExercise))
+                }
+            }
         }
 
         val nameState = remember { mutableStateOf(title) }
@@ -243,17 +240,10 @@ fun MoreTraining(
                                             title = item.title,
                                             textInDialog = "Введите время выполнения в мин",
                                             add = { title, value ->
-                                                selectListPhysicalExercise.add(
-                                                    ItemText(
-                                                        title,
-                                                        value
-                                                    )
-                                                )
-                                                val physicalExercise =
-                                                    SportActivity().getPhysicalExerciseByName(
-                                                        context,
-                                                        title
-                                                    )
+                                                if (selectListPhysicalExercise.none { it.title == title }) {
+                                                    selectListPhysicalExercise.add(ItemText(title, value))
+                                                }
+                                                val physicalExercise = SportActivity().getPhysicalExerciseByName(context, title)
                                                 metState.value += (value / 60.0) * physicalExercise.met
                                             }
                                         )
@@ -264,7 +254,7 @@ fun MoreTraining(
                                 value = "%.1f".format(metState.value),
                                 label = {
                                     Text(
-                                        LocalContext.current.getString(R.string.kilocalories),
+                                        LocalContext.current.getString(R.string.met),
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                 },

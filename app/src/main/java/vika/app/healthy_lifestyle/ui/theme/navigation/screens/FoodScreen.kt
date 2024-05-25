@@ -58,8 +58,12 @@ fun FoodScreen() {
     var lastListProduct = FoodActivity().getLastNutrition(context)
     lastListProduct = lastListProduct.reversed()
 
-    for (nutrition in lastListProduct) {
-        selectListProduct.add(ItemText(nutrition.name, nutrition.value))
+    remember {
+        lastListProduct.forEach { nutrition ->
+            if (selectListProduct.none { it.title == nutrition.name }) {
+                selectListProduct.add(ItemText(nutrition.name, nutrition.value))
+            }
+        }
     }
 
     val listState = rememberLazyListState()

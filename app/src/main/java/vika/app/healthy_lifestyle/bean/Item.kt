@@ -10,5 +10,5 @@ data class Item(
 
 data class ItemText(
     val title: String,
-    val value: Double
+    var value: Double
 )

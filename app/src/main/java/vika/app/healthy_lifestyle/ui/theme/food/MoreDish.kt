@@ -85,13 +85,14 @@ fun MoreDish(
 
          val recipeList =  FoodActivity().getRecipe(context, dish.id)
          val selectListIngredient = remember { mutableStateListOf<ItemText>() }
-         for (recipe in recipeList){
-             selectListIngredient.add(
-                 ItemText(
-                     title = FoodActivity().getIngredient(context, recipe.idIngredient).name,
-                     value = recipe.valueIngredient
-                 )
-             )
+
+         remember {
+             recipeList.forEach { recipe ->
+                 val recipeName = FoodActivity().getIngredient(context, recipe.idIngredient).name
+                 if (selectListIngredient.none { it.title == recipeName }) {
+                     selectListIngredient.add(ItemText(recipeName, recipe.valueIngredient))
+                 }
+             }
          }
 
          val nameState = remember { mutableStateOf(title) }
