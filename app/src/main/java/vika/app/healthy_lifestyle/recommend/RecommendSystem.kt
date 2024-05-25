@@ -18,9 +18,9 @@ class RecommendSystem(
         return RecommendProductRepository(context).getRecommendProductList(minMark, target, meal);
     }
 
-    private fun getMark(ingredient: Ingredient, targetType: Int?, mealType: Int?): Double {
+    fun getMark(ingredient: Ingredient): Double {
         var mark = 0.0
-        val plan = MealPlanManager().getMealPlan(targetType, mealType)
+        val plan = MealPlanManager().getMealPlan(target, meal)
 
         val kilocalories = ingredient.kilocalories
 
