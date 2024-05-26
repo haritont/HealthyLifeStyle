@@ -61,7 +61,15 @@ fun AddPhysicalExercise(
     val metState = remember { mutableStateOf("") }
 
     val options = listOf(
-        "Без типа"
+        "Без типа",
+        "Виды спорта",
+        "Бег",
+        "Езда на велосипеде",
+        "Кондиционирующее упражнение",
+        "Ходьба",
+        "Бездействие",
+        "Домашняя активность",
+        "Садоводство"
     )
     val typeState = remember { mutableStateOf(options[0]) }
 

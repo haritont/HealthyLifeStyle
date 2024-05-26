@@ -97,7 +97,15 @@ fun MoreTraining(
         val metState = remember { mutableStateOf(training.met) }
 
         val options = listOf(
-            "Без типа"
+            "Без типа",
+            "Виды спорта",
+            "Бег",
+            "Езда на велосипеде",
+            "Кондиционирующее упражнение",
+            "Ходьба",
+            "Бездействие",
+            "Домашняя активность",
+            "Садоводство"
         )
         val typeState = remember { mutableStateOf(training.type) }
 

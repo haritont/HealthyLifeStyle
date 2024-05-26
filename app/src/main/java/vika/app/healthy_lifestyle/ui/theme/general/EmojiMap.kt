@@ -1,8 +1,8 @@
 package vika.app.healthy_lifestyle.ui.theme.general
 
 val emojiMap = mapOf(
-    "" to "\uD83E\uDDC3",
-    "Без типа" to "\uD83E\uDDC3",
+    "" to "",
+    "Без типа" to "",
 
     "Напиток" to "\uD83E\uDDC3",
     "Фрукт" to "\uD83C\uDF4F",
