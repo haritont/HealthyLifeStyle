@@ -9,5 +9,7 @@ data class MealPlan(
     var fatMax: Int = 0,
     var carbMin: Int = 0,
     var carbMax: Int = 0,
+    var kiloMin: Int = 0,
+    var kiloMax: Int = 0,
     var types: List<String> = listOf()
 )
