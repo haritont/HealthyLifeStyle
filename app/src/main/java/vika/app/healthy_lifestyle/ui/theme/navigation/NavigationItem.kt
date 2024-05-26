@@ -54,7 +54,7 @@ val listItemsTop = listOf(
     ),
     NavigationItem(
         label = "Recommend",
-        icon = R.drawable.mood,
+        icon = R.drawable.recommend,
         route = Screens.RecommendScreen.name
     )
 )
