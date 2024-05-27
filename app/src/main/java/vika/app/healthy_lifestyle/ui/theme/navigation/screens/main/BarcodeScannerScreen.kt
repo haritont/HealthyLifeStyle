@@ -59,20 +59,25 @@ fun BarcodeScannerScreen() {
     var checkBarcode by remember { mutableStateOf(false) }
 
     if (checkBarcode) {
-        ItemListText(
-            title = name,
-            textInDialog = "Введите вес в гр.",
-            add = { title, value ->
-                NutritionRepository(context).insertNutrition(
-                    Nutrition(
-                        name = title,
-                        value = value,
-                        date = DateToday().getToday(),
-                        meal = MealCalc().getCurrentMeal()
+        Column (
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ItemListText(
+                title = name,
+                textInDialog = "Введите вес в гр/мл.",
+                add = { title, value ->
+                    NutritionRepository(context).insertNutrition(
+                        Nutrition(
+                            name = title,
+                            value = value,
+                            date = DateToday().getToday(),
+                            meal = MealCalc().getCurrentMeal()
+                        )
                     )
-                )
-            }
-        )
+                }
+            )
+        }
     }
 
     var checkBarcodeNull by remember { mutableStateOf(false) }
@@ -95,8 +100,8 @@ fun BarcodeScannerScreen() {
     var filteredListIngredient by remember { mutableStateOf(itemListIngredient) }
     if (checkBarcodeNull) {
         Column (
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.Start
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
         ){
             Search(
                 itemList = itemListIngredient,
@@ -111,7 +116,7 @@ fun BarcodeScannerScreen() {
                     key(item.title) {
                         ItemListText(
                             title = item.title,
-                            textInDialog = "Введите вес в гр.",
+                            textInDialog = "Введите вес в гр/мл.",
                             add = { title, value ->
                                 NutritionRepository(context).insertNutrition(
                                     Nutrition(
