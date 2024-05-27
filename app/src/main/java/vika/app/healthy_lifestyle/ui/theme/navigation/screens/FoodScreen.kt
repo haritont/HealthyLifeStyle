@@ -61,7 +61,7 @@ fun FoodScreen() {
 
     remember {
         lastListProduct.forEach { nutrition ->
-            if (selectListProduct.none { it.title == nutrition.name }) {
+            if (selectListProduct.none { it.title == nutrition.name && it.value == nutrition.value}) {
                 selectListProduct.add(ItemText(nutrition.name, nutrition.value))
             }
         }

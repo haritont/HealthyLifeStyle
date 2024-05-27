@@ -41,7 +41,7 @@ fun HistoryScreen() {
     val selectListProduct = remember { mutableStateListOf<History>() }
     remember {
         historyList.forEach { nutrition ->
-            if (selectListProduct.none { it.name == nutrition.name }) {
+            if (selectListProduct.none { it.name == nutrition.name && it.value == nutrition.value}) {
                 selectListProduct.add(nutrition)
             }
         }
