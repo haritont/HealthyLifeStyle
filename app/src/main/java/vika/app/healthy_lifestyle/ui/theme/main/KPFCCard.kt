@@ -21,6 +21,7 @@ import vika.app.healthy_lifestyle.bean.KPFC
 import vika.app.healthy_lifestyle.ui.theme.app.Blue
 import vika.app.healthy_lifestyle.ui.theme.app.BlueUltraLight
 import vika.app.healthy_lifestyle.ui.theme.app.Red
+import vika.app.healthy_lifestyle.ui.theme.app.White
 
 @Composable
 fun KPFCCard(
@@ -50,11 +51,12 @@ fun KPFCCard(
                 fontWeight = FontWeight.Bold
             )
             LinearProgressIndicator(
-                progress = { progressValue.toFloat() / targetValue.toFloat() },
+                progress = progressValue.toFloat() / targetValue.toFloat(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
                 color = progressColor,
+                trackColor = White
             )
             Text(
                 text = "Прогресс: ${progressValue.toInt()} / ${targetValue.toInt()}",
