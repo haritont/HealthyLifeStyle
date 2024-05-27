@@ -23,7 +23,7 @@ class BarcodeRepository (context: Context) {
         barcodeDao.insert(barcodeMapper.toBarcodeEntity(barcode))
     }
 
-    fun getByCode(code: String): Barcode = runBlocking {
-        barcodeMapper.toBarcode(barcodeDao.getByCode(code))
+    fun getByCode(code: String): Barcode? = runBlocking {
+        barcodeDao.getByCode(code)?.let { barcodeMapper.toBarcode(it) }
     }
 }

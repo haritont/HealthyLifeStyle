@@ -12,5 +12,5 @@ interface BarcodeDao {
     suspend fun insert(barcode: BarcodeEntity)
 
     @Query("SELECT * FROM Barcode WHERE code = :code")
-    suspend fun getByCode(code: String): BarcodeEntity
+    suspend fun getByCode(code: String): BarcodeEntity?
 }
