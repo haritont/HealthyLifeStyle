@@ -169,6 +169,7 @@ fun AddIngredient(
                             shape = RoundedCornerShape(10.dp),
                             modifier = Modifier
                                 .border(3.dp, colorKilo, RoundedCornerShape(10.dp))
+                                .weight(1f)
                         ) {
                             Box(
                                 modifier = Modifier.weight(1f)
@@ -200,6 +201,7 @@ fun AddIngredient(
                             shape = RoundedCornerShape(10.dp),
                             modifier = Modifier
                                 .border(3.dp, colorProtein, RoundedCornerShape(10.dp))
+                                .weight(1f)
                         ) {
                             Box(
                                 modifier = Modifier.weight(1f)
@@ -234,6 +236,7 @@ fun AddIngredient(
                             shape = RoundedCornerShape(10.dp),
                             modifier = Modifier
                                 .border(3.dp, colorFat, RoundedCornerShape(10.dp))
+                                .weight(1f)
                         ) {
                             Box(
                                 modifier = Modifier.weight(1f)
@@ -264,6 +267,7 @@ fun AddIngredient(
                             shape = RoundedCornerShape(10.dp),
                             modifier = Modifier
                                 .border(3.dp, colorCarb, RoundedCornerShape(10.dp))
+                                .weight(1f)
                         ) {
                             Box(
                                 modifier = Modifier.weight(1f)
