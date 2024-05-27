@@ -3,7 +3,7 @@ package vika.app.healthy_lifestyle.ui.theme.navigation.screens.main
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -49,7 +49,7 @@ fun HistoryScreen() {
 
     Column(
         modifier = Modifier.padding(8.dp),
-        verticalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -72,7 +72,7 @@ fun HistoryScreen() {
         }
 
         LazyColumn(
-            modifier = Modifier.height(300.dp).padding(8.dp)
+            modifier = Modifier.padding(8.dp).fillMaxSize()
         ) {
             items(selectListProduct) { item ->
                 key(item.name) {
