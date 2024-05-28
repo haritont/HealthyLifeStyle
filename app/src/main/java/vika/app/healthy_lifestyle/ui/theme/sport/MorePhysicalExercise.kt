@@ -2,6 +2,7 @@ package vika.app.healthy_lifestyle.ui.theme.sport
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -25,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,6 +37,7 @@ import androidx.compose.ui.window.Dialog
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.sport.SportActivity
 import vika.app.healthy_lifestyle.ui.theme.app.Black
+import vika.app.healthy_lifestyle.ui.theme.app.RedLight
 import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
 
@@ -77,6 +81,14 @@ fun MorePhysicalExercise(
 
         var favoriteState by remember { mutableStateOf(physicalExercise.favorite) }
         var exceptionState by remember { mutableStateOf(physicalExercise.exception) }
+
+        var colorName by remember {
+            mutableStateOf(Color.Transparent)
+        }
+
+        var colorMet by remember {
+            mutableStateOf(Color.Transparent)
+        }
 
         Dialog(
             onDismissRequest = {
@@ -142,63 +154,90 @@ fun MorePhysicalExercise(
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
-                    TextFieldBlue(
-                        value = nameState.value,
-                        label = {
-                            Text(
-                                LocalContext.current.getString(R.string.input_name),
-                                style = MaterialTheme.typography.bodySmall
-                            )
-                        },
-                        onValueChange = { newLogin -> nameState.value = newLogin },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        leadingIcon = {
-                            Image(
-                                painterResource(R.drawable.sport),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(25.dp)
-                            )
-                        }
-                    )
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        modifier = Modifier
+                            .border(3.dp, colorName, RoundedCornerShape(10.dp))
+                    ) {
+                        TextFieldBlue(
+                            value = nameState.value,
+                            label = {
+                                Text(
+                                    LocalContext.current.getString(R.string.input_name),
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            },
+                            onValueChange = { newLogin -> nameState.value = newLogin },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                            leadingIcon = {
+                                Image(
+                                    painterResource(R.drawable.sport),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(25.dp)
+                                )
+                            }
+                        )
+                    }
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        modifier = Modifier
+                            .border(3.dp, colorMet, RoundedCornerShape(10.dp))
+                    ) {
 
-                            TextFieldBlue(
-                                value = metState.value.toString(),
-                                label = {
-                                    Text(
-                                        LocalContext.current.getString(R.string.kilocalories),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                },
-                                onValueChange = { newLogin -> metState.value = newLogin.toDouble() },
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                leadingIcon = {
-                                    Image(
-                                        painterResource(R.drawable.sport),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(25.dp)
-                                    )
-                                }
-                            )
+                        TextFieldBlue(
+                            value = metState.value.toString(),
+                            label = {
+                                Text(
+                                    LocalContext.current.getString(R.string.kilocalories),
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            },
+                            onValueChange = { newLogin -> metState.value = newLogin.toDouble() },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            leadingIcon = {
+                                Image(
+                                    painterResource(R.drawable.sport),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(25.dp)
+                                )
+                            }
+                        )
+                    }
 
                     Row(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         TextButton(
                             onClick = {
-                                SportActivity().updatePhysicalExercise(
-                                    context,
-                                    physicalExercise.id,
-                                    nameState.value,
-                                    metState.value.toString().replace(",", ".").toDouble(),
-                                    typeState.value,
-                                    favoriteState,
-                                    exceptionState
-                                )
-                                openDialog = false
-                                onOpenChange(openDialog)
-                                Toast.makeText(context, "Изменено: ".plus(nameState.value), Toast.LENGTH_SHORT).show()
+                                var check = true
+                                if (nameState.value == ""){
+                                    check = false
+                                    colorName = RedLight
+                                }
+                                if (metState.value.toString() == ""){
+                                    check = false
+                                    colorMet = RedLight
+                                }
+                                if (check) {
+                                    SportActivity().updatePhysicalExercise(
+                                        context,
+                                        physicalExercise.id,
+                                        nameState.value,
+                                        metState.value.toString().replace(",", ".").toDouble(),
+                                        typeState.value,
+                                        favoriteState,
+                                        exceptionState
+                                    )
+                                    openDialog = false
+                                    onOpenChange(openDialog)
+                                    Toast.makeText(
+                                        context,
+                                        "Изменено: ".plus(nameState.value),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             },
                             modifier = Modifier.padding(8.dp),
                         ) {
