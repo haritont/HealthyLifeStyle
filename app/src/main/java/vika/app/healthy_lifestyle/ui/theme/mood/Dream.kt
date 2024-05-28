@@ -82,7 +82,7 @@ fun Dream (
                     .padding(5.dp)
             ) {
                 TextFieldBlue(
-                    value = minuteState.toString(),
+                    value = minuteState,
                     label = {
                         Text(
                             LocalContext.current.getString(R.string.minute),
