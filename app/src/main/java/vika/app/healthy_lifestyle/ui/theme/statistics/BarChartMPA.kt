@@ -26,7 +26,7 @@ fun BarChartMPA(values: List<Float>, dates: List<String>) {
                     xAxis.valueFormatter = object : ValueFormatter() {
                         override fun getFormattedValue(value: Float): String {
                             val index = value.toInt()
-                            return if (index >= 0 && index < dates.size) {
+                            return if (index >= 0 && index <= dates.size) {
                                 DateToday().formatDateDDMM(dates[index - 1])
                             } else {
                                 ""
