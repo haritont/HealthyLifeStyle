@@ -6,6 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
+import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.base.data.repository.food.IngredientRepository
 import vika.app.healthy_lifestyle.base.data.repository.food.NutritionRepository
@@ -30,6 +32,8 @@ import vika.app.healthy_lifestyle.bean.food.Nutrition
 import vika.app.healthy_lifestyle.bean.main.Barcode
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.calculations.MealCalc
+import vika.app.healthy_lifestyle.ui.theme.food.AddIngredient
+import vika.app.healthy_lifestyle.ui.theme.general.ImageButton
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListText
 import vika.app.healthy_lifestyle.ui.theme.general.list.Search
 
@@ -98,17 +102,32 @@ fun BarcodeScannerScreen() {
     }
 
     var filteredListIngredient by remember { mutableStateOf(itemListIngredient) }
+    var openDialogAddIngredient by remember { mutableStateOf(false) }
     if (checkBarcodeNull) {
         Column (
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            Search(
-                itemList = itemListIngredient,
-                onSearchResults = {
-                    filteredListIngredient = it.toMutableList()
-                }
+            AddIngredient(
+                openDialogAddIngredient,
+                onOpenChange = { openDialogAddIngredient = it }
             )
+            Row (
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Search(
+                    itemList = itemListIngredient,
+                    onSearchResults = {
+                        filteredListIngredient = it.toMutableList()
+                    }
+                )
+                ImageButton(
+                    icon = R.drawable.add
+                ) {
+                    openDialogAddIngredient = true
+                }
+            }
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
