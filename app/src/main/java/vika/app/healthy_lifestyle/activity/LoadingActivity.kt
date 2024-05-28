@@ -104,7 +104,7 @@ class LoadingActivity: ComponentActivity(){
                 )
             )
         }
-        insertNotifications()
+        //insertNotifications()
 
         setRecordTarget()
 
