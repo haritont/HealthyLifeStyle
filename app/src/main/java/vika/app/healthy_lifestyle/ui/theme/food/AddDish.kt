@@ -1,5 +1,6 @@
 package vika.app.healthy_lifestyle.ui.theme.food
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -268,6 +269,7 @@ fun AddDish(
                                         )
                                         openDialog = !openDialog
                                         onOpenChange(openDialog)
+                                        Toast.makeText(context, "Создано: ".plus(nameState.value), Toast.LENGTH_SHORT).show()
                                     }
                                 },
                                 modifier = Modifier.padding(8.dp),

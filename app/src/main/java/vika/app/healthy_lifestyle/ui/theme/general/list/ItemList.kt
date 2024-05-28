@@ -1,5 +1,6 @@
 package vika.app.healthy_lifestyle.ui.theme.general.list
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -60,6 +62,7 @@ fun ItemList(
     options: List<String>,
     firstOption: String
 ) {
+    val context = LocalContext.current
     var favoriteState by remember { mutableStateOf(favorite) }
     var exceptionState by remember { mutableStateOf(exception) }
 
@@ -180,6 +183,7 @@ fun ItemList(
                                     currentOptionSelect
                                 )
                                 openDialogAdd = !openDialogAdd
+                                Toast.makeText(context, "Добавлено: ".plus(title), Toast.LENGTH_SHORT).show()
                             },
                             modifier = Modifier.padding(8.dp),
                         ) {
