@@ -19,9 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.main.MainActivity
+import vika.app.healthy_lifestyle.base.data.repository.main.NotificationsRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
 import vika.app.healthy_lifestyle.base.data.repository.mood.DreamRepository
+import vika.app.healthy_lifestyle.bean.main.Notification
 import vika.app.healthy_lifestyle.bean.main.PersonalData
 import vika.app.healthy_lifestyle.bean.main.Record
 import vika.app.healthy_lifestyle.bean.mood.Dream
@@ -102,7 +104,7 @@ class LoadingActivity: ComponentActivity(){
                 )
             )
         }
-        //insertNotifications()
+        insertNotifications()
 
         setRecordTarget()
 
@@ -118,33 +120,33 @@ class LoadingActivity: ComponentActivity(){
         DreamRepository(this).saveDream(dream)
     }
 
-//    private fun insertNotifications(){
-//        val notificationsRepository = NotificationsRepository(this)
-//        notificationsRepository.insertNotifications(
-//            Notification(
-//                text="Завтрак", hour = 8, minute = 0
-//            )
-//        )
-//
-//        notificationsRepository.insertNotifications(
-//            Notification(
-//                text="Обед", hour = 13, minute = 0
-//            )
-//        )
-//
-//        notificationsRepository.insertNotifications(
-//            Notification(
-//                text="Перекус", hour = 15, minute = 30
-//            )
-//        )
-//
-//        notificationsRepository.insertNotifications(
-//            Notification(
-//                text="Ужин", hour = 18, minute = 0
-//            )
-//        )
-//    }
-//
+    private fun insertNotifications(){
+        val notificationsRepository = NotificationsRepository(this)
+        notificationsRepository.insertNotifications(
+            Notification(
+                text="Завтрак", hour = 8, minute = 0
+            )
+        )
+
+        notificationsRepository.insertNotifications(
+            Notification(
+                text="Обед", hour = 13, minute = 0
+            )
+        )
+
+        notificationsRepository.insertNotifications(
+            Notification(
+                text="Перекус", hour = 15, minute = 30
+            )
+        )
+
+        notificationsRepository.insertNotifications(
+            Notification(
+                text="Ужин", hour = 18, minute = 0
+            )
+        )
+    }
+
 //    private fun getCountNotifications(): Int {
 //        return NotificationsRepository(this).getNotificationsRowCount()
 //    }

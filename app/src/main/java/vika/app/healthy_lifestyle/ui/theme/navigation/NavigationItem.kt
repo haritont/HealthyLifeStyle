@@ -56,5 +56,10 @@ val listItemsTop = listOf(
         label = "Recommend",
         icon = R.drawable.recommend,
         route = Screens.RecommendScreen.name
+    ),
+    NavigationItem(
+        label = "Settings",
+        icon = R.drawable.settings,
+        route = Screens.SettingsScreen.name
     )
 )
