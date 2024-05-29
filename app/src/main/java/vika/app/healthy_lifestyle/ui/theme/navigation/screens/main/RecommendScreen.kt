@@ -435,11 +435,11 @@ fun RecommendScreen() {
                             RecommendItem(
                                 title = item.name,
                                 color =
-                                if (mark >= 3) {
+                                if (mark >= 2) {
                                     Green
-                                } else if (mark >= 2) {
-                                    Yellow
                                 } else if (mark >= 1) {
+                                    Yellow
+                                } else if (mark >= 0.5) {
                                     Orange
                                 } else {
                                     Red
@@ -522,11 +522,11 @@ fun RecommendScreen() {
                             RecommendItem(
                                 title = item.name,
                                 color =
-                                if (mark >= 3) {
+                                if (mark >= 2) {
                                     Green
-                                } else if (mark >= 2) {
-                                    Yellow
                                 } else if (mark >= 1) {
+                                    Yellow
+                                } else if (mark >= 0.5) {
                                     Orange
                                 } else {
                                     Red
@@ -609,11 +609,11 @@ fun RecommendScreen() {
                             RecommendItem(
                                 title = item.name,
                                 color =
-                                if (mark >= 3) {
+                                if (mark >= 2) {
                                     Green
-                                } else if (mark >= 2) {
-                                    Yellow
                                 } else if (mark >= 1) {
+                                    Yellow
+                                } else if (mark >= 0.5) {
                                     Orange
                                 } else {
                                     Red
