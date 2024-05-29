@@ -44,7 +44,7 @@ class MoodActivity : ComponentActivity() {
     }
 
     fun getAdvice(): String {
-        return CreateAdvice().getMoodAdvice()
+        return CreateAdvice().getMoodAdvice()[0]
     }
 
     fun getHabitList(context: Context): List<Habit> {
