@@ -36,4 +36,7 @@ interface PhysicalExerciseDao {
     suspend fun updateException(name: String, exception: Boolean)
     @Query("SELECT * FROM PhysicalExercise")
     suspend fun getAll(): List<PhysicalExerciseEntity>
+
+    @Query("SELECT * FROM PhysicalExercise WHERE type =:type")
+    suspend fun getAllByType(type: String): List<PhysicalExerciseEntity>
 }

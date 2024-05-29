@@ -57,4 +57,8 @@ class PhysicalExerciseRepository(context: Context) {
     fun getAll(): List<PhysicalExercise> = runBlocking{
         physicalExerciseMapper.toPhysicalExerciseList(physicalExerciseDao.getAll())
     }
+
+    fun getAllByType(type:String): List<PhysicalExercise> = runBlocking{
+        physicalExerciseMapper.toPhysicalExerciseList(physicalExerciseDao.getAllByType(type))
+    }
 }

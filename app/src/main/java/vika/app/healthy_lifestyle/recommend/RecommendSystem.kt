@@ -2,7 +2,9 @@ package vika.app.healthy_lifestyle.recommend
 
 import android.content.Context
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
+import vika.app.healthy_lifestyle.base.data.repository.sport.PhysicalExerciseRepository
 import vika.app.healthy_lifestyle.bean.food.Ingredient
+import vika.app.healthy_lifestyle.bean.sport.PhysicalExercise
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.recommend.database.RecommendProductRepository
 
@@ -17,6 +19,19 @@ class RecommendSystem(
 
     fun getProducts(count: Int): List<RecommendProduct>{
         return getListProduct().shuffled().take(count)
+    }
+
+    fun getSports(count: Int): List<PhysicalExercise>{
+        val recommendSports = mutableListOf<PhysicalExercise>()
+        val physicalExercises = PhysicalExerciseRepository(context).getAllPhysicalExercises()
+        val plan = MealPlanManager().getSportPlan(target)
+
+        for(physicalExercise in physicalExercises){
+            if (physicalExercise.type in plan!!.types){
+                recommendSports.add(physicalExercise)
+            }
+        }
+        return recommendSports.shuffled().take(count)
     }
     private fun getListProduct(): List<RecommendProduct>{
         return RecommendProductRepository(context).getRecommendProductList(minMark, target, meal);

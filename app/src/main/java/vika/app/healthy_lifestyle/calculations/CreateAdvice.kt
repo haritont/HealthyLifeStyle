@@ -16,4 +16,10 @@ class CreateAdvice {
 
         return advice.plus(products[0].product)
     }
+
+    fun getSportAdvice(context: Context, data: PersonalData): String{
+        val advice = "Попробуйте заняться: "
+        val physicalExercise = RecommendSystem(context, data.target, 0).getSports(1)
+        return advice.plus(physicalExercise[0].name)
+    }
 }

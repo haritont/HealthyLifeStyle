@@ -28,6 +28,7 @@ import vika.app.healthy_lifestyle.bean.Item
 import vika.app.healthy_lifestyle.bean.ItemText
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.ui.theme.app.Black
+import vika.app.healthy_lifestyle.ui.theme.general.Advice
 import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListDelete
 import vika.app.healthy_lifestyle.ui.theme.sport.AddTraining
@@ -111,7 +112,7 @@ fun SportScreen () {
             }
 
             StepTracker()
-            //Advice(value = FoodActivity().getAdvice(context))
+            Advice(value = SportActivity().getAdvice(context))
             var openDialogAddTraining by remember { mutableStateOf(false) }
 
             AddTraining(isOpen = openDialogAddTraining, onOpenChange = {openDialogAddTraining = it})

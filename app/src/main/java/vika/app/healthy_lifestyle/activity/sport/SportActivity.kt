@@ -13,6 +13,7 @@ import vika.app.healthy_lifestyle.bean.ItemText
 import vika.app.healthy_lifestyle.bean.sport.Activism
 import vika.app.healthy_lifestyle.bean.sport.PhysicalExercise
 import vika.app.healthy_lifestyle.bean.sport.Training
+import vika.app.healthy_lifestyle.calculations.CreateAdvice
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.navigation.Navigation
@@ -188,5 +189,11 @@ class SportActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    fun getAdvice(context: Context): String {
+        val personalData = PersonalDataRepository(context).getPersonalData()
+
+        return CreateAdvice().getSportAdvice(context, personalData)
     }
 }

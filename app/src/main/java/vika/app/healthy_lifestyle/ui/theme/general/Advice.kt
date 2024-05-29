@@ -23,7 +23,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import vika.app.healthy_lifestyle.R
-import vika.app.healthy_lifestyle.ui.theme.app.Blue
 import vika.app.healthy_lifestyle.ui.theme.app.BlueUltraLight
 import vika.app.healthy_lifestyle.ui.theme.app.White
 
@@ -57,7 +56,7 @@ fun Advice(
                 .size(25.dp)
         )
         Text(
-            text = if (value == "") LocalContext.current.getString(R.string.default_advice) else "Совет ⬇\uFE0F\n".plus(value),
+            text = if (value == "") LocalContext.current.getString(R.string.default_advice) else value,
             maxLines = if (isExpanded) Int.MAX_VALUE else 1,
             modifier = Modifier
                 .padding(15.dp)

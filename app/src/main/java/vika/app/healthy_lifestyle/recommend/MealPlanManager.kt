@@ -72,7 +72,26 @@ class MealPlanManager {
         )
     )
 
+    private val sportPlan: List<SportPlan> = listOf(
+        SportPlan(
+            2,
+            listOf("Бег", "Виды спорта", "Ходьба", "Езда на велосипеде")
+        ),
+        SportPlan(
+            1,
+            listOf("Кондицирующие упражнения", "Ходьба", "Езда на велосипеде")
+        ),
+        SportPlan(
+            0,
+            listOf("Виды спорта", "Кондицирующие упражнения")
+        )
+    )
+
     fun getMealPlan(target: Int?, meal: Int?): MealPlan? {
         return mealPlans.find { it.target == target && it.meal == meal }
+    }
+
+    fun getSportPlan(target: Int): SportPlan?{
+        return sportPlan.find{it.target == target}
     }
 }
