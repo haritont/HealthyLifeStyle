@@ -116,7 +116,21 @@ fun FoodScreen() {
 
             var openDialogAddDish by remember { mutableStateOf(false) }
 
-            AddDish(isOpen = openDialogAddDish, onOpenChange = {openDialogAddDish = it})
+            AddDish(
+                isOpen = openDialogAddDish,
+                onOpenChange = {openDialogAddDish = it},
+                getAdd = {name, type ->
+                    filteredListIngredient.add(
+                        Item(
+                            name,
+                            type,
+                            favorite = false,
+                            exception = false,
+                            typeIs = 1
+                        )
+                    )
+                }
+            )
             ButtonBlue(text = "Создать рецепт") {
                 openDialogAddDish = true
             }
@@ -168,6 +182,17 @@ fun FoodScreen() {
                         coroutineScope.launch {
                             listState.animateScrollToItem(index = 5)
                         }
+                    },
+                    getAdd = {name, type ->
+                        filteredListIngredient.add(
+                            Item(
+                                name,
+                                type,
+                                favorite = false,
+                                exception = false,
+                                typeIs = 0
+                            )
+                        )
                     }
                 )
             }

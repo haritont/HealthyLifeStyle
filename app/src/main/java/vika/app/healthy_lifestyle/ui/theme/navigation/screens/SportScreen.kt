@@ -118,7 +118,20 @@ fun SportScreen () {
 
             AddTraining(
                 isOpen = openDialogAddTraining,
-                onOpenChange = { openDialogAddTraining = it })
+                onOpenChange = { openDialogAddTraining = it },
+                getAdd = {name, type ->
+                    filteredListPhysicalExercises.add(
+                        Item(
+                            name,
+                            type,
+                            favorite = false,
+                            exception = false,
+                            typeIs = 3
+                        )
+                    )
+                }
+            )
+
             ButtonBlue(text = "Создать тренировку") {
                 openDialogAddTraining = true
             }
@@ -179,6 +192,17 @@ fun SportScreen () {
                         coroutineScope.launch {
                             listState.animateScrollToItem(index = 4)
                         }
+                    },
+                    getAdd = {name, type ->
+                        filteredListPhysicalExercises.add(
+                            Item(
+                                name,
+                                type,
+                                favorite = false,
+                                exception = false,
+                                typeIs = 2
+                            )
+                        )
                     }
                 )
             }

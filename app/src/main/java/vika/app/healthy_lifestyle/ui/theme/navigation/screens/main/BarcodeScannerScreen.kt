@@ -110,7 +110,18 @@ fun BarcodeScannerScreen() {
         ){
             AddIngredient(
                 openDialogAddIngredient,
-                onOpenChange = { openDialogAddIngredient = it }
+                onOpenChange = { openDialogAddIngredient = it },
+                getAdd = {name, type ->
+                    filteredListIngredient.add(
+                        Item(
+                            name,
+                            type,
+                            favorite = false,
+                            exception = false,
+                            typeIs = 0
+                        )
+                    )
+                }
             )
             Row (
                 horizontalArrangement = Arrangement.Center,

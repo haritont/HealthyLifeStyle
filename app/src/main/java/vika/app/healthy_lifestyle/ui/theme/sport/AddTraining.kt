@@ -52,7 +52,8 @@ import vika.app.healthy_lifestyle.ui.theme.general.list.Search
 @Composable
 fun AddTraining(
     isOpen: Boolean,
-    onOpenChange: (Boolean) -> Unit
+    onOpenChange: (Boolean) -> Unit,
+    getAdd: (name:String, type:String) -> Unit
 ) {
     var openDialog by remember { mutableStateOf(isOpen) }
 
@@ -282,6 +283,7 @@ fun AddTraining(
                                     openDialog = false
                                     onOpenChange(openDialog)
                                     Toast.makeText(context, "Создано: ".plus(nameState.value), Toast.LENGTH_SHORT).show()
+                                    getAdd(nameState.value, typeState.value)
                                 }
                             },
                             modifier = Modifier.padding(8.dp),

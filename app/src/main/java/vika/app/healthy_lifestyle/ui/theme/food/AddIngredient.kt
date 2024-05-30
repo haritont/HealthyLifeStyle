@@ -41,7 +41,8 @@ import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
 @Composable
 fun AddIngredient(
     isOpen: Boolean,
-    onOpenChange: (Boolean) -> Unit
+    onOpenChange: (Boolean) -> Unit,
+    getAdd: (name:String, type:String) -> Unit
 ) {
     var openDialog by remember { mutableStateOf(isOpen) }
 
@@ -301,8 +302,7 @@ fun AddIngredient(
                     Dropdown(
                         options,
                         options[0]
-                    ) {
-                        currentOption ->
+                    ) { currentOption ->
                         typeState.value = currentOption
                     }
 
@@ -312,23 +312,23 @@ fun AddIngredient(
                         TextButton(
                             onClick = {
                                 var check = true
-                                if (nameState.value == ""){
+                                if (nameState.value == "") {
                                     check = false
                                     colorName = RedLight
                                 }
-                                if (kilocaloriesState.value == ""){
+                                if (kilocaloriesState.value == "") {
                                     check = false
                                     colorKilo = RedLight
                                 }
-                                if (proteinsState.value == ""){
+                                if (proteinsState.value == "") {
                                     check = false
                                     colorProtein = RedLight
                                 }
-                                if (fatsState.value == ""){
+                                if (fatsState.value == "") {
                                     check = false
                                     colorFat = RedLight
                                 }
-                                if (carbohydratesState.value == ""){
+                                if (carbohydratesState.value == "") {
                                     check = false
                                     colorCarb = RedLight
                                 }
@@ -344,9 +344,14 @@ fun AddIngredient(
                                     )
                                     openDialog = !openDialog
                                     onOpenChange(openDialog)
-                                    Toast.makeText(context, "Создано: ".plus(nameState.value), Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        "Создано: ".plus(nameState.value),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    getAdd(nameState.value, typeState.value)
                                 }
-                                      },
+                            },
                             modifier = Modifier.padding(8.dp),
                         ) {
                             Text("Добавить")
@@ -355,7 +360,7 @@ fun AddIngredient(
                             onClick = {
                                 openDialog = false
                                 onOpenChange(openDialog)
-                                      },
+                            },
                             modifier = Modifier.padding(8.dp),
                         ) {
                             Text("Отмена")

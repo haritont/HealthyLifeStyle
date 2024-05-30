@@ -29,7 +29,8 @@ fun List(
     options: List<String>,
     firstOption: String,
     typeAdd: Int, //0-ingred, 1-physEx
-    clickSearch:() -> Unit
+    clickSearch:() -> Unit,
+    getAdd: (name:String, type:String) -> Unit
 ) {
     var filteredList by remember { mutableStateOf(itemList) }
 
@@ -54,12 +55,14 @@ fun List(
 
             AddIngredient(
                 openDialogAddIngredient,
-                onOpenChange = { openDialogAddIngredient = it }
+                onOpenChange = { openDialogAddIngredient = it },
+                getAdd
             )
 
             AddPhysicalExercise(
                 openDialogAddPhysicalExercise,
-                onOpenChange = { openDialogAddPhysicalExercise = it }
+                onOpenChange = { openDialogAddPhysicalExercise = it },
+                getAdd
             )
 
             ImageButton(
