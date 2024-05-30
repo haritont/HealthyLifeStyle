@@ -36,5 +36,15 @@ val emojiMap = mapOf(
     "Ходьба" to "\uD83D\uDEB6",
     "Бездействие" to "\uD83E\uDDCE",
     "Домашняя активность" to "\uD83E\uDDF9",
-    "Садоводство" to "\uD83E\uDEB4"
+    "Садоводство" to "\uD83E\uDEB4",
+
+    "Страх" to "\uD83D\uDE30",
+    "Восхищение" to "\uD83D\uDE32",
+    "Грусть" to "\uD83D\uDE2D",
+    "Злость" to "\uD83D\uDE21",
+    "Радость" to "\uD83D\uDE00",
+    "Любовь" to "\uD83E\uDD70",
+    "Отвращение" to "\uD83E\uDD22",
+    "Интерес" to "\uD83E\uDDD0",
+    "Стыд" to "\uD83D\uDE16"
 )

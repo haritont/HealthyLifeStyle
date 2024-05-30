@@ -17,43 +17,64 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import vika.app.healthy_lifestyle.base.data.repository.mood.EmotionRecordRepository
 import vika.app.healthy_lifestyle.bean.mood.Emotion
+import vika.app.healthy_lifestyle.bean.mood.EmotionRecord
+import vika.app.healthy_lifestyle.calculations.DateToday
+import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.Green
+import vika.app.healthy_lifestyle.ui.theme.app.Red
+import vika.app.healthy_lifestyle.ui.theme.general.emojiMap
 
 @Composable
 fun Emotions (
     emotionList: List<Emotion>
 ) {
+    val context = LocalContext.current
     Text(
         text = "Эмоции",
-        style = MaterialTheme.typography.bodyMedium,
-        fontWeight = FontWeight.Bold
+        modifier = Modifier.padding(8.dp),
+        fontWeight = FontWeight.Bold,
+        color = Black
     )
     LazyRow (
         verticalAlignment = Alignment.CenterVertically
     ){
         items(emotionList) { item ->
-            var isChose by remember { mutableStateOf(false) }
+            var isChose by remember {
+                mutableStateOf(
+                EmotionRecordRepository(context).getByIdAndDate(item.id, DateToday().getToday()) != null
+                )
+            }
             Surface(
                 modifier = Modifier
                     .padding(10.dp)
                     .border(
                         width = if (isChose) 3.dp else 0.dp,
-                        color = if (isChose) Green else Color.Transparent,
+                        color = if (isChose) { if (item.isPositive) Green else Red} else Color.Transparent,
                         shape = RoundedCornerShape(10.dp)
                     )
             ) {
-                Text(
-                    text = item.name,
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.clickable
+                emojiMap[item.name]?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.clickable
                         {
                             isChose = !isChose
+                            EmotionRecordRepository(context).insertEmotionRecord(
+                                EmotionRecord(
+                                    date = DateToday().getToday(),
+                                    idEmotion = item.id
+                                )
+                            )
                         }
 
-                )
+                    )
+                }
             }
         }
     }

@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 class EmotionRecordEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
-    var data: String = "",
+    var date: String = "",
     var idEmotion: Long = 0
 )
