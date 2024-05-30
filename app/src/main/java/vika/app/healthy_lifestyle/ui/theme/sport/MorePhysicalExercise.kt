@@ -64,7 +64,7 @@ fun MorePhysicalExercise(
         val physicalExercise = SportActivity().getPhysicalExerciseByName(context, title)
 
         val nameState = remember { mutableStateOf(title) }
-        val metState = remember { mutableStateOf(physicalExercise.met) }
+        val metState = remember { mutableStateOf(physicalExercise.met.toString()) }
 
         val options = listOf(
             "Без типа",
@@ -193,7 +193,7 @@ fun MorePhysicalExercise(
                                     style = MaterialTheme.typography.bodySmall
                                 )
                             },
-                            onValueChange = { newLogin -> metState.value = newLogin.toDouble() },
+                            onValueChange = { newLogin -> metState.value = newLogin },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             leadingIcon = {
                                 Image(
@@ -216,7 +216,7 @@ fun MorePhysicalExercise(
                                     check = false
                                     colorName = RedLight
                                 }
-                                if (metState.value.toString() == ""){
+                                if (metState.value== ""){
                                     check = false
                                     colorMet = RedLight
                                 }
@@ -225,7 +225,7 @@ fun MorePhysicalExercise(
                                         context,
                                         physicalExercise.id,
                                         nameState.value,
-                                        metState.value.toString().replace(",", ".").toDouble(),
+                                        metState.value.replace(",", ".").toDouble(),
                                         typeState.value,
                                         favoriteState,
                                         exceptionState

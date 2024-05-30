@@ -99,7 +99,7 @@ fun MoreTraining(
         }
 
         val nameState = remember { mutableStateOf(title) }
-        val metState = remember { mutableStateOf(training.met) }
+        val metState = remember { mutableStateOf(training.met.toString()) }
 
         val options = listOf(
             "Без типа",
@@ -247,7 +247,8 @@ fun MoreTraining(
                                                             context,
                                                             title
                                                         )
-                                                    metState.value -= (item.value / 60.0) * physicalExercise.met
+                                                    metState.value =
+                                                        (metState.value.toDouble() - (item.value / 60.0) * physicalExercise.met).toString()
                                                 }
                                             )
                                         }
@@ -292,7 +293,7 @@ fun MoreTraining(
                                     )
                                 },
                                 onValueChange = { newLogin ->
-                                    metState.value = newLogin.toDouble()
+                                    metState.value = newLogin
                                 },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 leadingIcon = {
@@ -326,7 +327,7 @@ fun MoreTraining(
                                         context,
                                         training.id,
                                         nameState.value,
-                                        metState.value.toString().replace(",", ".").toDouble(),
+                                        metState.value.replace(",", ".").toDouble(),
                                         typeState.value,
                                         favoriteState,
                                         exceptionState,
