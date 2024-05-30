@@ -82,7 +82,13 @@ class SportActivity : ComponentActivity() {
     }
 
     fun saveProgressSteps(context: Context, stepValue: Int) {
+        val steps = stepValue - getProgressSteps(context)
         RecordRepository(context).updateProgressStepsRecord(DateToday().getToday(), stepValue)
+        val burned = RecordRepository(context).burnedKilocalories(DateToday().getToday())
+        RecordRepository(context).updateBurnedKilocalories(
+            DateToday().getToday(),
+            burned + steps * 0.04
+        )
     }
 
     fun getLastActivism(context: Context): List<Activism> {

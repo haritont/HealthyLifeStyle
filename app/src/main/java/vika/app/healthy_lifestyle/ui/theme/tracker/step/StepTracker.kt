@@ -20,8 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import vika.app.healthy_lifestyle.activity.main.MainActivity
 import vika.app.healthy_lifestyle.activity.sport.SportActivity
-import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
-import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.ui.theme.main.CircularProgressBar
 
 @Composable
@@ -45,8 +43,7 @@ fun StepTracker() {
                     editor.apply()
                 }
                 stepValue = event.values[0].toInt() - lastStep.toString().toInt() + 1
-                val burnedKilocalories = RecordRepository(context).getRecordByDate(DateToday().getToday())!!.burnedKilocalories
-                RecordRepository(context).updateBurnedKilocalories(DateToday().getToday(), burnedKilocalories + 0.04)
+
                 SportActivity().saveProgressSteps(context, stepValue)
             }
 
