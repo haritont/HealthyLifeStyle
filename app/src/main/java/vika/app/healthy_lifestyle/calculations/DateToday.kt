@@ -1,6 +1,7 @@
 package vika.app.healthy_lifestyle.calculations
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
@@ -62,5 +63,15 @@ class DateToday {
         val dateLoc = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
         return dateLoc.format(formatter)
+    }
+
+    fun getCurrentHour(): Int{
+        val currentTime = LocalDateTime.now()
+        return currentTime.hour
+    }
+
+    fun getCurrentMinute(): Int{
+        val currentTime = LocalDateTime.now()
+        return currentTime.minute
     }
 }

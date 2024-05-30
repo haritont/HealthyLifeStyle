@@ -29,6 +29,8 @@ import vika.app.healthy_lifestyle.bean.main.Record
 import vika.app.healthy_lifestyle.bean.mood.Dream
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.calculations.PersonalTarget
+import vika.app.healthy_lifestyle.notification.createNotificationChannel
+import vika.app.healthy_lifestyle.notification.scheduleNotification
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 
 class LoadingActivity: ComponentActivity(){
@@ -107,6 +109,13 @@ class LoadingActivity: ComponentActivity(){
         //insertNotifications()
 
         setRecordTarget()
+
+        val notification = NotificationsRepository(this).getAllNotifications()
+        for (not in notification) {
+            scheduleNotification(applicationContext, "Пора заполнить ".plus(not.text.lowercase()), not.hour, not.minute)
+        }
+
+        createNotificationChannel(this)
 
         startActivity(Intent(this@LoadingActivity, MainActivity::class.java))
         finish()

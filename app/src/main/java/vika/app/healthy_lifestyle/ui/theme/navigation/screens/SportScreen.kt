@@ -27,6 +27,7 @@ import vika.app.healthy_lifestyle.activity.sport.SportActivity
 import vika.app.healthy_lifestyle.bean.Item
 import vika.app.healthy_lifestyle.bean.ItemText
 import vika.app.healthy_lifestyle.calculations.DateToday
+import vika.app.healthy_lifestyle.notification.scheduleNotification
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.general.Advice
 import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
@@ -115,7 +116,9 @@ fun SportScreen () {
             Advice(value = SportActivity().getAdvice(context))
             var openDialogAddTraining by remember { mutableStateOf(false) }
 
-            AddTraining(isOpen = openDialogAddTraining, onOpenChange = {openDialogAddTraining = it})
+            AddTraining(
+                isOpen = openDialogAddTraining,
+                onOpenChange = { openDialogAddTraining = it })
             ButtonBlue(text = "Создать тренировку") {
                 openDialogAddTraining = true
             }
@@ -145,6 +148,14 @@ fun SportScreen () {
                                 value
                             )
                         )
+                        if (value > 30) {
+                            scheduleNotification(
+                                context,
+                                "Попейте воды",
+                                DateToday().getCurrentHour(),
+                                DateToday().getCurrentMinute()
+                            )
+                        }
                     },
                     updateException = { name, exception ->
                         SportActivity().updateException(
