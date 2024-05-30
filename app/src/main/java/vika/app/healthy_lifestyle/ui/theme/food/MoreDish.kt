@@ -101,10 +101,10 @@ fun MoreDish(
         }
 
         val nameState = remember { mutableStateOf(title) }
-        val kilocaloriesState = remember { mutableStateOf(dish.kilocalories) }
-        val proteinsState = remember { mutableStateOf(dish.proteins) }
-        val fatsState = remember { mutableStateOf(dish.fats) }
-        val carbohydratesState = remember { mutableStateOf(dish.carbohydrates) }
+        val kilocaloriesState = remember { mutableStateOf(dish.kilocalories.toString()) }
+        val proteinsState = remember { mutableStateOf(dish.proteins.toString()) }
+        val fatsState = remember { mutableStateOf(dish.fats.toString()) }
+        val carbohydratesState = remember { mutableStateOf(dish.carbohydrates.toString()) }
 
         val options = listOf(
             "Без типа",
@@ -280,10 +280,18 @@ fun MoreDish(
                                                     )
                                                     val ingredient =
                                                         FoodActivity().getIngredient(context, title)
-                                                    kilocaloriesState.value -= ingredient.kilocalories / 100 * item.value
-                                                    proteinsState.value -= ingredient.proteins / 100 * item.value
-                                                    fatsState.value -= ingredient.fats / 100 * item.value
-                                                    carbohydratesState.value -= ingredient.carbohydrates / 100 * item.value
+                                                    kilocaloriesState.value =
+                                                        (kilocaloriesState.value.toDouble()
+                                                                - ingredient.kilocalories / 100 * item.value).toString()
+                                                    proteinsState.value =
+                                                        (proteinsState.value.toDouble()
+                                                                - ingredient.proteins / 100 * item.value).toString()
+                                                    fatsState.value =
+                                                        (fatsState.value.toDouble()
+                                                                - ingredient.fats / 100 * item.value).toString()
+                                                    carbohydratesState.value =
+                                                        (carbohydratesState.value.toDouble()
+                                                                - ingredient.carbohydrates / 100 * item.value).toString()
                                                 }
                                             )
                                         }
@@ -312,10 +320,18 @@ fun MoreDish(
                                                 selectListIngredient.add(ItemText(title, value))
                                                 val ingredient =
                                                     FoodActivity().getIngredient(context, title)
-                                                kilocaloriesState.value += ingredient.kilocalories / 100 * value
-                                                proteinsState.value += ingredient.proteins / 100 * value
-                                                fatsState.value += ingredient.fats / 100 * value
-                                                carbohydratesState.value += ingredient.carbohydrates / 100 * value
+                                                kilocaloriesState.value =
+                                                    (kilocaloriesState.value.toDouble()
+                                                            + ingredient.kilocalories / 100 * value).toString()
+                                                proteinsState.value =
+                                                    (proteinsState.value.toDouble()
+                                                            + ingredient.proteins / 100 * value).toString()
+                                                fatsState.value =
+                                                    (fatsState.value.toDouble()
+                                                            + ingredient.fats / 100 * value).toString()
+                                                carbohydratesState.value =
+                                                    (carbohydratesState.value.toDouble()
+                                                            + ingredient.carbohydrates / 100 * value).toString()
                                             }
                                         )
                                     }
@@ -344,7 +360,7 @@ fun MoreDish(
                                                 )
                                             },
                                             onValueChange = { newLogin ->
-                                                kilocaloriesState.value = newLogin.toDouble()
+                                                kilocaloriesState.value = newLogin
                                             },
                                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                             leadingIcon = {
@@ -376,7 +392,7 @@ fun MoreDish(
                                                 )
                                             },
                                             onValueChange = { newLogin ->
-                                                proteinsState.value = newLogin.toDouble()
+                                                proteinsState.value = newLogin
                                             },
                                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                             leadingIcon = {
@@ -413,7 +429,7 @@ fun MoreDish(
                                                 )
                                             },
                                             onValueChange = { newLogin ->
-                                                fatsState.value = newLogin.toDouble()
+                                                fatsState.value = newLogin
                                             },
                                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                             leadingIcon = {
@@ -446,7 +462,7 @@ fun MoreDish(
                                                 )
                                             },
                                             onValueChange = { newLogin ->
-                                                carbohydratesState.value = newLogin.toDouble()
+                                                carbohydratesState.value = newLogin
                                             },
                                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                             leadingIcon = {
@@ -474,19 +490,19 @@ fun MoreDish(
                                     check = false
                                     colorName = RedLight
                                 }
-                                if (kilocaloriesState.value.toString() == "") {
+                                if (kilocaloriesState.value == "") {
                                     check = false
                                     colorKilo = RedLight
                                 }
-                                if (proteinsState.value.toString() == "") {
+                                if (proteinsState.value == "") {
                                     check = false
                                     colorProtein = RedLight
                                 }
-                                if (fatsState.value.toString() == "") {
+                                if (fatsState.value == "") {
                                     check = false
                                     colorFat = RedLight
                                 }
-                                if (carbohydratesState.value.toString() == "") {
+                                if (carbohydratesState.value == "") {
                                     check = false
                                     colorCarb = RedLight
                                 }
@@ -499,12 +515,12 @@ fun MoreDish(
                                         context,
                                         dish.id,
                                         nameState.value,
-                                        kilocaloriesState.value.toString().replace(",", ".")
+                                        kilocaloriesState.value.replace(",", ".")
                                             .toDouble(),
-                                        proteinsState.value.toString().replace(",", ".")
+                                        proteinsState.value.replace(",", ".")
                                             .toDouble(),
-                                        fatsState.value.toString().replace(",", ".").toDouble(),
-                                        carbohydratesState.value.toString().replace(",", ".")
+                                        fatsState.value.replace(",", ".").toDouble(),
+                                        carbohydratesState.value.replace(",", ".")
                                             .toDouble(),
                                         typeState.value,
                                         favoriteState,

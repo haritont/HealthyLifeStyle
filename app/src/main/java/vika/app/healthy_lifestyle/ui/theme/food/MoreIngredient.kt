@@ -65,10 +65,10 @@ fun MoreIngredient(
         val ingredient = FoodActivity().getIngredient(context, title)
 
         val nameState = remember { mutableStateOf(title) }
-        val kilocaloriesState = remember { mutableStateOf(ingredient.kilocalories) }
-        val proteinsState = remember { mutableStateOf(ingredient.proteins) }
-        val fatsState = remember { mutableStateOf(ingredient.fats) }
-        val carbohydratesState = remember { mutableStateOf(ingredient.carbohydrates) }
+        val kilocaloriesState = remember { mutableStateOf(ingredient.kilocalories.toString()) }
+        val proteinsState = remember { mutableStateOf(ingredient.proteins.toString()) }
+        val fatsState = remember { mutableStateOf(ingredient.fats.toString()) }
+        val carbohydratesState = remember { mutableStateOf(ingredient.carbohydrates.toString()) }
 
         val options = listOf(
             "Без типа",
@@ -223,7 +223,7 @@ fun MoreIngredient(
                                 modifier = Modifier.weight(1f)
                             ) {
                                 TextFieldBlue(
-                                    value = kilocaloriesState.value.toString(),
+                                    value = kilocaloriesState.value,
                                     label = {
                                         Text(
                                             LocalContext.current.getString(R.string.kilocalories),
@@ -231,7 +231,7 @@ fun MoreIngredient(
                                         )
                                     },
                                     onValueChange = { newLogin ->
-                                        kilocaloriesState.value = newLogin.toDouble()
+                                        kilocaloriesState.value = newLogin
                                     },
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                     leadingIcon = {
@@ -255,7 +255,7 @@ fun MoreIngredient(
                                 modifier = Modifier.weight(1f)
                             ) {
                                 TextFieldBlue(
-                                    value = proteinsState.value.toString(),
+                                    value = proteinsState.value,
                                     label = {
                                         Text(
                                             LocalContext.current.getString(R.string.proteins),
@@ -263,7 +263,7 @@ fun MoreIngredient(
                                         )
                                     },
                                     onValueChange = { newLogin ->
-                                        proteinsState.value = newLogin.toDouble()
+                                        proteinsState.value = newLogin
                                     },
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                     leadingIcon = {
@@ -292,7 +292,7 @@ fun MoreIngredient(
                                 modifier = Modifier.weight(1f)
                             ) {
                                 TextFieldBlue(
-                                    value = fatsState.value.toString(),
+                                    value = fatsState.value,
                                     label = {
                                         Text(
                                             LocalContext.current.getString(R.string.fats),
@@ -300,7 +300,7 @@ fun MoreIngredient(
                                         )
                                     },
                                     onValueChange = { newLogin ->
-                                        fatsState.value = newLogin.toDouble()
+                                        fatsState.value = newLogin
                                     },
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                     leadingIcon = {
@@ -325,7 +325,7 @@ fun MoreIngredient(
                                 modifier = Modifier.weight(1f)
                             ) {
                                 TextFieldBlue(
-                                    value = carbohydratesState.value.toString(),
+                                    value = carbohydratesState.value,
                                     label = {
                                         Text(
                                             LocalContext.current.getString(R.string.carbohydrates),
@@ -333,7 +333,7 @@ fun MoreIngredient(
                                         )
                                     },
                                     onValueChange = { newLogin ->
-                                        carbohydratesState.value = newLogin.toDouble()
+                                        carbohydratesState.value = newLogin
                                     },
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                     leadingIcon = {
@@ -359,19 +359,19 @@ fun MoreIngredient(
                                     check = false
                                     colorName = RedLight
                                 }
-                                if (kilocaloriesState.value.toString() == ""){
+                                if (kilocaloriesState.value == ""){
                                     check = false
                                     colorKilo = RedLight
                                 }
-                                if (proteinsState.value.toString() == ""){
+                                if (proteinsState.value == ""){
                                     check = false
                                     colorProtein = RedLight
                                 }
-                                if (fatsState.value.toString() == ""){
+                                if (fatsState.value == ""){
                                     check = false
                                     colorFat = RedLight
                                 }
-                                if (carbohydratesState.value.toString() == ""){
+                                if (carbohydratesState.value == ""){
                                     check = false
                                     colorCarb = RedLight
                                 }
@@ -380,11 +380,11 @@ fun MoreIngredient(
                                         context,
                                         ingredient.id,
                                         nameState.value,
-                                        kilocaloriesState.value.toString().replace(",", ".")
+                                        kilocaloriesState.value.replace(",", ".")
                                             .toDouble(),
-                                        proteinsState.value.toString().replace(",", ".").toDouble(),
-                                        fatsState.value.toString().replace(",", ".").toDouble(),
-                                        carbohydratesState.value.toString().replace(",", ".")
+                                        proteinsState.value.replace(",", ".").toDouble(),
+                                        fatsState.value.replace(",", ".").toDouble(),
+                                        carbohydratesState.value.replace(",", ".")
                                             .toDouble(),
                                         typeState.value,
                                         favoriteState,
