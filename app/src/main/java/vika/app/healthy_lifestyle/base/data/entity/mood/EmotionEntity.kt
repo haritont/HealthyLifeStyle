@@ -8,5 +8,5 @@ class EmotionEntity (
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
     var name: String = "",
-    var type: Int = 0
+    var isPositive: Boolean = false
 )

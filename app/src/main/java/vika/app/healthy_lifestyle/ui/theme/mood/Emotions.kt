@@ -1,11 +1,8 @@
 package vika.app.healthy_lifestyle.ui.theme.mood
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,14 +16,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import vika.app.healthy_lifestyle.bean.mood.Emotion
-import vika.app.healthy_lifestyle.ui.theme.app.BlueUltraLight
 import vika.app.healthy_lifestyle.ui.theme.app.Green
-import vika.app.healthy_lifestyle.ui.theme.app.White
 
 @Composable
 fun Emotions (
@@ -52,7 +46,7 @@ fun Emotions (
                     )
             ) {
                 Text(
-                    text = item.type,
+                    text = item.name,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.clickable
                         {

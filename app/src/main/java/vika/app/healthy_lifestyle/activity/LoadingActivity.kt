@@ -80,6 +80,11 @@ class LoadingActivity: ComponentActivity(){
 //        for (habit in habits) {
 //            HabitRepository(this).insertHabit(habit)
 //        }
+//        val emotions = DefaultApiServiceRepository().getAllEmotions()
+//
+//        for (emotion in emotions) {
+//            EmotionRepository(this).insertEmotion(emotion)
+//        }
 //        savePersonalData(
 //            PersonalData(
 //                genderId = 1,
