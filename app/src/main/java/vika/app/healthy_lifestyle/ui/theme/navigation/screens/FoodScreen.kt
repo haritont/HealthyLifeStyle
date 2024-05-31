@@ -138,7 +138,7 @@ fun FoodScreen() {
             Box(
                 modifier = Modifier
                     .padding(8.dp)
-                    .height(300.dp)
+                    .height(450.dp)
             ) {
                 vika.app.healthy_lifestyle.ui.theme.general.list.List(
                     itemList = filteredListIngredient,
