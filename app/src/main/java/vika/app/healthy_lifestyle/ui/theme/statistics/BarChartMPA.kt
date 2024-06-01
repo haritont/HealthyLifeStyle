@@ -55,6 +55,14 @@ fun BarChartMPA(values: List<Float>, dates: List<String>) {
                     legend.isEnabled = false
 
                     animateY(1000)
+
+                    isDragEnabled = true
+                    setScaleEnabled(false)
+
+                    setVisibleXRangeMaximum(7f)
+                    setVisibleXRangeMinimum(5f)
+
+                    invalidate()
                 }
             },
             modifier = Modifier.fillMaxSize()
