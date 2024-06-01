@@ -42,4 +42,6 @@ interface IngredientDao {
     suspend fun updateFavorite(name: String, favorite: Boolean)
    @Query("SELECT * FROM Ingredient")
     suspend fun getAll(): List<IngredientEntity>
+    @Query("UPDATE Ingredient SET exception = :exception WHERE type = :type")
+    suspend fun updateIngredientExceptionByType(type: String, exception: Boolean)
 }

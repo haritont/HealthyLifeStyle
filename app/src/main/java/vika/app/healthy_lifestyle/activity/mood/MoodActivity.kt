@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import vika.app.healthy_lifestyle.base.data.repository.food.IngredientRepository
 import vika.app.healthy_lifestyle.base.data.repository.mood.DreamRepository
 import vika.app.healthy_lifestyle.base.data.repository.mood.HabitRecordRepository
 import vika.app.healthy_lifestyle.base.data.repository.mood.HabitRepository
@@ -57,6 +58,12 @@ class MoodActivity : ComponentActivity() {
 
     fun insertHabitRecord(context: Context, habitRecord: HabitRecord) {
         HabitRecordRepository(context).insertHabitRecord(habitRecord)
+        val habit = HabitRepository(context).getById(habitRecord.idHabit)
+        if (habitRecord.dateEnd == "") {
+            IngredientRepository(context).updateIngredientExceptionByType(habit.product, true)
+        } else {
+            IngredientRepository(context).updateIngredientExceptionByType(habit.product, false)
+        }
     }
 
     fun insertHabit(context: Context, name: String, type: String) {

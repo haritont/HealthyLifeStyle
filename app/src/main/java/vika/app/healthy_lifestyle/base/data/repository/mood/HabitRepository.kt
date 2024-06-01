@@ -28,4 +28,8 @@ class HabitRepository (context: Context){
     fun getByProduct(product: String): Habit? = runBlocking{
         habitDao.getByProduct(product)?.let { habitMapper.toHabit(it) }
     }
+
+    fun getById(idHabit: Long): Habit = runBlocking{
+        habitMapper.toHabit(habitDao.getById(idHabit))
+    }
 }

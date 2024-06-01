@@ -14,4 +14,6 @@ interface HabitDao {
     suspend fun insert(habitEntity: HabitEntity)
     @Query("SELECT * fROM Habit WHERE product =:product")
     suspend fun getByProduct(product: String): HabitEntity?
+    @Query("SELECT * fROM Habit WHERE id =:idHabit")
+    suspend fun getById(idHabit: Long):HabitEntity
 }

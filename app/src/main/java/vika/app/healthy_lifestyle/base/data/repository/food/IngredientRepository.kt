@@ -65,4 +65,8 @@ class IngredientRepository(context: Context) {
     fun getAllProduct(): List<Ingredient> = runBlocking{
         ingredientMapper.toIngredientList(ingredientDao.getAll())
     }
+
+    fun updateIngredientExceptionByType(type: String, exception: Boolean)  = runBlocking{
+        ingredientDao.updateIngredientExceptionByType(type, exception)
+    }
 }

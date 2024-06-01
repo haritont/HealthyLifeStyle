@@ -15,6 +15,7 @@ import vika.app.healthy_lifestyle.bean.ItemText
 import vika.app.healthy_lifestyle.bean.food.Ingredient
 import vika.app.healthy_lifestyle.bean.food.Nutrition
 import vika.app.healthy_lifestyle.bean.food.Recipe
+import vika.app.healthy_lifestyle.bean.mood.HabitRecord
 import vika.app.healthy_lifestyle.calculations.CreateAdvice
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.calculations.MealCalc
@@ -154,11 +155,18 @@ class FoodActivity : ComponentActivity() {
         val habit = HabitRepository(context).getByProduct(ingredient.type)
         if (habit != null) {
             val record = HabitRecordRepository(context).getRecordByIdHabit(habit.id, true)
-            if (record != null){
+            if (record != null) {
                 record.tracking = false
                 record.dateEnd = DateToday().getToday()
                 HabitRecordRepository(context).insertHabitRecord(
                     record
+                )
+                HabitRecordRepository(context).insertHabitRecord(
+                    HabitRecord(
+                        idHabit = record.idHabit,
+                        tracking = true,
+                        dateStart = DateToday().getToday(),
+                    )
                 )
             }
         }
