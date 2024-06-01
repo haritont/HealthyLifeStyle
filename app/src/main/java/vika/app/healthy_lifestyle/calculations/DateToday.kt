@@ -20,28 +20,16 @@ class DateToday {
         return days + 1
     }
 
-    fun getYesterday(): String {
-        val yesterday =
-            LocalDate.now().minusDays(1)
-        return formatDate(yesterday)
-    }
-
-    fun addDay(inputDate: String): String {
-        val date =
-            LocalDate.parse(inputDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")).plusDays(1)
-        return formatDate(date)
-    }
-
-    fun subtractDay(inputDate: String): String {
+    private fun subtractDay(inputDate: String): String {
         val date =
             LocalDate.parse(inputDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")).minusDays(1)
         return formatDate(date)
     }
 
-    fun getWeek(): List<String>{
+    fun getMonth(): List<String>{
         val week = mutableListOf<String>()
         var currentDay = getToday()
-        for (index in 1..7){
+        for (index in 1..30){
             week.add(currentDay)
             currentDay = subtractDay(currentDay)
         }

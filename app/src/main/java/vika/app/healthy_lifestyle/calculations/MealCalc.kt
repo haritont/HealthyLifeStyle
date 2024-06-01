@@ -1,18 +1,11 @@
 package vika.app.healthy_lifestyle.calculations
 
-import android.os.Build
 import java.time.LocalTime
 
 class MealCalc {
 
     fun getCurrentMeal(): String{
-        val currentHour = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LocalTime.now().hour
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
-
-        return when (currentHour) {
+        return when (LocalTime.now().hour) {
             in 7..9 -> {
                 "Завтрак"
             }

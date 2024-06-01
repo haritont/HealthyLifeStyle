@@ -20,7 +20,7 @@ import vika.app.healthy_lifestyle.ui.theme.statistics.Dropdown
 @Composable
 fun StatisticsScreen() {
     var selectedOption by remember { mutableStateOf("Ккал") }
-    val labels = DateToday().getWeek()
+    val labels = DateToday().getMonth()
 
     var data by remember { mutableStateOf(StatisticsActivity().getKilocalories(labels)) }
 
