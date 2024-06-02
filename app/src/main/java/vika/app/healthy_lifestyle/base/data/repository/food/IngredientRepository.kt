@@ -71,8 +71,8 @@ class IngredientRepository(context: Context) {
     }
 
     fun getIngredientByValueTarget(value: Double, targetKilo: Double, targetProtein: Double,
-                                   targetFat: Double, targetCarb: Double): Ingredient = runBlocking{
-        ingredientMapper.toIngredient(
+                                   targetFat: Double, targetCarb: Double): List<Ingredient> = runBlocking{
+        ingredientMapper.toIngredientList(
             ingredientDao.getIngredientByValueTarget(
             value,
             targetKilo,

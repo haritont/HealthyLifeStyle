@@ -48,5 +48,5 @@ interface IngredientDao {
             "proteins * :value / 100 < :targetProtein AND fats * :value / 100 < :targetFat AND " +
             "carbohydrates * :value / 100 < :targetCarb")
     suspend fun getIngredientByValueTarget(value: Double, targetKilo: Double, targetProtein: Double,
-                                           targetFat: Double, targetCarb: Double): IngredientEntity
+                                           targetFat: Double, targetCarb: Double): List<IngredientEntity>
 }

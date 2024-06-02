@@ -223,7 +223,7 @@ class RecommendSystem(
                 targetProtein,
                 targetFat,
                 targetCarb
-            )
+            ).shuffled().take(1)[0]
             targetKilo -= replaceProduct.kilocalories * value / 100
             targetProtein -= replaceProduct.proteins  * value / 100
             targetFat -= replaceProduct.fats  * value / 100
