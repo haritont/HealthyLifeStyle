@@ -69,4 +69,16 @@ class IngredientRepository(context: Context) {
     fun updateIngredientExceptionByType(type: String, exception: Boolean)  = runBlocking{
         ingredientDao.updateIngredientExceptionByType(type, exception)
     }
+
+    fun getIngredientByValueTarget(value: Double, targetKilo: Double, targetProtein: Double,
+                                   targetFat: Double, targetCarb: Double): Ingredient = runBlocking{
+        ingredientMapper.toIngredient(
+            ingredientDao.getIngredientByValueTarget(
+            value,
+            targetKilo,
+            targetProtein,
+            targetFat,
+            targetCarb
+        ))
+    }
 }

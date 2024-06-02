@@ -1,12 +1,14 @@
 package vika.app.healthy_lifestyle.recommend
 
 import android.content.Context
+import vika.app.healthy_lifestyle.base.data.repository.food.IngredientRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
 import vika.app.healthy_lifestyle.base.data.repository.sport.PhysicalExerciseRepository
 import vika.app.healthy_lifestyle.bean.food.Ingredient
 import vika.app.healthy_lifestyle.bean.sport.PhysicalExercise
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.recommend.database.RecommendProductRepository
+import vika.app.healthy_lifestyle.ui.theme.main.ProductMark
 
 class RecommendSystem(
     val context: Context,
@@ -117,10 +119,10 @@ class RecommendSystem(
         val plan = MealPlanManager().getMealPlan(target, meal)
 
         val target = RecordRepository(context).getRecordByDate(DateToday().getToday())
-        val kilocalories = product.kilocalories * value
-        val protein = product.proteins * value
-        val fats = product.fats * value
-        val carb = product.carbohydrates * value
+        val kilocalories = product.kilocalories * value / 100
+        val protein = product.proteins * value / 100
+        val fats = product.fats * value / 100
+        val carb = product.carbohydrates * value / 100
 
         if (kilocalories / target!!.targetKilocalories * 100 > plan!!.kiloMax) {
             return -1
@@ -135,5 +137,113 @@ class RecommendSystem(
             return -4
         }
         return 0
+    }
+
+    fun getReplaceProduct(currentProduct: List<ProductMark>): List<ProductMark>{
+        val products = mutableListOf<ProductMark>()
+        val sortedProduct = currentProduct.sortedWith(compareBy<ProductMark> { it.mark != 0 }
+            .thenByDescending { it.favorite })
+
+        val plan = MealPlanManager().getMealPlan(target, meal)
+        val target = RecordRepository(context).getRecordByDate(DateToday().getToday())
+
+        var kilocalories = 0.0
+        var protein = 0.0
+        var fats = 0.0
+        var carb = 0.0
+
+        val replacedProduct = mutableListOf<ProductMark>()
+
+        for (product in sortedProduct){
+            if (product.mark == 0){
+                products.add(product)
+                kilocalories += product.kilocalories * product.value / 100
+                protein += product.proteins * product.value / 100
+                fats += product.fats * product.value / 100
+                carb += product.carbohydrates * product.value / 100
+            }
+            else {
+                if (product.favorite) {
+                    var value = product.value
+                    when (product.mark) {
+                        -1 -> {
+                            while (product.kilocalories * value / 100 / target!!.targetKilocalories * 100 > plan!!.kiloMax){
+                                value -= value * 0.1
+                            }
+                        }
+                        -2 -> {
+                            while (product.proteins * value / 100 / target!!.targetProteins * 100 > plan!!.proteinMax){
+                                value -= value * 0.1
+                            }
+                        }
+                        -3 -> {
+                            while (product.fats * value / 100 / target!!.targetFats * 100 > plan!!.fatMax){
+                                value -= value * 0.1
+                            }
+                        }
+                        else -> {
+                            while (product.carbohydrates * value / 100 / target!!.targetCarbohydrates * 100 > plan!!.carbMax){
+                                value -= value * 0.1
+                            }
+                        }
+                    }
+                    products.add(
+                        ProductMark(
+                            name = product.name,
+                            kilocalories = product.kilocalories,
+                            proteins = product.proteins,
+                            fats = product.fats,
+                            carbohydrates = product.carbohydrates,
+                            value = value,
+                            exception = product.exception,
+                            favorite = product.favorite,
+                            mark = product.mark
+                        )
+                    )
+                    kilocalories += product.kilocalories * value / 100
+                    protein += product.proteins * value / 100
+                    fats += product.fats * value / 100
+                    carb += product.carbohydrates * value / 100
+                }
+                else{
+                    replacedProduct.add(product)
+                }
+            }
+        }
+
+        var targetKilo = plan!!.kiloMax * target!!.targetKilocalories - kilocalories
+        var targetProtein = plan.proteinMax * target.targetProteins - protein
+        var targetFat = plan.fatMax * target.targetFats - fats
+        var targetCarb = plan.carbMax * target.targetCarbohydrates - carb
+        for (product in replacedProduct){
+            val value = product.value
+            val replaceProduct = IngredientRepository(context).getIngredientByValueTarget(
+                value,
+                targetKilo,
+                targetProtein,
+                targetFat,
+                targetCarb
+            )
+            targetKilo -= replaceProduct.kilocalories * value / 100
+            targetProtein -= replaceProduct.proteins  * value / 100
+            targetFat -= replaceProduct.fats  * value / 100
+            targetCarb -= replaceProduct.carbohydrates  * value / 100
+            products.add(
+                ProductMark(
+                    name = product.name,
+                    kilocalories = product.kilocalories,
+                    proteins = product.proteins,
+                    fats = product.fats,
+                    carbohydrates = product.carbohydrates,
+                    value = value,
+                    exception = product.exception,
+                    favorite = product.favorite,
+                    mark = product.mark,
+                    replacement = replaceProduct.name
+                )
+            )
+        }
+
+        return products
     }
 }

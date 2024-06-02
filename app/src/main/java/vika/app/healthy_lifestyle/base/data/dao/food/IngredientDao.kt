@@ -44,4 +44,9 @@ interface IngredientDao {
     suspend fun getAll(): List<IngredientEntity>
     @Query("UPDATE Ingredient SET exception = :exception WHERE type = :type")
     suspend fun updateIngredientExceptionByType(type: String, exception: Boolean)
+    @Query("SELECT * FROM Ingredient WHERE kilocalories * :value / 100 < :targetKilo AND " +
+            "proteins * :value / 100 < :targetProtein AND fats * :value / 100 < :targetFat AND " +
+            "carbohydrates * :value / 100 < :targetCarb")
+    suspend fun getIngredientByValueTarget(value: Double, targetKilo: Double, targetProtein: Double,
+                                           targetFat: Double, targetCarb: Double): IngredientEntity
 }
