@@ -189,6 +189,17 @@ fun RecommendPage(
             Text(text = "Рекомендации")
         }
         if (openDialog) {
+            val newProductList = recommend.getReplaceProduct(productsList)
+            val newMeal = Ingredient(
+                name = "Рекомендуемый набор продуктов", kilocalories = 0.0, proteins = 0.0,
+                fats = 0.0, carbohydrates = 0.0
+            )
+            for (product in newProductList){
+                newMeal.kilocalories += product.value * product.kilocalories / 100
+                newMeal.proteins += product.value * product.proteins / 100
+                newMeal.fats += product.value * product.fats / 100
+                newMeal.carbohydrates += product.value * product.carbohydrates / 100
+            }
             Dialog(
                 onDismissRequest = {
                     openDialog = !openDialog
@@ -199,12 +210,100 @@ fun RecommendPage(
                         .padding(8.dp),
                     shape = RoundedCornerShape(16.dp)
                 ) {
+                    Row {
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.Top,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            recommend.getTarget()
+                            Text(
+                                text = "Цель",
+                                modifier = Modifier.padding(8.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = Black
+                            )
+                            Text(
+                                text = recommend.targetKilo,
+                                modifier = Modifier.padding(8.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Gray
+                            )
+                            Text(
+                                text = recommend.targetProtein,
+                                modifier = Modifier.padding(8.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Gray
+                            )
+                            Text(
+                                text = recommend.targetFat,
+                                modifier = Modifier.padding(8.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Gray
+                            )
+                            Text(
+                                text = recommend.targetCarb,
+                                modifier = Modifier.padding(8.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Gray
+                            )
+                        }
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.Top,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            val markKilo = recommend.getMarkKilo(newMeal)
+                            val markProtein = recommend.getMarkProtein(newMeal)
+                            val markFat = recommend.getMarkFat(newMeal)
+                            val markCarb = recommend.getMarkCarb(newMeal)
+                            Text(
+                                text = "Ваше значение",
+                                modifier = Modifier.padding(8.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = Black
+                            )
+                            Text(
+                                text = recommend.progressKilo,
+                                modifier = Modifier.padding(8.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = if (markKilo == 0.5) Orange else if (markKilo == 0.0) Red else Color.Gray
+                            )
+                            Text(
+                                text = recommend.progressProtein,
+                                modifier = Modifier.padding(8.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = if (markProtein == 0.5) Orange else if (markProtein == 0.0) Red else Color.Gray
+                            )
+                            Text(
+                                text = recommend.progressFat,
+                                modifier = Modifier.padding(8.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = if (markFat == 0.5) Orange else if (markFat == 0.0) Red else Color.Gray
+                            )
+                            Text(
+                                text = recommend.progressCarb,
+                                modifier = Modifier.padding(8.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = if (markCarb == 0.5) Orange else if (markCarb == 0.0) Red else Color.Gray
+                            )
+                        }
+                    }
                     Column(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.padding(8.dp)
                     ) {
-                        val newProductList = recommend.getReplaceProduct(productsList)
                         LazyColumn(
                             modifier = Modifier
                                 .height(300.dp)
