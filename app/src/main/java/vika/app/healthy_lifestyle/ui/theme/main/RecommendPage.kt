@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,12 +22,11 @@ import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.bean.food.Ingredient
 import vika.app.healthy_lifestyle.bean.food.Nutrition
 import vika.app.healthy_lifestyle.recommend.RecommendSystem
-import vika.app.healthy_lifestyle.recommend.database.RecommendProductRepository
 import vika.app.healthy_lifestyle.ui.theme.app.Black
+import vika.app.healthy_lifestyle.ui.theme.app.Blue
 import vika.app.healthy_lifestyle.ui.theme.app.Green
 import vika.app.healthy_lifestyle.ui.theme.app.Orange
 import vika.app.healthy_lifestyle.ui.theme.app.Red
-import vika.app.healthy_lifestyle.ui.theme.app.Yellow
 import vika.app.healthy_lifestyle.ui.theme.general.list.RecommendItem
 
 @Composable
@@ -133,6 +133,7 @@ fun RecommendPage(
                 )
             }
         }
+        val productsList = mutableListOf<ProductMark>()
         LazyColumn(
             modifier = Modifier
                 .height(300.dp)
@@ -141,19 +142,31 @@ fun RecommendPage(
             items(mealList) { item ->
                 key(item.name) {
                     val product = FoodActivity().getIngredient(context, item.name)
-                    val mark =
-                        RecommendProductRepository(context).getRecommendProduct(item.name).mark
+                    val mark = recommend.getMarkProduct(product, item.value)
+                    productsList.add(
+                        ProductMark(
+                            name = item.name,
+                            kilocalories = product.kilocalories,
+                            proteins = product.proteins,
+                            fats = product.fats,
+                            carbohydrates = product.carbohydrates,
+                            value = item.value,
+                            exception = product.exception,
+                            favorite = product.favorite,
+                            mark = mark
+                        )
+                    )
                     RecommendItem(
                         title = item.name,
                         color =
-                        if (mark >= 3) {
-                            Green
-                        } else if (mark >= 2) {
-                            Yellow
-                        } else if (mark >= 1) {
-                            Orange
-                        } else {
+                        if (product.favorite) {
+                            Blue
+                        } else if (product.exception) {
                             Red
+                        } else if (mark < 0) {
+                            Red
+                        } else {
+                            Green
                         },
                         kilocalories = product.kilocalories * item.value / 100,
                         proteins = product.proteins * item.value / 100,
@@ -163,5 +176,21 @@ fun RecommendPage(
                 }
             }
         }
+        Button(onClick = {}) {
+            Text(text = "Рекомендации")
+        }
     }
 }
+
+private data class ProductMark(
+    val name: String,
+    val kilocalories: Double,
+    val proteins: Double,
+    val fats: Double,
+    val carbohydrates: Double,
+    val value: Double,
+    val mark: Int,
+    val exception: Boolean,
+    val favorite: Boolean,
+    var replacement: String = ""
+)

@@ -112,4 +112,28 @@ class RecommendSystem(
         targetFat = "жиры: ".plus(plan?.fatMin).plus("% - ").plus(plan?.fatMax).plus("%")
         targetCarb = "углеводы: ".plus(plan?.carbMin).plus("% - ").plus(plan?.carbMax).plus("%")
     }
+
+    fun getMarkProduct(product: Ingredient, value: Double): Int {
+        val plan = MealPlanManager().getMealPlan(target, meal)
+
+        val target = RecordRepository(context).getRecordByDate(DateToday().getToday())
+        val kilocalories = product.kilocalories * value
+        val protein = product.proteins * value
+        val fats = product.fats * value
+        val carb = product.carbohydrates * value
+
+        if (kilocalories / target!!.targetKilocalories * 100 > plan!!.kiloMax) {
+            return -1
+        }
+        if (protein / target.targetProteins * 100 > plan.proteinMax) {
+            return -2
+        }
+        if (fats / target.targetCarbohydrates * 100 > plan.fatMax) {
+            return -3
+        }
+        if (carb / target.targetCarbohydrates * 100 > plan.carbMax) {
+            return -4
+        }
+        return 0
+    }
 }
