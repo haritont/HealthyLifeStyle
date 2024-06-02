@@ -244,6 +244,36 @@ class RecommendSystem(
             )
         }
 
+        while (targetKilo > 0 || targetProtein > 0 || targetCarb > 0 || targetFat > 0){
+            val value = listOf(100.0, 150.0, 200.0, 250.0, 300.0).random()
+            val replaceProduct = IngredientRepository(context).getIngredientByValueTarget(
+                value,
+                targetKilo,
+                targetProtein,
+                targetFat,
+                targetCarb
+            ).shuffled().take(1)[0]
+
+            targetKilo -= replaceProduct.kilocalories * value / 100
+            targetProtein -= replaceProduct.proteins  * value / 100
+            targetFat -= replaceProduct.fats  * value / 100
+            targetCarb -= replaceProduct.carbohydrates  * value / 100
+
+            products.add(
+                ProductMark(
+                    name = replaceProduct.name,
+                    kilocalories = replaceProduct.kilocalories,
+                    proteins = replaceProduct.proteins,
+                    fats = replaceProduct.fats,
+                    carbohydrates = replaceProduct.carbohydrates,
+                    value = value,
+                    exception = replaceProduct.exception,
+                    favorite = replaceProduct.favorite,
+                    mark = 0
+                )
+            )
+        }
+
         return products
     }
 }
