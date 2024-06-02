@@ -14,8 +14,15 @@ class RecommendSystem(
     val meal: Int
 ) {
     private val minMark = 2.5
-    var adviceTarget = ""
-    var adviceProgress = ""
+    var progressKilo = ""
+    var progressProtein = ""
+    var progressFat = ""
+    var progressCarb = ""
+
+    var targetKilo = ""
+    var targetProtein = ""
+    var targetFat = ""
+    var targetCarb = ""
 
     fun getProducts(count: Int): List<RecommendProduct>{
         return getListProduct().shuffled().take(count)
@@ -34,52 +41,75 @@ class RecommendSystem(
         return recommendSports.shuffled().take(count)
     }
     private fun getListProduct(): List<RecommendProduct>{
-        return RecommendProductRepository(context).getRecommendProductList(minMark, target, meal);
+        return RecommendProductRepository(context).getRecommendProductList(minMark, target, meal)
     }
 
-    fun getMarkMeal(ingredient: Ingredient): Double {
-        var mark = 0.0
+    fun getMarkKilo(ingredient: Ingredient): Double{
         val plan = MealPlanManager().getMealPlan(target, meal)
 
         val targetKilo = RecordRepository(context).targetKilocalories(DateToday().getToday())
-        var kilocalories = ingredient.kilocalories
+        val kilocalories = ingredient.kilocalories / targetKilo * 100
 
-        adviceTarget = "по ккал: ".plus(plan?.kiloMin).plus("% - ").plus(plan?.kiloMax).plus("%\n")
-            .plus("по белкам: ".plus(plan?.proteinMin).plus("% - ").plus(plan?.proteinMax).plus("%\n"))
-            .plus("по жирам: ".plus(plan?.fatMin).plus("% - ").plus(plan?.fatMax).plus("%\n"))
-            .plus("по углеводам: ".plus(plan?.carbMin).plus("% - ").plus(plan?.carbMax).plus("%\n"))
-
-        if (kilocalories != 0.0) {
-            val protein = (ingredient.proteins * 4) / kilocalories * 100
-            val fats = (ingredient.fats * 9) / kilocalories * 100
-            val carbohydrates = (ingredient.carbohydrates * 4) / kilocalories * 100
-            kilocalories = kilocalories / targetKilo * 100
-
-            adviceProgress = "по ккал: ".plus(kilocalories.toInt().toString()).plus("%\n")
-                .plus("по белкам: ".plus(protein.toInt().toString()).plus("%\n"))
-                .plus("по жирам: ".plus(fats.toInt().toString()).plus("%\n"))
-                .plus("по углеводам: ".plus(carbohydrates.toInt().toString()).plus("%\n"))
-
-            if (protein >= plan!!.proteinMin && protein <= plan.proteinMax) {
-                mark += 1.0
-            }
-
-            if (fats >= plan.fatMin && fats <= plan.fatMax) {
-                mark += 1.0
-            }
-
-            if (carbohydrates >= plan.carbMin && carbohydrates <= plan.carbMax) {
-                mark += 1.0
-            }
-
-            if (kilocalories >= plan.kiloMin && kilocalories <= plan.kiloMax) {
-                mark += 1.0
-            }
+        progressKilo = "%.1f".format(kilocalories).plus("%")
+        if (kilocalories >= plan!!.kiloMin && kilocalories <= plan.kiloMax) {
+           return 1.0
         }
-
-        if (plan!!.types.contains(ingredient.type)) {
-            mark += 1.0
+        else if (kilocalories >= plan.kiloMin - 5 && kilocalories <= plan.kiloMax + 5) {
+            return 0.5
         }
-        return mark
+        return 0.0
+    }
+
+    fun getMarkProtein(ingredient: Ingredient): Double{
+        val plan = MealPlanManager().getMealPlan(target, meal)
+
+        val protein = (ingredient.proteins * 4) / ingredient.kilocalories * 100
+
+        progressProtein = "%.1f".format(protein).plus("%")
+        if (protein >= plan!!.proteinMin && protein <= plan.proteinMax) {
+            return 1.0
+        }
+        else if (protein >= plan.proteinMin - 5 && protein <= plan.proteinMax + 5) {
+            return 0.5
+        }
+        return 0.0
+    }
+
+    fun getMarkFat(ingredient: Ingredient): Double{
+        val plan = MealPlanManager().getMealPlan(target, meal)
+
+        val fats = (ingredient.fats * 9) / ingredient.kilocalories * 100
+
+        progressFat = "%.1f".format(fats).plus("%")
+        if (fats >= plan!!.fatMin && fats <= plan.fatMax) {
+            return 1.0
+        }
+        else if (fats >= plan.fatMin - 5 && fats <= plan.fatMax + 5) {
+            return 0.5
+        }
+        return 0.0
+    }
+
+    fun getMarkCarb(ingredient: Ingredient): Double{
+        val plan = MealPlanManager().getMealPlan(target, meal)
+
+        val carbohydrates = (ingredient.carbohydrates * 4) / ingredient.kilocalories * 100
+
+        progressCarb = "%.1f".format(carbohydrates).plus("%")
+        if (carbohydrates >= plan!!.carbMin && carbohydrates <= plan.carbMax) {
+            return 1.0
+        }
+        else if (carbohydrates >= plan.carbMin - 5 && carbohydrates <= plan.carbMax + 5) {
+            return 0.5
+        }
+        return 0.0
+    }
+
+    fun getTarget() {
+        val plan = MealPlanManager().getMealPlan(target, meal)
+        targetKilo = "ккал: ".plus(plan?.kiloMin).plus("% - ").plus(plan?.kiloMax).plus("%")
+        targetProtein = "белки: ".plus(plan?.proteinMin).plus("% - ").plus(plan?.proteinMax).plus("%")
+        targetFat = "жиры: ".plus(plan?.fatMin).plus("% - ").plus(plan?.fatMax).plus("%")
+        targetCarb = "углеводы: ".plus(plan?.carbMin).plus("% - ").plus(plan?.carbMax).plus("%")
     }
 }
