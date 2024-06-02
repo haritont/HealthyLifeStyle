@@ -211,10 +211,10 @@ class RecommendSystem(
             }
         }
 
-        var targetKilo = plan!!.kiloMax * target!!.targetKilocalories - kilocalories
-        var targetProtein = plan.proteinMax * target.targetProteins - protein
-        var targetFat = plan.fatMax * target.targetFats - fats
-        var targetCarb = plan.carbMax * target.targetCarbohydrates - carb
+        var targetKilo = (plan!!.kiloMax.toDouble() / 100 * target!!.targetKilocalories) - kilocalories
+        var targetProtein = (plan.proteinMax.toDouble() / 100 * target.targetProteins) - protein
+        var targetFat = (plan.fatMax.toDouble() / 100 * target.targetFats) - fats
+        var targetCarb = (plan.carbMax.toDouble() / 100 * target.targetCarbohydrates) - carb
         for (product in replacedProduct){
             val value = product.value
             val replaceProduct = IngredientRepository(context).getIngredientByValueTarget(
@@ -244,7 +244,7 @@ class RecommendSystem(
             )
         }
 
-        while (targetKilo > 0 || targetProtein > 0 || targetCarb > 0 || targetFat > 0){
+        if (targetKilo > 0 || targetProtein > 0 || targetCarb > 0 || targetFat > 0){
             val value = listOf(100.0, 150.0, 200.0, 250.0, 300.0).random()
             val replaceProduct = IngredientRepository(context).getIngredientByValueTarget(
                 value,

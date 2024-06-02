@@ -142,44 +142,46 @@ fun RecommendPage(
             }
         }
         val productsList = mutableListOf<ProductMark>()
+        for (productMeal in mealList){
+            val product = FoodActivity().getIngredient(context, productMeal.name)
+            val mark = recommend.getMarkProduct(product, productMeal.value)
+            productsList.add(
+                ProductMark(
+                    name = productMeal.name,
+                    kilocalories = product.kilocalories,
+                    proteins = product.proteins,
+                    fats = product.fats,
+                    carbohydrates = product.carbohydrates,
+                    value = productMeal.value,
+                    exception = product.exception,
+                    favorite = product.favorite,
+                    mark = mark
+                )
+            )
+        }
         LazyColumn(
             modifier = Modifier
                 .height(200.dp)
                 .padding(8.dp)
         ) {
-            items(mealList) { item ->
+            items(productsList) { item ->
                 key(item.name) {
-                    val product = FoodActivity().getIngredient(context, item.name)
-                    val mark = recommend.getMarkProduct(product, item.value)
-                    productsList.add(
-                        ProductMark(
-                            name = item.name,
-                            kilocalories = product.kilocalories,
-                            proteins = product.proteins,
-                            fats = product.fats,
-                            carbohydrates = product.carbohydrates,
-                            value = item.value,
-                            exception = product.exception,
-                            favorite = product.favorite,
-                            mark = mark
-                        )
-                    )
                     RecommendItem(
                         title = item.name,
                         color =
-                        if (product.favorite) {
+                        if (item.favorite) {
                             Blue
-                        } else if (product.exception) {
+                        } else if (item.exception) {
                             Red
-                        } else if (mark < 0) {
+                        } else if (item.mark < 0) {
                             Red
                         } else {
                             Green
                         },
-                        kilocalories = product.kilocalories * item.value / 100,
-                        proteins = product.proteins * item.value / 100,
-                        fats = product.fats * item.value / 100,
-                        carbohydrates = product.carbohydrates * item.value / 100
+                        kilocalories = item.kilocalories * item.value / 100,
+                        proteins = item.proteins * item.value / 100,
+                        fats = item.fats * item.value / 100,
+                        carbohydrates = item.carbohydrates * item.value / 100
                     )
                 }
             }
@@ -263,7 +265,7 @@ fun RecommendPage(
                             val markFat = recommend.getMarkFat(newMeal)
                             val markCarb = recommend.getMarkCarb(newMeal)
                             Text(
-                                text = "Ваше значение",
+                                text = "Новое значение",
                                 modifier = Modifier.padding(8.dp),
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Bold,
