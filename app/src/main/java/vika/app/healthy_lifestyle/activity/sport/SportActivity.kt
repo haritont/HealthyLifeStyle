@@ -199,7 +199,7 @@ class SportActivity : ComponentActivity() {
     }
 
     fun getAdvice(context: Context): String {
-        val personalData = PersonalDataRepository(context).getPersonalData()
+        val personalData = PersonalDataRepository(context).getPersonalData()!!
 
         return CreateAdvice().getSportAdvice(context, personalData)
     }

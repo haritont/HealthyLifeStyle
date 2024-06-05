@@ -10,7 +10,6 @@ import vika.app.healthy_lifestyle.base.data.repository.main.WeightRepository
 import vika.app.healthy_lifestyle.bean.main.PersonalData
 import vika.app.healthy_lifestyle.bean.main.Record
 import vika.app.healthy_lifestyle.bean.main.Weight
-import vika.app.healthy_lifestyle.calculations.CreateAdvice
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.navigation.Navigation
@@ -89,7 +88,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun getPersonalData(context: Context): PersonalData{
-        return PersonalDataRepository(context).getPersonalData()
+        return PersonalDataRepository(context).getPersonalData()!!
     }
 
     fun getBurnedKilocalories(context: Context): Double {

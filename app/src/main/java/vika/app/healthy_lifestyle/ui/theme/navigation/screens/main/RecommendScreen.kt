@@ -36,7 +36,7 @@ fun RecommendScreen() {
     val context = LocalContext.current
 
     val nutritionToday = FoodActivity().getLastNutrition(context)
-    val type = PersonalDataRepository(context).getPersonalData().target
+    val type = PersonalDataRepository(context).getPersonalData()!!.target
 
     val breakfast = Ingredient(
         name = "Завтрак", kilocalories = 0.0, proteins = 0.0,

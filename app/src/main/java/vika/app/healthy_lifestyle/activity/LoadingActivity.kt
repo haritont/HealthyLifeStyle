@@ -208,7 +208,7 @@ class LoadingActivity: ComponentActivity(){
     }
 
     private fun getPersonalData(): PersonalData {
-        return PersonalDataRepository(this).getPersonalData()
+        return PersonalDataRepository(this).getPersonalData()!!
     }
 //
 //    private fun getCountPersonalData():Int  {

@@ -187,7 +187,7 @@ class FoodActivity : ComponentActivity() {
     }
 
     fun getAdvice(context: Context): String {
-        val personalData = PersonalDataRepository(context).getPersonalData()
+        val personalData = PersonalDataRepository(context).getPersonalData()!!
         return CreateAdvice().getProductAdvice(context, personalData, MealCalc().getCurrentMeal())
     }
 
