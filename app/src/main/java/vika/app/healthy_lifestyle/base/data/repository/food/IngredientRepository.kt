@@ -73,4 +73,8 @@ class IngredientRepository(context: Context) {
             targetCarb
         ))
     }
+
+    fun getAllProductByType(type: String): List<Ingredient>? = runBlocking{
+        ingredientDao.getAllProductByType(type)?.let { ingredientMapper.toIngredientList(it) }
+    }
 }

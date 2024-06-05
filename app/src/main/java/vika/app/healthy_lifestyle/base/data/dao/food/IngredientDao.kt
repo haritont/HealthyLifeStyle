@@ -37,7 +37,7 @@ interface IngredientDao {
 
     @Query("UPDATE Ingredient SET favorite = :favorite WHERE name = :name")
     suspend fun updateFavorite(name: String, favorite: Boolean)
-   @Query("SELECT * FROM Ingredient")
+    @Query("SELECT * FROM Ingredient")
     suspend fun getAll(): List<IngredientEntity>?
     @Query("UPDATE Ingredient SET exception = :exception WHERE type = :type")
     suspend fun updateIngredientExceptionByType(type: String, exception: Boolean)
@@ -47,4 +47,6 @@ interface IngredientDao {
     )
     suspend fun getIngredientByValueTarget(value: Double, targetKilo: Double, targetProtein: Double,
                                            targetFat: Double, targetCarb: Double): List<IngredientEntity>
+    @Query("SELECT * FROM Ingredient WHERE type =:type")
+    suspend fun getAllProductByType(type: String): List<IngredientEntity>?
 }

@@ -7,7 +7,6 @@ import vika.app.healthy_lifestyle.base.data.repository.sport.PhysicalExerciseRep
 import vika.app.healthy_lifestyle.bean.food.Ingredient
 import vika.app.healthy_lifestyle.bean.sport.PhysicalExercise
 import vika.app.healthy_lifestyle.calculations.DateToday
-import vika.app.healthy_lifestyle.recommend.database.RecommendProductRepository
 import vika.app.healthy_lifestyle.ui.theme.main.ProductMark
 
 class RecommendSystem(
@@ -15,7 +14,6 @@ class RecommendSystem(
     val target: Int,
     val meal: Int
 ) {
-    private val minMark = 2.5
     var progressKilo = ""
     var progressProtein = ""
     var progressFat = ""
@@ -26,7 +24,7 @@ class RecommendSystem(
     var targetFat = ""
     var targetCarb = ""
 
-    fun getProducts(count: Int): List<RecommendProduct>{
+    fun getProducts(count: Int): List<Ingredient>{
         return getListProduct().shuffled().take(count)
     }
 
@@ -42,8 +40,16 @@ class RecommendSystem(
         }
         return recommendSports.shuffled().take(count)
     }
-    private fun getListProduct(): List<RecommendProduct>{
-        return RecommendProductRepository(context).getRecommendProductList(minMark, target, meal)
+    private fun getListProduct(): List<Ingredient>{
+        val types = listOf("Фрукт", "Рыба", "Крупа", "Овощ", "Мясо", "Молочное", "Яйцо")
+        val products = mutableListOf<Ingredient>()
+        for (type in types){
+            val productList = IngredientRepository(context).getAllProductByType(type)
+            if (productList != null) {
+                products.addAll(productList)
+            }
+        }
+        return products
     }
 
     fun getMarkKilo(ingredient: Ingredient): Double{
@@ -196,7 +202,7 @@ class RecommendSystem(
                             carbohydrates = product.carbohydrates,
                             value = value,
                             exception = product.exception,
-                            favorite = product.favorite,
+                            favorite = true,
                             mark = product.mark
                         )
                     )
