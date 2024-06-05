@@ -24,7 +24,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.main.ProfileActivity
+import vika.app.healthy_lifestyle.base.data.repository.main.WeightRepository
 import vika.app.healthy_lifestyle.bean.main.PersonalData
+import vika.app.healthy_lifestyle.bean.main.Weight
+import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
 import vika.app.healthy_lifestyle.ui.theme.general.DatePickerWithDialog
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
@@ -85,7 +88,7 @@ fun ProfileScreen() {
                     modifier = Modifier.weight(1f)
                 ) {
                     TextFieldBlue(
-                        value = heightState.value.toString(),
+                        value = heightState.value,
                         label = {
                             Text(
                                 LocalContext.current.getString(R.string.height),
@@ -109,7 +112,7 @@ fun ProfileScreen() {
                     modifier = Modifier.weight(1f)
                 ) {
                     TextFieldBlue(
-                        value = weightState.value.toString(),
+                        value = weightState.value,
                         label = {
                             Text(
                                 LocalContext.current.getString(R.string.weight),
@@ -264,6 +267,12 @@ fun ProfileScreen() {
                         activityRate = activityRateState.value,
                         name = nameState.value,
                         target = targetState.value
+                    )
+                )
+                WeightRepository(context).insertWeight(
+                    Weight(
+                        date = DateToday().getToday(),
+                        value = weightState.value.toDouble()
                     )
                 )
             }
