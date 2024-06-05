@@ -40,6 +40,7 @@
         <activity android:name="vika.app.healthy_lifestyle.activity.main.ProfileActivity" />
         <activity android:name="vika.app.healthy_lifestyle.activity.main.SettingsActivity" />
         <activity android:name="vika.app.healthy_lifestyle.activity.mood.MoodActivity" />
+        <activity android:name="vika.app.healthy_lifestyle.activity.RegistrationActivity" />
     </application>
 
 </manifest>
