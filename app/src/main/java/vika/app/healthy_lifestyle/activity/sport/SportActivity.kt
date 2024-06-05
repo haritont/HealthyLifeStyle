@@ -68,9 +68,11 @@ class SportActivity : ComponentActivity() {
         val steps = stepValue - getProgressSteps(context)
         RecordRepository(context).updateProgressStepsRecord(DateToday().getToday(), stepValue)
         val burned = RecordRepository(context).burnedKilocalories(DateToday().getToday())
+        val lengthStep = PersonalDataRepository(context).getPersonalData()!!.height / 4.0 + 37.0
+        val nowBurned = (steps * WeightRepository(context).getLastEntry()!!.value * lengthStep) / 100000.0
         RecordRepository(context).updateBurnedKilocalories(
             DateToday().getToday(),
-            burned + steps * 0.05 * WeightRepository(context).getLastEntry()!!.value / 70.0
+            burned + nowBurned
         )
     }
 
