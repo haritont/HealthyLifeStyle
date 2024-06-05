@@ -15,4 +15,6 @@ interface WeightDao {
 
     @Query("SELECT * FROM Weight ORDER BY id DESC LIMIT 1")
     suspend fun getLastEntry(): WeightEntity?
+    @Query("SELECT * FROM Weight WHERE date =:date")
+    suspend fun getByDate(date: String): WeightEntity?
 }

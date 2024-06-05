@@ -17,8 +17,8 @@ class EmotionRepository (context: Context){
         emotionDao = emotionDatabase.emotionDao()
         emotionMapper = DefaultEmotionMapper()
     }
-    fun getAllEmotions(): List<Emotion> = runBlocking{
-        emotionMapper.toEmotionList(emotionDao.getAll())
+    fun getAllEmotions(): List<Emotion>? = runBlocking{
+        emotionDao.getAll()?.let { emotionMapper.toEmotionList(it) }
     }
 
     fun insertEmotion(emotion: Emotion) = runBlocking{

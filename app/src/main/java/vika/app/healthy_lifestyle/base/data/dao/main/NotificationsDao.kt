@@ -12,7 +12,7 @@ interface NotificationsDao {
     suspend fun insert(notification: NotificationEntity)
 
     @Query("SELECT * FROM Notifications")
-    suspend fun getAll(): List<NotificationEntity>
+    suspend fun getAll(): List<NotificationEntity>?
 
     @Query("SELECT COUNT(*) FROM Notifications")
     suspend fun getRowCount(): Int

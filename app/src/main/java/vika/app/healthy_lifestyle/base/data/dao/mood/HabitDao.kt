@@ -9,7 +9,7 @@ import vika.app.healthy_lifestyle.base.data.entity.mood.HabitEntity
 @Dao
 interface HabitDao {
     @Query("SELECT * FROM Habit")
-    suspend fun getAll(): List<HabitEntity>
+    suspend fun getAll(): List<HabitEntity>?
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(habitEntity: HabitEntity)
     @Query("SELECT * fROM Habit WHERE product =:product")

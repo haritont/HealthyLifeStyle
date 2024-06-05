@@ -15,10 +15,7 @@ interface IngredientDao {
     suspend fun getName(ingredientId: Long): String
 
     @Query("SELECT * FROM Ingredient WHERE isDish = 0")
-    suspend fun getAllIngredients(): List<IngredientEntity>
-
-    @Query("SELECT * FROM Ingredient WHERE isDish = 1")
-    suspend fun getAllDishes(): List<IngredientEntity>
+    suspend fun getAllIngredients(): List<IngredientEntity>?
 
     @Query("SELECT * FROM Ingredient WHERE name = :name")
     suspend fun getByName(name: String): IngredientEntity
@@ -41,7 +38,7 @@ interface IngredientDao {
     @Query("UPDATE Ingredient SET favorite = :favorite WHERE name = :name")
     suspend fun updateFavorite(name: String, favorite: Boolean)
    @Query("SELECT * FROM Ingredient")
-    suspend fun getAll(): List<IngredientEntity>
+    suspend fun getAll(): List<IngredientEntity>?
     @Query("UPDATE Ingredient SET exception = :exception WHERE type = :type")
     suspend fun updateIngredientExceptionByType(type: String, exception: Boolean)
     @Query("SELECT * FROM Ingredient WHERE kilocalories * :value / 100 < :targetKilo AND " +

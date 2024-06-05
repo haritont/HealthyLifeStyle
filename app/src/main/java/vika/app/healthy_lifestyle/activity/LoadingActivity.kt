@@ -19,18 +19,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.main.MainActivity
+import vika.app.healthy_lifestyle.base.data.repository.food.IngredientRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.NotificationsRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
+import vika.app.healthy_lifestyle.base.data.repository.main.WeightRepository
 import vika.app.healthy_lifestyle.base.data.repository.mood.DreamRepository
+import vika.app.healthy_lifestyle.base.data.repository.mood.EmotionRepository
+import vika.app.healthy_lifestyle.base.data.repository.mood.HabitRepository
+import vika.app.healthy_lifestyle.base.data.repository.sport.PhysicalExerciseRepository
 import vika.app.healthy_lifestyle.bean.main.Notification
 import vika.app.healthy_lifestyle.bean.main.PersonalData
 import vika.app.healthy_lifestyle.bean.main.Record
+import vika.app.healthy_lifestyle.bean.main.Weight
 import vika.app.healthy_lifestyle.bean.mood.Dream
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.calculations.PersonalTarget
 import vika.app.healthy_lifestyle.notification.createNotificationChannel
 import vika.app.healthy_lifestyle.notification.scheduleNotification
+import vika.app.healthy_lifestyle.server.api.DefaultApiServiceRepository
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 
 class LoadingActivity: ComponentActivity(){
@@ -57,52 +64,47 @@ class LoadingActivity: ComponentActivity(){
 
     private fun loadData() {
 
-//        val ingredients = DefaultApiServiceRepository().getAllIngredients()
-//
-//        for (ingredient in ingredients) {
-//            IngredientRepository(this).insertIngredient(ingredient)
-//        }
-//
-//        val physicalExercises = DefaultApiServiceRepository().getAllPhysicalExercise()
-//
-//        for (physicalExercise in physicalExercises) {
-//            PhysicalExerciseRepository(this).insertPhysicalExercise(physicalExercise)
-//        }
-//
-//        val productRecommend = DefaultApiServiceRepository().getRecommendProductList()
-//
-//        for (product in productRecommend) {
-//            RecommendProductRepository(this).insertRecommendProduct(product)
-//        }
-//
-//        val habits = DefaultApiServiceRepository().getAllHabits()
-//
-//        for (habit in habits) {
-//            HabitRepository(this).insertHabit(habit)
-//        }
-//        val emotions = DefaultApiServiceRepository().getAllEmotions()
-//
-//        for (emotion in emotions) {
-//            EmotionRepository(this).insertEmotion(emotion)
-//        }
-//        savePersonalData(
-//            PersonalData(
-//                genderId = 1,
-//                height = 162.0,
-//                weight = 45.3,
-//                birthDate = "2002-04-18",
-//                activityRate = 1.3,
-//                name = "Виктория",
-//                target = 1
-//            )
-//        )
+        if (IngredientRepository(this).getAllProduct() == null) {
 
-//        WeightRepository(this).insertWeight(
-//            Weight(
-//                date = DateToday().getToday(),
-//                value = 45.3
-//            )
-//        )
+            val ingredients = DefaultApiServiceRepository().getAllIngredients()
+
+            for (ingredient in ingredients) {
+                IngredientRepository(this).insertIngredient(ingredient)
+            }
+        }
+
+        if (PhysicalExerciseRepository(this).getAll() == null) {
+            val physicalExercises = DefaultApiServiceRepository().getAllPhysicalExercise()
+
+            for (physicalExercise in physicalExercises) {
+                PhysicalExerciseRepository(this).insertPhysicalExercise(physicalExercise)
+            }
+        }
+
+        if (HabitRepository(this).getAllHabits() == null) {
+            val habits = DefaultApiServiceRepository().getAllHabits()
+
+            for (habit in habits) {
+                HabitRepository(this).insertHabit(habit)
+            }
+        }
+
+        if (EmotionRepository(this).getAllEmotions() == null) {
+            val emotions = DefaultApiServiceRepository().getAllEmotions()
+
+            for (emotion in emotions) {
+                EmotionRepository(this).insertEmotion(emotion)
+            }
+        }
+
+        if (WeightRepository(this).getToday() == null) {
+            WeightRepository(this).insertWeight(
+                Weight(
+                    date = DateToday().getToday(),
+                    value = getPersonalData().weight
+                )
+            )
+        }
 
         if (getTodayDream(DateToday().getToday()) == null) {
             saveDream(
@@ -111,16 +113,9 @@ class LoadingActivity: ComponentActivity(){
                 )
             )
         }
-        //insertNotifications()
 
+        insertNotifications()
         setRecordTarget()
-
-        val notification = NotificationsRepository(this).getAllNotifications()
-        for (not in notification) {
-            scheduleNotification(applicationContext, "Пора заполнить ".plus(not.text.lowercase()), not.hour, not.minute)
-        }
-
-        createNotificationChannel(this)
 
         startActivity(Intent(this@LoadingActivity, MainActivity::class.java))
         finish()
@@ -136,51 +131,40 @@ class LoadingActivity: ComponentActivity(){
 
     private fun insertNotifications(){
         val notificationsRepository = NotificationsRepository(this)
-        notificationsRepository.insertNotifications(
-            Notification(
-                text="Завтрак", hour = 8, minute = 0
-            )
-        )
 
-        notificationsRepository.insertNotifications(
-            Notification(
-                text="Обед", hour = 13, minute = 0
+        if (notificationsRepository.getAllNotifications() == null) {
+            notificationsRepository.insertNotifications(
+                Notification(
+                    text = "Завтрак", hour = 8, minute = 0
+                )
             )
-        )
 
-        notificationsRepository.insertNotifications(
-            Notification(
-                text="Перекус", hour = 15, minute = 30
+            notificationsRepository.insertNotifications(
+                Notification(
+                    text = "Обед", hour = 13, minute = 0
+                )
             )
-        )
 
-        notificationsRepository.insertNotifications(
-            Notification(
-                text="Ужин", hour = 18, minute = 0
+            notificationsRepository.insertNotifications(
+                Notification(
+                    text = "Перекус", hour = 15, minute = 30
+                )
             )
-        )
+
+            notificationsRepository.insertNotifications(
+                Notification(
+                    text = "Ужин", hour = 18, minute = 0
+                )
+            )
+
+            val notification = notificationsRepository.getAllNotifications()
+            for (not in notification!!) {
+                scheduleNotification(applicationContext, "Пора заполнить ".plus(not.text.lowercase()), not.hour, not.minute)
+            }
+
+            createNotificationChannel(this)
+        }
     }
-
-//    private fun getCountNotifications(): Int {
-//        return NotificationsRepository(this).getNotificationsRowCount()
-//    }
-
-//    private fun getPersonalDataServer(){
-//        val token = getToken()
-//        if (token != null) {
-//            val personalData = DefaultApiServiceRepository().getPersonalData(token)
-//            personalData?.token = token
-//            savePersonalData(personalData!!)
-//        } else {
-//            showToast("Ошибка проверки данных")
-//            Log.d("LoadingActivity", "Token is null")
-//        }
-//    }
-
-//    private fun getIngredients() {
-//        val ingredients = DefaultApiServiceRepository().getAllIngredients()
-//        saveIngredients(ingredients)
-//    }
 
     private fun setRecordTarget() {
         val today = DateToday().getToday()
@@ -210,25 +194,6 @@ class LoadingActivity: ComponentActivity(){
     private fun getPersonalData(): PersonalData {
         return PersonalDataRepository(this).getPersonalData()!!
     }
-//
-//    private fun getCountPersonalData():Int  {
-//        return getToken()?.let { PersonalDataRepository(this).getRowCountByToken(it) }!!
-//    }
-//
-    private fun savePersonalData(personalData: PersonalData) {
-        PersonalDataRepository(this).insertPersonalData(personalData)
-    }
-//
-//
-//    private fun saveIngredients(ingredients:List<Ingredient>)  {
-//        for (ingredient in ingredients) {
-//            IngredientRepository(this).insertIngredient(ingredient)
-//        }
-//    }
-//
-//    private fun getCountIngredients(): Int {
-//        return IngredientRepository(this).getIngredientRowCount()
-//    }
 
     @Composable
     fun TextWelcome() {

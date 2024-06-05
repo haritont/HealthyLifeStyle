@@ -54,8 +54,8 @@ class PhysicalExerciseRepository(context: Context) {
         physicalExerciseDao.updateException(name, exception)
     }
 
-    fun getAll(): List<PhysicalExercise> = runBlocking{
-        physicalExerciseMapper.toPhysicalExerciseList(physicalExerciseDao.getAll())
+    fun getAll(): List<PhysicalExercise>? = runBlocking{
+        physicalExerciseDao.getAll()?.let { physicalExerciseMapper.toPhysicalExerciseList(it) }
     }
 
     fun getAllByType(type:String): List<PhysicalExercise> = runBlocking{

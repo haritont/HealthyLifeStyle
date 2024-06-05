@@ -9,7 +9,7 @@ import vika.app.healthy_lifestyle.base.data.entity.mood.EmotionEntity
 @Dao
 interface EmotionDao {
     @Query("SELECT * FROM Emotion")
-    suspend fun getAll(): List<EmotionEntity>
+    suspend fun getAll(): List<EmotionEntity>?
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(emotionEntity: EmotionEntity)
     @Query("SELECT * fROM Emotion WHERE name =:name")

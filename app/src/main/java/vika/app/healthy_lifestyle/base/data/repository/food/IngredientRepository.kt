@@ -30,16 +30,8 @@ class IngredientRepository(context: Context) {
         ingredientDao.insert(ingredientMapper.toIngredientEntity(ingredient))
     }
 
-    fun getIngredientName(ingredientId: Long): String = runBlocking{
-        ingredientDao.getName(ingredientId)
-    }
-
-    fun getAllIngredients(): List<Ingredient> = runBlocking{
-        ingredientMapper.toIngredientList(ingredientDao.getAllIngredients())
-    }
-
-    fun getAllDishes(): List<Ingredient> = runBlocking{
-        ingredientMapper.toIngredientList(ingredientDao.getAllDishes())
+    fun getAllIngredients(): List<Ingredient>? = runBlocking{
+        ingredientDao.getAllIngredients()?.let { ingredientMapper.toIngredientList(it) }
     }
 
     fun getIngredientByName(name: String): Ingredient = runBlocking{
@@ -62,8 +54,8 @@ class IngredientRepository(context: Context) {
         ingredientDao.isIngredientExists(nameIngredient) != 0
     }
 
-    fun getAllProduct(): List<Ingredient> = runBlocking{
-        ingredientMapper.toIngredientList(ingredientDao.getAll())
+    fun getAllProduct(): List<Ingredient>? = runBlocking{
+        ingredientDao.getAll()?.let { ingredientMapper.toIngredientList(it) }
     }
 
     fun updateIngredientExceptionByType(type: String, exception: Boolean)  = runBlocking{

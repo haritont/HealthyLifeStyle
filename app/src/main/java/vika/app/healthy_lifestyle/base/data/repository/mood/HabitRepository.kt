@@ -17,8 +17,8 @@ class HabitRepository (context: Context){
         habitDao = habitDatabase.habitDao()
         habitMapper = DefaultHabitMapper()
     }
-    fun getAllHabits(): List<Habit> = runBlocking{
-        habitMapper.toHabitList(habitDao.getAll())
+    fun getAllHabits(): List<Habit>? = runBlocking{
+        habitDao.getAll()?.let { habitMapper.toHabitList(it) }
     }
 
     fun insertHabit(habit: Habit) = runBlocking{

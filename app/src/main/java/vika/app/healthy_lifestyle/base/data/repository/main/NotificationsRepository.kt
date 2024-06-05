@@ -22,8 +22,8 @@ class NotificationsRepository(context: Context) {
         notificationsDao.insert(notificationsMapper.toNotificationEntity(notification))
     }
 
-    fun getAllNotifications(): List<Notification> = runBlocking{
-        notificationsMapper.toNotificationList(notificationsDao.getAll())
+    fun getAllNotifications(): List<Notification>? = runBlocking{
+        notificationsDao.getAll()?.let { notificationsMapper.toNotificationList(it) }
     }
 
     fun getNotificationsRowCount(): Int = runBlocking{
