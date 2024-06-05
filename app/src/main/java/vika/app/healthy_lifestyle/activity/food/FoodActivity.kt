@@ -19,7 +19,6 @@ import vika.app.healthy_lifestyle.bean.mood.HabitRecord
 import vika.app.healthy_lifestyle.calculations.CreateAdvice
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.calculations.MealCalc
-import vika.app.healthy_lifestyle.recommend.database.RecommendProductRepository
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.navigation.Navigation
 
@@ -33,7 +32,7 @@ class FoodActivity : ComponentActivity() {
         }
     }
 
-    fun getAllProducts(context: Context):List<Ingredient>{
+    fun getAllProducts(context: Context):List<Ingredient>? {
         return IngredientRepository(context).getAllProduct()
     }
 
@@ -174,16 +173,10 @@ class FoodActivity : ComponentActivity() {
 
     fun updateFavoriteIngredient(context: Context, name: String, favorite: Boolean) {
         IngredientRepository(context).updateIngredientFavorite(name, favorite)
-        RecommendProductRepository(context).updateMarkRecommendProduct(name, 1.0, favorite)
     }
 
     fun updateExceptionIngredient(context: Context, name: String, exception: Boolean) {
         IngredientRepository(context).updateIngredientException(name, exception)
-        RecommendProductRepository(context).updateMarkRecommendProduct(name, 0.0, exception)
-    }
-
-    fun getAllIngredients(context: Context): List<Ingredient> {
-        return IngredientRepository(context).getAllIngredients()
     }
 
     fun getAdvice(context: Context): String {

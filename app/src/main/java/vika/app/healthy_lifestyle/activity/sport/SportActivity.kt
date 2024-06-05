@@ -28,26 +28,8 @@ class SportActivity : ComponentActivity() {
             }
         }
     }
-    fun addNewPhysicalExercise(context: Context, name: String, met: Double, type: String, training: Boolean){
-        val exists = PhysicalExerciseRepository(context).isPhysicalExerciseExists(name)
 
-        if (exists) {
-            PhysicalExerciseRepository(context).insertPhysicalExercise(
-                PhysicalExercise(
-                    name = name,
-                    met = met,
-                    type = type,
-                    training = training
-                )
-            )
-        }
-    }
-
-    fun getAllTrainings(context: Context): List<PhysicalExercise> {
-        return PhysicalExerciseRepository(context).getAllTrainings()
-    }
-
-    fun add(context: Context, name: String, value: Double, date: String, option: String){
+    fun add(context: Context, name: String, value: Double, date: String){
         ActivismRepository(context).insertActivism(
             Activism(
                 name = name,
@@ -66,7 +48,7 @@ class SportActivity : ComponentActivity() {
         )
     }
 
-    fun getAll(context: Context): List<PhysicalExercise> {
+    fun getAll(context: Context): List<PhysicalExercise>? {
         return PhysicalExerciseRepository(context).getAll()
     }
 
