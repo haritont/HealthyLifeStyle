@@ -133,16 +133,19 @@ fun ProfileScreen() {
                 }
             }
 
-            val imt = weightState.value.toDouble() / (heightState.value.toDouble() / 100.0).pow(2)
-            val explanation = when {
-                imt < 18.5 -> "Недостаток веса"
-                imt < 25.0 -> "Нормальный вес"
-                imt < 30.0 -> "Предожирение"
-                imt < 35.0 -> "1 степень ожирения"
-                imt < 40.0 -> "2 степень ожирения"
-                else -> "3 степень ожирения"
+            if (weightState.value.isNotEmpty() && heightState.value.isNotEmpty()) {
+                val imt =
+                    weightState.value.toDouble() / (heightState.value.toDouble() / 100.0).pow(2)
+                val explanation = when {
+                    imt < 18.5 -> "Недостаток веса"
+                    imt < 25.0 -> "Нормальный вес"
+                    imt < 30.0 -> "Предожирение"
+                    imt < 35.0 -> "1 степень ожирения"
+                    imt < 40.0 -> "2 степень ожирения"
+                    else -> "3 степень ожирения"
+                }
+                Text(text = "Ваш ИМТ = %.2f (%s)".format(imt, explanation))
             }
-            Text(text = "Ваш ИМТ = %.2f (%s)".format(imt, explanation))
 
             val targets = listOf("Набрать вес", "Поддержать вес", "Снизить вес")
             val (selectedTarget, onTargetSelected) = remember { mutableStateOf(targets[targetState.value - 1]) }

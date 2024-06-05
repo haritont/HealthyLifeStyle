@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -64,7 +63,6 @@ class LoadingActivity : ComponentActivity() {
                 ) {
                     TextWelcome()
                     if (isLoading) {
-                        CircularProgressIndicator()
                         Text(text = "Загрузка данных...", modifier = Modifier.padding(top = 16.dp))
                     } else {
                         errorMessage?.let {
