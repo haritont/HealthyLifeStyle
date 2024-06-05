@@ -40,6 +40,7 @@ fun StatisticsScreen() {
                     "Жиры" -> StatisticsActivity().getFats(labels)
                     "Углеводы" -> StatisticsActivity().getCarbohydrates(labels)
                     "Спорт" -> StatisticsActivity().getActivism(labels)
+                    "Вес" ->  StatisticsActivity().getWeights(labels)
                     else -> {
                         mutableListOf()
                     }

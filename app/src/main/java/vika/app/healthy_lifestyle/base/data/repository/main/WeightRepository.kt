@@ -34,4 +34,8 @@ class WeightRepository (context: Context){
     fun getToday(): Weight? = runBlocking{
         weightDao.getByDate(DateToday().getToday())?.let{ weightMapper.toWeight(it) }
     }
+
+    fun getByDate(date: String): Weight? = runBlocking {
+        weightDao.getByDate(DateToday().getToday())?.let{ weightMapper.toWeight(it) }
+    }
 }
