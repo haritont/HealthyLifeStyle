@@ -23,20 +23,20 @@ class PersonalDataRepository(context: Context) {
         personalDataDao.insert(personalDataMapper.toPersonalDataEntity(personalDataEntity))
     }
 
-    fun getPersonalData(): PersonalData = runBlocking {
-        personalDataMapper.toPersonalData(personalDataDao.getLastEntry()!!)
+    fun getPersonalData(): PersonalData? = runBlocking {
+        personalDataDao.getLastEntry()?.let { personalDataMapper.toPersonalData(it) }
     }
 
     fun getName(): String = runBlocking {
-        getPersonalData().name
+        getPersonalData()!!.name
     }
 
     fun getWeight(): Double = runBlocking {
-        getPersonalData().weight
+        getPersonalData()!!.weight
     }
 
     fun getGender(): Int = runBlocking {
-        getPersonalData().genderId
+        getPersonalData()!!.genderId
     }
 
     fun getRowCountByToken(): Int = runBlocking {
@@ -52,7 +52,7 @@ class PersonalDataRepository(context: Context) {
         val data = getPersonalData()
         updateWeight(
             PersonalData(
-                genderId = data.genderId,
+                genderId = data!!.genderId,
                 height = data.height,
                 weight = weight,
                 birthDate = data.birthDate,

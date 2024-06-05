@@ -27,15 +27,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.runBlocking
 import vika.app.healthy_lifestyle.R
-import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
+import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
+import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
 
 class AuthorizationActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            startActivity(Intent(this@AuthorizationActivity, LoadingActivity::class.java))
+            if (PersonalDataRepository(this).getPersonalData() == null){
+                startActivity(Intent(this@AuthorizationActivity, RegistrationActivity::class.java))
+            }
+            else {
+                startActivity(Intent(this@AuthorizationActivity, LoadingActivity::class.java))
+            }
             finish()
             Healthy_LifestyleTheme {
                 Column(

@@ -157,32 +157,32 @@ class RecommendSystem(
         for (product in sortedProduct){
             if (product.mark == 0){
                 products.add(product)
-                kilocalories += product.kilocalories * product.value / 100
-                protein += product.proteins * product.value / 100
-                fats += product.fats * product.value / 100
-                carb += product.carbohydrates * product.value / 100
+                kilocalories += product.kilocalories * product.value / 100.0
+                protein += product.proteins * product.value / 100.0
+                fats += product.fats * product.value / 100.0
+                carb += product.carbohydrates * product.value / 100.0
             }
             else {
                 if (product.favorite) {
                     var value = product.value
                     when (product.mark) {
                         -1 -> {
-                            while (product.kilocalories * value / 100 / target!!.targetKilocalories * 100 > plan!!.kiloMax){
+                            while (product.kilocalories * value / 100.0 / target!!.targetKilocalories * 100.0 > plan!!.kiloMax){
                                 value -= value * 0.1
                             }
                         }
                         -2 -> {
-                            while (product.proteins * value / 100 / target!!.targetProteins * 100 > plan!!.proteinMax){
+                            while (product.proteins * value / 100.0 / target!!.targetProteins * 100.0 > plan!!.proteinMax){
                                 value -= value * 0.1
                             }
                         }
                         -3 -> {
-                            while (product.fats * value / 100 / target!!.targetFats * 100 > plan!!.fatMax){
+                            while (product.fats * value / 100.0 / target!!.targetFats * 100.0 > plan!!.fatMax){
                                 value -= value * 0.1
                             }
                         }
                         else -> {
-                            while (product.carbohydrates * value / 100 / target!!.targetCarbohydrates * 100 > plan!!.carbMax){
+                            while (product.carbohydrates * value / 100.0 / target!!.targetCarbohydrates * 100.0 > plan!!.carbMax){
                                 value -= value * 0.1
                             }
                         }
@@ -200,10 +200,10 @@ class RecommendSystem(
                             mark = product.mark
                         )
                     )
-                    kilocalories += product.kilocalories * value / 100
-                    protein += product.proteins * value / 100
-                    fats += product.fats * value / 100
-                    carb += product.carbohydrates * value / 100
+                    kilocalories += product.kilocalories * value / 100.0
+                    protein += product.proteins * value / 100.0
+                    fats += product.fats * value / 100.0
+                    carb += product.carbohydrates * value / 100.0
                 }
                 else{
                     replacedProduct.add(product)
@@ -211,10 +211,10 @@ class RecommendSystem(
             }
         }
 
-        var targetKilo = (plan!!.kiloMax.toDouble() / 100 * target!!.targetKilocalories) - kilocalories
-        var targetProtein = (plan.proteinMax.toDouble() / 100 * target.targetProteins) - protein
-        var targetFat = (plan.fatMax.toDouble() / 100 * target.targetFats) - fats
-        var targetCarb = (plan.carbMax.toDouble() / 100 * target.targetCarbohydrates) - carb
+        var targetKilo = (plan!!.kiloMax.toDouble() / 100.0 * target!!.targetKilocalories) - kilocalories
+        var targetProtein = (plan.proteinMax.toDouble() / 100.0 * target.targetProteins) - protein
+        var targetFat = (plan.fatMax.toDouble() / 100.0 * target.targetFats) - fats
+        var targetCarb = (plan.carbMax.toDouble() / 100.0 * target.targetCarbohydrates) - carb
         for (product in replacedProduct){
             val value = product.value
             val replaceProduct = IngredientRepository(context).getIngredientByValueTarget(
@@ -224,10 +224,10 @@ class RecommendSystem(
                 targetFat,
                 targetCarb
             ).shuffled().take(1)[0]
-            targetKilo -= replaceProduct.kilocalories * value / 100
-            targetProtein -= replaceProduct.proteins  * value / 100
-            targetFat -= replaceProduct.fats  * value / 100
-            targetCarb -= replaceProduct.carbohydrates  * value / 100
+            targetKilo -= replaceProduct.kilocalories * value / 100.0
+            targetProtein -= replaceProduct.proteins  * value / 100.0
+            targetFat -= replaceProduct.fats  * value / 100.0
+            targetCarb -= replaceProduct.carbohydrates  * value / 100.0
             products.add(
                 ProductMark(
                     name = product.name,
