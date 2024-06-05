@@ -67,6 +67,15 @@ fun ProfileScreen() {
                 }
             )
 
+            Text(text = context.getString(R.string.birth_date))
+            DatePickerWithDialog(
+                currentDate = birthDate,
+                getCurrentTime =
+                { currentTime ->
+                    birthDate = currentTime
+                }
+            )
+
             Row(
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
@@ -120,14 +129,43 @@ fun ProfileScreen() {
                 }
             }
 
-            Text(text = context.getString(R.string.birth_date))
-            DatePickerWithDialog(
-                currentDate = birthDate,
-                getCurrentTime =
-                { currentTime ->
-                    birthDate = currentTime
+            if (weightState.value != "" && heightState.value != "") {
+                val imtState = remember {
+                    mutableStateOf(
+                        weightState.value.toDouble() / (heightState.value.toDouble() * heightState.value.toDouble())
+                    )
                 }
-            )
+                val explanationState = remember {
+                    mutableStateOf(
+                        when {
+                            imtState.value < 18.5 -> {
+                                "Недостаток веса"
+                            }
+                            imtState.value < 25.0 -> {
+                                "Нормальный вес"
+                            }
+                            imtState.value < 30.0 -> {
+                                "Предожирение"
+                            }
+                            imtState.value < 35.0 -> {
+                                "1 степень ожирения"
+                            }
+                            imtState.value < 40.0 -> {
+                                "2 степень ожирения"
+                            }
+                            else -> {
+                                "3 степень ожирения"
+                            }
+                        }
+                    )
+                }
+                val text = remember {
+                    mutableStateOf(
+                        "Ваш ИМТ = $imtState ($explanationState)"
+                    )
+                }
+                Text(text = text.value)
+            }
 
             val targets = listOf("Набрать вес", "Поддержать вес", "Снизить вес")
             val (selectedTarget, onTargetSelected) = remember { mutableStateOf(targets[targetState.value - 1]) }
