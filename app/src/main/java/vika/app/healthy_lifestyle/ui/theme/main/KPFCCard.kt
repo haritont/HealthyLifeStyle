@@ -1,9 +1,12 @@
 package vika.app.healthy_lifestyle.ui.theme.main
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,8 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import vika.app.healthy_lifestyle.R
+import vika.app.healthy_lifestyle.activity.main.MainActivity
 import vika.app.healthy_lifestyle.bean.KPFC
 import vika.app.healthy_lifestyle.ui.theme.app.Blue
 import vika.app.healthy_lifestyle.ui.theme.app.BlueUltraLight
@@ -70,9 +76,21 @@ fun KPFCCard(
 
 @Composable
 fun KPFCList(
-    kpfc: List <KPFC>
+    kpfc: List <KPFC>,
+    context: Context
 ){
     LazyRow {
+        item {
+            CircularProgressBar(
+                text = LocalContext.current.getString(R.string.kilocalories),
+                progressValue = MainActivity().getProgressKilocalories(context),
+                targetValue = MainActivity().getTargetKilocalories(context),
+                burnedValue = MainActivity().getBurnedKilocalories(context)
+            )
+
+            Spacer(modifier = Modifier.width(5.dp))
+        }
+
         items(kpfc) { item ->
             KPFCCard(
                 text = item.text,
