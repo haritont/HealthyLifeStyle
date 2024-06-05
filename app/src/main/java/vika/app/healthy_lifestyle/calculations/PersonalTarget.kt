@@ -1,6 +1,5 @@
 package vika.app.healthy_lifestyle.calculations
 
-import android.os.Build
 import vika.app.healthy_lifestyle.bean.main.PersonalData
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -15,9 +14,10 @@ class PersonalTarget(
     var water: Double = 0.0
 ) {
     fun count(personalData: PersonalData) {
-        val weight = personalData.weight ?: 0.0
+        val weight = personalData.weight
         val age = calculateAge(personalData.birthDate)
-        val activityFactor = personalData.activityRate ?: 1.0
+        val activityFactor = personalData.activityRate
+        val target = personalData.target
 
         kilocalories = when {
             personalData.genderId == 1 && age in 18..30 ->
@@ -41,20 +41,24 @@ class PersonalTarget(
             else -> 0.0
         }
 
-        proteins = round((kilocalories * 0.3) / 4.1)
-        fats = round((kilocalories * 0.3) / 9.3)
-        carbohydrates = round((kilocalories * 0.4) / 4.1)
+        if (target == 0){
+            kilocalories += kilocalories * 0.2
+        }
+        else if (target == 2){
+            kilocalories -= kilocalories * 0.2
+        }
+
+        proteins = round((kilocalories * 0.35) / 4.1)
+        fats = round((kilocalories * 0.35) / 9.3)
+        carbohydrates = round((kilocalories * 0.65) / 4.1)
         kilocalories = round(kilocalories)
 
         water = (30 * weight) / 1000
     }
 
     private fun calculateAge(birthDate: String?): Int {
-        val formatter = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val formatter =
             DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
         val birthLocalDate = LocalDate.parse(birthDate, formatter)
         val currentDate = LocalDate.now()
         return birthLocalDate.until(currentDate, ChronoUnit.YEARS).toInt()
