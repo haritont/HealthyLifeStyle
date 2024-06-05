@@ -33,6 +33,7 @@ import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
 import vika.app.healthy_lifestyle.ui.theme.general.DatePickerWithDialog
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
+import kotlin.math.pow
 
 class RegistrationActivity: ComponentActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +57,7 @@ class RegistrationActivity: ComponentActivity()  {
                     item {
                         Text(text = "Заполните свои данные")
                         TextFieldBlue(
-                            value = "",
+                            value = nameState.value,
                             label = {
                                 Text(
                                     LocalContext.current.getString(R.string.name),
@@ -92,7 +93,7 @@ class RegistrationActivity: ComponentActivity()  {
                                 modifier = Modifier.weight(1f)
                             ) {
                                 TextFieldBlue(
-                                    value = "",
+                                    value = heightState.value,
                                     label = {
                                         Text(
                                             LocalContext.current.getString(R.string.height),
@@ -116,7 +117,7 @@ class RegistrationActivity: ComponentActivity()  {
                                 modifier = Modifier.weight(1f)
                             ) {
                                 TextFieldBlue(
-                                    value = "",
+                                    value = weightState.value,
                                     label = {
                                         Text(
                                             LocalContext.current.getString(R.string.weight),
@@ -140,7 +141,7 @@ class RegistrationActivity: ComponentActivity()  {
                         if (weightState.value != "" && heightState.value != "") {
                             val imtState = remember {
                                 mutableStateOf(
-                                    weightState.value.toDouble() / (heightState.value.toDouble() * heightState.value.toDouble())
+                                    weightState.value.toDouble() / (heightState.value.toDouble() / 100.0).pow(2)
                                 )
                             }
                             val explanationState = remember {
@@ -169,7 +170,7 @@ class RegistrationActivity: ComponentActivity()  {
                             }
                             val text = remember {
                                 mutableStateOf(
-                                   "Ваш ИМТ = $imtState ($explanationState)"
+                                    "Ваш ИМТ = ${imtState.value} (${explanationState.value})"
                                 )
                             }
                             Text(text = text.value)

@@ -28,15 +28,16 @@ import vika.app.healthy_lifestyle.bean.main.PersonalData
 import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
 import vika.app.healthy_lifestyle.ui.theme.general.DatePickerWithDialog
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
+import kotlin.math.pow
 
 @Composable
 fun ProfileScreen() {
     val context = LocalContext.current
 
     val personalData = ProfileActivity().getPersonalData(context)
-    val nameState = remember { mutableStateOf("") }
-    val heightState = remember { mutableStateOf("") }
-    val weightState = remember { mutableStateOf("") }
+    val nameState = remember { mutableStateOf(personalData.name) }
+    val heightState = remember { mutableStateOf(personalData.height.toString()) }
+    val weightState = remember { mutableStateOf(personalData.weight.toString()) }
     var birthDate = personalData.birthDate
     val targetState = remember { mutableStateOf(personalData.target) }
     val activityRateState = remember { mutableStateOf(personalData.activityRate) }
@@ -48,7 +49,7 @@ fun ProfileScreen() {
     ) {
         item {
             TextFieldBlue(
-                value = personalData.name,
+                value = nameState.value,
                 label = {
                     Text(
                         LocalContext.current.getString(R.string.name),
@@ -84,7 +85,7 @@ fun ProfileScreen() {
                     modifier = Modifier.weight(1f)
                 ) {
                     TextFieldBlue(
-                        value = personalData.height.toString(),
+                        value = heightState.value.toString(),
                         label = {
                             Text(
                                 LocalContext.current.getString(R.string.height),
@@ -108,7 +109,7 @@ fun ProfileScreen() {
                     modifier = Modifier.weight(1f)
                 ) {
                     TextFieldBlue(
-                        value = personalData.weight.toString(),
+                        value = weightState.value.toString(),
                         label = {
                             Text(
                                 LocalContext.current.getString(R.string.weight),
@@ -129,43 +130,47 @@ fun ProfileScreen() {
                 }
             }
 
-            if (weightState.value != "" && heightState.value != "") {
-                val imtState = remember {
-                    mutableStateOf(
-                        weightState.value.toDouble() / (heightState.value.toDouble() * heightState.value.toDouble())
-                    )
-                }
-                val explanationState = remember {
-                    mutableStateOf(
-                        when {
-                            imtState.value < 18.5 -> {
-                                "Недостаток веса"
-                            }
-                            imtState.value < 25.0 -> {
-                                "Нормальный вес"
-                            }
-                            imtState.value < 30.0 -> {
-                                "Предожирение"
-                            }
-                            imtState.value < 35.0 -> {
-                                "1 степень ожирения"
-                            }
-                            imtState.value < 40.0 -> {
-                                "2 степень ожирения"
-                            }
-                            else -> {
-                                "3 степень ожирения"
-                            }
-                        }
-                    )
-                }
-                val text = remember {
-                    mutableStateOf(
-                        "Ваш ИМТ = $imtState ($explanationState)"
-                    )
-                }
-                Text(text = text.value)
+            val imtState = remember {
+                mutableStateOf(
+                    weightState.value.toDouble() / (heightState.value.toDouble() / 100.0).pow(2)
+                )
             }
+            val explanationState = remember {
+                mutableStateOf(
+                    when {
+                        imtState.value < 18.5 -> {
+                            "Недостаток веса"
+                        }
+
+                        imtState.value < 25.0 -> {
+                            "Нормальный вес"
+                        }
+
+                        imtState.value < 30.0 -> {
+                            "Предожирение"
+                        }
+
+                        imtState.value < 35.0 -> {
+                            "1 степень ожирения"
+                        }
+
+                        imtState.value < 40.0 -> {
+                            "2 степень ожирения"
+                        }
+
+                        else -> {
+                            "3 степень ожирения"
+                        }
+                    }
+                )
+            }
+            val text = remember {
+                mutableStateOf(
+                    "Ваш ИМТ = ${imtState.value} (${explanationState.value})"
+                )
+            }
+            Text(text = text.value)
+
 
             val targets = listOf("Набрать вес", "Поддержать вес", "Снизить вес")
             val (selectedTarget, onTargetSelected) = remember { mutableStateOf(targets[targetState.value - 1]) }
@@ -237,7 +242,8 @@ fun ProfileScreen() {
                                 selected = (text == selectedActivity),
                                 onClick = {
                                     onActivitySelected(text)
-                                    activityRateState.value = activities.entries.find { it.value == text }!!.key
+                                    activityRateState.value =
+                                        activities.entries.find { it.value == text }!!.key
                                 }
                             )
                             Text(text = text)
