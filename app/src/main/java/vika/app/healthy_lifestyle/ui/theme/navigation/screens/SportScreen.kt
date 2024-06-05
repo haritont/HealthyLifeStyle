@@ -42,16 +42,18 @@ fun SportScreen () {
 
     val itemListPhysicalExercises = mutableListOf<Item>()
     val physicalExercises = SportActivity().getAll(context)
-    for (physicalExercise in physicalExercises) {
-        itemListPhysicalExercises.add(
-            Item(
-                physicalExercise.name,
-                physicalExercise.type,
-                physicalExercise.favorite,
-                physicalExercise.exception,
-                if (physicalExercise.training) 3 else 2
+    if (physicalExercises != null) {
+        for (physicalExercise in physicalExercises) {
+            itemListPhysicalExercises.add(
+                Item(
+                    physicalExercise.name,
+                    physicalExercise.type,
+                    physicalExercise.favorite,
+                    physicalExercise.exception,
+                    if (physicalExercise.training) 3 else 2
+                )
             )
-        )
+        }
     }
     val filteredListPhysicalExercises by remember { mutableStateOf(itemListPhysicalExercises) }
 
@@ -143,13 +145,12 @@ fun SportScreen () {
             ) {
                 vika.app.healthy_lifestyle.ui.theme.general.list.List(
                     itemList = filteredListPhysicalExercises,
-                    add = { name, value, date, option ->
+                    add = { name, value, date, _ ->
                         SportActivity().add(
                             context,
                             name,
                             value,
-                            date,
-                            option
+                            date
                         )
                         coroutineScope.launch {
                             listState.animateScrollToItem(index = 0)

@@ -49,7 +49,7 @@ import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
 
 @Composable
 fun Habits(
-    habitList: List<Habit>
+    habitList: List<Habit>?
 ) {
     var openDialogAddHabit by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -68,11 +68,13 @@ fun Habits(
         }
     }
 
-    LazyRow {
-        items(habitList) { item ->
-            HabitCard(
-                item
-            )
+    if (habitList != null) {
+        LazyRow {
+            items(habitList) { item ->
+                HabitCard(
+                    item
+                )
+            }
         }
     }
 

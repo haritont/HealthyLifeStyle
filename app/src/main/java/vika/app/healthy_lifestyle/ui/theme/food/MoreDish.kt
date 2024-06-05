@@ -74,17 +74,19 @@ fun MoreDish(
         val dish = FoodActivity().getDish(context, title)
 
         val itemListIngredient = mutableListOf<Item>()
-        val ingredients = FoodActivity().getAllIngredients(context)
-        for (ingredient in ingredients) {
-            itemListIngredient.add(
-                Item(
-                    ingredient.name,
-                    ingredient.type,
-                    ingredient.favorite,
-                    ingredient.exception,
-                    if (ingredient.isDish) 1 else 0
+        val ingredients = FoodActivity().getAllProducts(context)
+        if (ingredients != null) {
+            for (ingredient in ingredients) {
+                itemListIngredient.add(
+                    Item(
+                        ingredient.name,
+                        ingredient.type,
+                        ingredient.favorite,
+                        ingredient.exception,
+                        if (ingredient.isDish) 1 else 0
+                    )
                 )
-            )
+            }
         }
         var filteredListIngredient by remember { mutableStateOf(itemListIngredient) }
 
@@ -164,7 +166,7 @@ fun MoreDish(
         Dialog(
             onDismissRequest = {
                 openDialog = false
-                onOpenChange(openDialog)
+                onOpenChange(false)
             }
         ) {
             Card(
@@ -528,7 +530,7 @@ fun MoreDish(
                                         selectListIngredient
                                     )
                                     openDialog = false
-                                    onOpenChange(openDialog)
+                                    onOpenChange(false)
                                     Toast.makeText(
                                         context,
                                         "Изменено: ".plus(nameState.value),
@@ -543,7 +545,7 @@ fun MoreDish(
                         TextButton(
                             onClick = {
                                 openDialog = false
-                                onOpenChange(openDialog)
+                                onOpenChange(false)
                             },
                             modifier = Modifier.padding(8.dp),
                         ) {

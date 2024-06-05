@@ -25,14 +25,22 @@ class CreateAdvice {
     fun getProductAdvice(context: Context, data: PersonalData, meal: String): String {
         val advice = "Попробуйте на ".plus(meal.lowercase()).plus(" : ")
 
-        val products = RecommendSystem(context, data.target, MealCalc().getIndexMeal(meal)).getProducts(1)
+        val products =
+            RecommendSystem(context, data.target, MealCalc().getIndexMeal(meal)).getProducts(1)
 
-        return advice.plus(products[0].product)
+        if (products != null) {
+            return advice.plus(products[0].name)
+        }
+        return "Совет скоро появится"
     }
 
     fun getSportAdvice(context: Context, data: PersonalData): String{
         val advice = "Попробуйте заняться: "
         val physicalExercise = RecommendSystem(context, data.target, 0).getSports(1)
-        return advice.plus(physicalExercise[0].name)
+
+        if (physicalExercise != null) {
+            return advice.plus(physicalExercise[0].name)
+        }
+        return "Совет скоро появится"
     }
 }

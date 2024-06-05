@@ -24,23 +24,23 @@ class RecommendSystem(
     var targetFat = ""
     var targetCarb = ""
 
-    fun getProducts(count: Int): List<Ingredient>{
-        return getListProduct().shuffled().take(count)
+    fun getProducts(count: Int): List<Ingredient>?{
+        return getListProduct()?.shuffled()?.take(count)
     }
 
-    fun getSports(count: Int): List<PhysicalExercise>{
+    fun getSports(count: Int): List<PhysicalExercise>?{
         val recommendSports = mutableListOf<PhysicalExercise>()
         val physicalExercises = PhysicalExerciseRepository(context).getAllPhysicalExercises()
         val plan = MealPlanManager().getSportPlan(target)
 
-        for(physicalExercise in physicalExercises){
+        for (physicalExercise in physicalExercises){
             if (physicalExercise.type in plan!!.types){
                 recommendSports.add(physicalExercise)
             }
         }
-        return recommendSports.shuffled().take(count)
+        return recommendSports?.shuffled()?.take(count)
     }
-    private fun getListProduct(): List<Ingredient>{
+    private fun getListProduct(): List<Ingredient>?{
         val types = listOf("Фрукт", "Рыба", "Крупа", "Овощ", "Мясо", "Молочное", "Яйцо")
         val products = mutableListOf<Ingredient>()
         for (type in types){

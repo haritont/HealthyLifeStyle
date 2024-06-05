@@ -88,17 +88,19 @@ fun BarcodeScannerScreen() {
     var code by remember { mutableStateOf("") }
 
     val itemListIngredient = mutableListOf<Item>()
-    val ingredients = FoodActivity().getAllIngredients(context)
-    for (ingredient in ingredients) {
-        itemListIngredient.add(
-            Item(
-                ingredient.name,
-                ingredient.type,
-                ingredient.favorite,
-                ingredient.exception,
-                if (ingredient.isDish) 1 else 0
+    val ingredients = FoodActivity().getAllProducts(context)
+    if (ingredients != null) {
+        for (ingredient in ingredients) {
+            itemListIngredient.add(
+                Item(
+                    ingredient.name,
+                    ingredient.type,
+                    ingredient.favorite,
+                    ingredient.exception,
+                    if (ingredient.isDish) 1 else 0
+                )
             )
-        )
+        }
     }
 
     var filteredListIngredient by remember { mutableStateOf(itemListIngredient) }

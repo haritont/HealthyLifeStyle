@@ -41,16 +41,18 @@ fun FoodScreen() {
 
     val itemListIngredient = mutableListOf<Item>()
     val ingredients = FoodActivity().getAllProducts(context)
-    for (ingredient in ingredients) {
-        itemListIngredient.add(
-            Item(
-                ingredient.name,
-                ingredient.type,
-                ingredient.favorite,
-                ingredient.exception,
-                if (ingredient.isDish) 1 else 0
+    if (ingredients != null) {
+        for (ingredient in ingredients) {
+            itemListIngredient.add(
+                Item(
+                    ingredient.name,
+                    ingredient.type,
+                    ingredient.favorite,
+                    ingredient.exception,
+                    if (ingredient.isDish) 1 else 0
+                )
             )
-        )
+        }
     }
     val filteredListIngredient by remember { mutableStateOf(itemListIngredient) }
 

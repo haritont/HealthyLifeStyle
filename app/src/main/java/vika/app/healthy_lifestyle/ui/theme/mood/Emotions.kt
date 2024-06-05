@@ -31,7 +31,7 @@ import vika.app.healthy_lifestyle.ui.theme.general.emojiMap
 
 @Composable
 fun Emotions (
-    emotionList: List<Emotion>
+    emotionList: List<Emotion>?
 ) {
     val context = LocalContext.current
     Text(
@@ -40,40 +40,47 @@ fun Emotions (
         fontWeight = FontWeight.Bold,
         color = Black
     )
-    LazyRow (
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        items(emotionList) { item ->
-            var isChose by remember {
-                mutableStateOf(
-                EmotionRecordRepository(context).getByIdAndDate(item.id, DateToday().getToday()) != null
-                )
-            }
-            Surface(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .border(
-                        width = if (isChose) 3.dp else 0.dp,
-                        color = if (isChose) { if (item.isPositive) Green else Red} else Color.Transparent,
-                        shape = RoundedCornerShape(10.dp)
+    if (emotionList != null) {
+        LazyRow(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            items(emotionList) { item ->
+                var isChose by remember {
+                    mutableStateOf(
+                        EmotionRecordRepository(context).getByIdAndDate(
+                            item.id,
+                            DateToday().getToday()
+                        ) != null
                     )
-            ) {
-                emojiMap[item.name]?.let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.clickable
-                        {
-                            isChose = !isChose
-                            EmotionRecordRepository(context).insertEmotionRecord(
-                                EmotionRecord(
-                                    date = DateToday().getToday(),
-                                    idEmotion = item.id
+                }
+                Surface(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .border(
+                            width = if (isChose) 3.dp else 0.dp,
+                            color = if (isChose) {
+                                if (item.isPositive) Green else Red
+                            } else Color.Transparent,
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                ) {
+                    emojiMap[item.name]?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.clickable
+                            {
+                                isChose = !isChose
+                                EmotionRecordRepository(context).insertEmotionRecord(
+                                    EmotionRecord(
+                                        date = DateToday().getToday(),
+                                        idEmotion = item.id
+                                    )
                                 )
-                            )
-                        }
+                            }
 
-                    )
+                        )
+                    }
                 }
             }
         }

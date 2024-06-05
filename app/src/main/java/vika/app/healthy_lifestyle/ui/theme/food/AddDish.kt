@@ -59,17 +59,19 @@ fun AddDish(
     val context = LocalContext.current
 
     val itemListIngredient = mutableListOf<Item>()
-    val ingredients = FoodActivity().getAllIngredients(context)
-    for (ingredient in ingredients) {
-        itemListIngredient.add(
-            Item(
-                ingredient.name,
-                ingredient.type,
-                ingredient.favorite,
-                ingredient.exception,
-                if (ingredient.isDish) 1 else 0
+    val ingredients = FoodActivity().getAllProducts(context)
+    if (ingredients != null) {
+        for (ingredient in ingredients) {
+            itemListIngredient.add(
+                Item(
+                    ingredient.name,
+                    ingredient.type,
+                    ingredient.favorite,
+                    ingredient.exception,
+                    if (ingredient.isDish) 1 else 0
+                )
             )
-        )
+        }
     }
     var filteredListIngredient by remember { mutableStateOf(itemListIngredient) }
     val selectListIngredient = remember { mutableStateListOf<ItemText>() }
@@ -281,7 +283,7 @@ fun AddDish(
                             TextButton(
                                 onClick = {
                                     openDialog = false
-                                    onOpenChange(openDialog)
+                                    onOpenChange(false)
                                 },
                                 modifier = Modifier.padding(8.dp),
                             ) {
