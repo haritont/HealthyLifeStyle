@@ -39,13 +39,13 @@ fun BarChartMPA(values: List<Float>, dates: List<String>) {
                         BarEntry((index + 1).toFloat(), value)
                     }
 
-                    val dataSet = BarDataSet(entries, "Калории").apply {
+                    val dataSet = BarDataSet(entries, "").apply {
                         color = Color.argb(200, 73, 204, 253)
                         valueTextColor = Color.BLACK
                         valueTextSize = 15f
                         valueFormatter = object : ValueFormatter() {
                             override fun getBarLabel(entry: BarEntry?): String {
-                                return entry?.y?.toInt()?.toString() ?: ""
+                                return entry?.y?.let { String.format("%.1f", it) } ?: ""
                             }
                         }
                     }

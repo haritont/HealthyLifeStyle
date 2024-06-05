@@ -40,7 +40,7 @@ fun ProfileScreen() {
     val personalData = ProfileActivity().getPersonalData(context)
     val nameState = remember { mutableStateOf(personalData.name) }
     val heightState = remember { mutableStateOf(personalData.height.toString()) }
-    val weightState = remember { mutableStateOf(personalData.weight.toString()) }
+    val weightState = remember { mutableStateOf(WeightRepository(context).getToday()!!.value.toString()) }
     var birthDate = personalData.birthDate
     val targetState = remember { mutableStateOf(personalData.target) }
     val activityRateState = remember { mutableStateOf(personalData.activityRate) }
