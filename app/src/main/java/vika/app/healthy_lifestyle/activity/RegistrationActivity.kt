@@ -1,5 +1,6 @@
 package vika.app.healthy_lifestyle.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -267,6 +268,7 @@ class RegistrationActivity: ComponentActivity()  {
                                     target = targetState.value
                                 )
                             )
+                            startActivity(Intent(this@RegistrationActivity, LoadingActivity::class.java))
                         }
                     }
                 }
