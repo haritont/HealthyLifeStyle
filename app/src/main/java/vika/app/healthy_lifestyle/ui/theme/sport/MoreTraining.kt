@@ -91,9 +91,15 @@ fun MoreTraining(
         val selectListPhysicalExercise = remember { mutableStateListOf<ItemText>() }
         remember {
             trainingList.forEach { train ->
-                val exerciseName = SportActivity().getPhysicalExerciseById(context, train.idPhysicalExercise).name
+                val exerciseName =
+                    SportActivity().getPhysicalExerciseById(context, train.idPhysicalExercise).name
                 if (selectListPhysicalExercise.none { it.title == exerciseName }) {
-                    selectListPhysicalExercise.add(ItemText(exerciseName, train.valuePhysicalExercise))
+                    selectListPhysicalExercise.add(
+                        ItemText(
+                            exerciseName,
+                            train.valuePhysicalExercise
+                        )
+                    )
                 }
             }
         }
@@ -185,175 +191,168 @@ fun MoreTraining(
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Surface(
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier
-                            .border(3.dp, colorName, RoundedCornerShape(10.dp))
-                    ) {
-                        TextFieldBlue(
-                            value = nameState.value,
-                            label = {
-                                Text(
-                                    LocalContext.current.getString(R.string.input_name),
-                                    style = MaterialTheme.typography.bodySmall
-                                )
-                            },
-                            onValueChange = { newLogin -> nameState.value = newLogin },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                            leadingIcon = {
-                                Image(
-                                    painterResource(R.drawable.sport),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(25.dp)
-                                )
-                            }
-                        )
-                    }
-
-                    LazyColumn(
-                        modifier = Modifier.height(500.dp)
-                    ) {
+                    LazyColumn {
                         item {
-                            Text(
-                                text = "Добавленные упражнения",
-                                modifier = Modifier.padding(8.dp),
-                                fontWeight = FontWeight.Bold,
-                                color = Black
-                            )
-
+                            Spacer(modifier = Modifier.height(10.dp))
                             Surface(
                                 shape = RoundedCornerShape(10.dp),
                                 modifier = Modifier
-                                    .border(3.dp, colorAdd, RoundedCornerShape(10.dp))
+                                    .border(3.dp, colorName, RoundedCornerShape(10.dp))
                             ) {
-                                LazyColumn(
-                                    modifier = Modifier
-                                        .width(300.dp)
-                                        .height(200.dp)
-                                ) {
-                                    items(selectListPhysicalExercise) { item ->
-                                        key(item) {
-                                            ItemListDelete(
-                                                title = item.title,
-                                                value = item.value,
-                                                delete = { title ->
-                                                    selectListPhysicalExercise.remove(
-                                                        selectListPhysicalExercise.find { it.title == title }
+                                TextFieldBlue(
+                                    value = nameState.value,
+                                    label = {
+                                        Text(
+                                            LocalContext.current.getString(R.string.input_name),
+                                            style = MaterialTheme.typography.bodySmall
+                                        )
+                                    },
+                                    onValueChange = { newLogin -> nameState.value = newLogin },
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                                    leadingIcon = {
+                                        Image(
+                                            painterResource(R.drawable.sport),
+                                            contentDescription = null,
+                                            modifier = Modifier
+                                                .size(25.dp)
+                                        )
+                                    }
+                                )
+                            }
+
+                            LazyColumn(
+                                modifier = Modifier.height(500.dp)
+                            ) {
+                                item {
+                                    Text(
+                                        text = "Добавленные упражнения",
+                                        modifier = Modifier.padding(8.dp),
+                                        fontWeight = FontWeight.Bold,
+                                        color = Black
+                                    )
+
+                                    Surface(
+                                        shape = RoundedCornerShape(10.dp),
+                                        modifier = Modifier
+                                            .border(3.dp, colorAdd, RoundedCornerShape(10.dp))
+                                    ) {
+                                        LazyColumn(
+                                            modifier = Modifier
+                                                .width(300.dp)
+                                                .height(200.dp)
+                                        ) {
+                                            items(selectListPhysicalExercise) { item ->
+                                                key(item) {
+                                                    ItemListDelete(
+                                                        title = item.title,
+                                                        value = item.value,
+                                                        delete = { title ->
+                                                            selectListPhysicalExercise.remove(
+                                                                selectListPhysicalExercise.find { it.title == title }
+                                                            )
+                                                            val physicalExercise =
+                                                                SportActivity().getPhysicalExerciseByName(
+                                                                    context,
+                                                                    title
+                                                                )
+                                                            metState.value =
+                                                                (metState.value.toDouble() - (item.value / 60.0) * physicalExercise.met).toString()
+                                                        }
                                                     )
-                                                    val physicalExercise =
-                                                        SportActivity().getPhysicalExerciseByName(
-                                                            context,
-                                                            title
-                                                        )
-                                                    metState.value =
-                                                        (metState.value.toDouble() - (item.value / 60.0) * physicalExercise.met).toString()
                                                 }
-                                            )
+                                            }
+                                        }
+                                    }
+
+                                    Search(
+                                        itemList = itemListPhysicalExercise,
+                                        onSearchResults = {
+                                            filteredListPhysicalExercise = it.toMutableList()
+                                        }
+                                    )
+
+                                    LazyColumn(
+                                        modifier = Modifier
+                                            .width(300.dp)
+                                            .height(200.dp)
+                                    ) {
+                                        items(filteredListPhysicalExercise) { item ->
+                                            key(item.title) {
+                                                ItemListText(
+                                                    title = item.title,
+                                                    textInDialog = "Введите время выполнения в мин",
+                                                    add = { title, value ->
+                                                        if (selectListPhysicalExercise.none { it.title == title }) {
+                                                            selectListPhysicalExercise.add(
+                                                                ItemText(
+                                                                    title,
+                                                                    value
+                                                                )
+                                                            )
+                                                        }
+                                                        val physicalExercise =
+                                                            SportActivity().getPhysicalExerciseByName(
+                                                                context,
+                                                                title
+                                                            )
+                                                        metState.value =
+                                                            (metState.value.toDouble() + (value / 60.0) * physicalExercise.met).toString()
+                                                    }
+                                                )
+                                            }
                                         }
                                     }
                                 }
                             }
 
-                            Search(
-                                itemList = itemListPhysicalExercise,
-                                onSearchResults = {
-                                    filteredListPhysicalExercise = it.toMutableList()
-                                }
-                            )
-
-                            LazyColumn(
-                                modifier = Modifier
-                                    .width(300.dp)
-                                    .height(200.dp)
+                            Row(
+                                horizontalArrangement = Arrangement.Center
                             ) {
-                                items(filteredListPhysicalExercise) { item ->
-                                    key(item.title) {
-                                        ItemListText(
-                                            title = item.title,
-                                            textInDialog = "Введите время выполнения в мин",
-                                            add = { title, value ->
-                                                if (selectListPhysicalExercise.none { it.title == title }) {
-                                                    selectListPhysicalExercise.add(ItemText(title, value))
-                                                }
-                                                val physicalExercise = SportActivity().getPhysicalExerciseByName(context, title)
-                                                metState.value += (value / 60.0) * physicalExercise.met
-                                            }
-                                        )
-                                    }
+                                TextButton(
+                                    onClick = {
+                                        var check = true
+                                        if (nameState.value == "") {
+                                            check = false
+                                            colorName = RedLight
+                                        }
+                                        if (selectListPhysicalExercise.size == 0) {
+                                            check = false
+                                            colorAdd = RedLight
+                                        }
+                                        if (check) {
+                                            SportActivity().updateTraining(
+                                                context,
+                                                training.id,
+                                                nameState.value,
+                                                metState.value.replace(",", ".").toDouble(),
+                                                typeState.value,
+                                                favoriteState,
+                                                exceptionState,
+                                                selectListPhysicalExercise
+                                            )
+                                            openDialog = false
+                                            onOpenChange(false)
+                                            Toast.makeText(
+                                                context,
+                                                "Изменено: ".plus(nameState.value),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    },
+                                    modifier = Modifier.padding(8.dp),
+                                ) {
+                                    Text("Ок")
+                                }
+                                TextButton(
+                                    onClick = {
+                                        openDialog = false
+                                        onOpenChange(false)
+                                    },
+                                    modifier = Modifier.padding(8.dp),
+                                ) {
+                                    Text("Отмена")
                                 }
                             }
-                            TextFieldBlue(
-                                value = "%.1f".format(metState.value),
-                                label = {
-                                    Text(
-                                        LocalContext.current.getString(R.string.met),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                },
-                                onValueChange = { newLogin ->
-                                    metState.value = newLogin
-                                },
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                leadingIcon = {
-                                    Image(
-                                        painterResource(R.drawable.sport),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(25.dp)
-                                    )
-                                }
-                            )
-                        }
-                    }
-
-                    Row(
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        TextButton(
-                            onClick = {
-                                var check = true
-                                if (nameState.value == ""){
-                                    check = false
-                                    colorName = RedLight
-                                }
-                                if (selectListPhysicalExercise.size == 0){
-                                    check = false
-                                    colorAdd = RedLight
-                                }
-                                if (check) {
-                                    SportActivity().updateTraining(
-                                        context,
-                                        training.id,
-                                        nameState.value,
-                                        metState.value.replace(",", ".").toDouble(),
-                                        typeState.value,
-                                        favoriteState,
-                                        exceptionState,
-                                        selectListPhysicalExercise
-                                    )
-                                    openDialog = false
-                                    onOpenChange(false)
-                                    Toast.makeText(
-                                        context,
-                                        "Изменено: ".plus(nameState.value),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            },
-                            modifier = Modifier.padding(8.dp),
-                        ) {
-                            Text("Ок")
-                        }
-                        TextButton(
-                            onClick = {
-                                openDialog = false
-                                onOpenChange(false)
-                            },
-                            modifier = Modifier.padding(8.dp),
-                        ) {
-                            Text("Отмена")
                         }
                     }
                 }

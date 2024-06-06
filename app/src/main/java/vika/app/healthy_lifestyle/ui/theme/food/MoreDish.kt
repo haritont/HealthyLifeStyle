@@ -222,259 +222,278 @@ fun MoreDish(
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Surface(
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier
-                            .border(3.dp, colorName, RoundedCornerShape(10.dp))
-                    ) {
-                        TextFieldBlue(
-                            value = nameState.value,
-                            label = {
-                                Text(
-                                    LocalContext.current.getString(R.string.input_name),
-                                    style = MaterialTheme.typography.bodySmall
-                                )
-                            },
-                            onValueChange = { newLogin -> nameState.value = newLogin },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                            leadingIcon = {
-                                Image(
-                                    painterResource(R.drawable.dish),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(25.dp)
-                                )
-                            }
-                        )
-                    }
-
-                    LazyColumn(
-                        modifier = Modifier.height(500.dp)
-                    ) {
+                    LazyColumn {
                         item {
-                            Text(
-                                text = "Добавленные ингредиенты",
-                                modifier = Modifier.padding(8.dp),
-                                fontWeight = FontWeight.Bold,
-                                color = Black
-                            )
-
+                            Spacer(modifier = Modifier.height(10.dp))
                             Surface(
                                 shape = RoundedCornerShape(10.dp),
                                 modifier = Modifier
-                                    .border(3.dp, colorAdd, RoundedCornerShape(10.dp))
+                                    .border(3.dp, colorName, RoundedCornerShape(10.dp))
                             ) {
-                                LazyColumn(
-                                    modifier = Modifier
-                                        .width(300.dp)
-                                        .height(200.dp)
-                                ) {
-                                    items(selectListIngredient) { item ->
-                                        key(item) {
-                                            ItemListDelete(
-                                                title = item.title,
-                                                value = item.value,
-                                                delete = { title ->
-                                                    selectListIngredient.remove(
-                                                        selectListIngredient.find { it.title == title }
-                                                    )
-                                                    val ingredient =
-                                                        FoodActivity().getIngredient(context, title)
-                                                    kilocaloriesState.value =
-                                                        (kilocaloriesState.value.toDouble()
-                                                                - ingredient.kilocalories / 100 * item.value).toString()
-                                                    proteinsState.value =
-                                                        (proteinsState.value.toDouble()
-                                                                - ingredient.proteins / 100 * item.value).toString()
-                                                    fatsState.value =
-                                                        (fatsState.value.toDouble()
-                                                                - ingredient.fats / 100 * item.value).toString()
-                                                    carbohydratesState.value =
-                                                        (carbohydratesState.value.toDouble()
-                                                                - ingredient.carbohydrates / 100 * item.value).toString()
-                                                }
-                                            )
-                                        }
+                                TextFieldBlue(
+                                    value = nameState.value,
+                                    label = {
+                                        Text(
+                                            LocalContext.current.getString(R.string.input_name),
+                                            style = MaterialTheme.typography.bodySmall
+                                        )
+                                    },
+                                    onValueChange = { newLogin -> nameState.value = newLogin },
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                                    leadingIcon = {
+                                        Image(
+                                            painterResource(R.drawable.dish),
+                                            contentDescription = null,
+                                            modifier = Modifier
+                                                .size(25.dp)
+                                        )
                                     }
-                                }
+                                )
                             }
-
-                            Search(
-                                itemList = itemListIngredient,
-                                onSearchResults = {
-                                    filteredListIngredient = it.toMutableList()
-                                }
-                            )
 
                             LazyColumn(
-                                modifier = Modifier
-                                    .width(300.dp)
-                                    .height(200.dp)
+                                modifier = Modifier.height(500.dp)
                             ) {
-                                items(filteredListIngredient) { item ->
-                                    key(item.title) {
-                                        ItemListText(
-                                            title = item.title,
-                                            textInDialog = "Введите вес в гр.",
-                                            add = { title, value ->
-                                                selectListIngredient.add(ItemText(title, value))
-                                                val ingredient =
-                                                    FoodActivity().getIngredient(context, title)
-                                                kilocaloriesState.value =
-                                                    (kilocaloriesState.value.toDouble()
-                                                            + ingredient.kilocalories / 100 * value).toString()
-                                                proteinsState.value =
-                                                    (proteinsState.value.toDouble()
-                                                            + ingredient.proteins / 100 * value).toString()
-                                                fatsState.value =
-                                                    (fatsState.value.toDouble()
-                                                            + ingredient.fats / 100 * value).toString()
-                                                carbohydratesState.value =
-                                                    (carbohydratesState.value.toDouble()
-                                                            + ingredient.carbohydrates / 100 * value).toString()
-                                            }
-                                        )
-                                    }
-                                }
-                            }
+                                item {
+                                    Text(
+                                        text = "Добавленные ингредиенты",
+                                        modifier = Modifier.padding(8.dp),
+                                        fontWeight = FontWeight.Bold,
+                                        color = Black
+                                    )
 
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceAround,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Surface(
-                                    shape = RoundedCornerShape(10.dp),
-                                    modifier = Modifier
-                                        .border(3.dp, colorKilo, RoundedCornerShape(10.dp))
-                                        .weight(1f)
-                                ) {
-                                    Box(
-                                        modifier = Modifier.weight(1f)
+                                    Surface(
+                                        shape = RoundedCornerShape(10.dp),
+                                        modifier = Modifier
+                                            .border(3.dp, colorAdd, RoundedCornerShape(10.dp))
                                     ) {
-                                        TextFieldBlue(
-                                            value = "%.1f".format(kilocaloriesState.value),
-                                            label = {
-                                                Text(
-                                                    LocalContext.current.getString(R.string.kilocalories),
-                                                    style = MaterialTheme.typography.bodySmall
-                                                )
-                                            },
-                                            onValueChange = { newLogin ->
-                                                kilocaloriesState.value = newLogin
-                                            },
-                                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                            leadingIcon = {
-                                                Image(
-                                                    painterResource(R.drawable.kilocalories),
-                                                    contentDescription = null,
-                                                    modifier = Modifier
-                                                        .size(25.dp)
-                                                )
+                                        LazyColumn(
+                                            modifier = Modifier
+                                                .width(300.dp)
+                                                .height(200.dp)
+                                        ) {
+                                            items(selectListIngredient) { item ->
+                                                key(item) {
+                                                    ItemListDelete(
+                                                        title = item.title,
+                                                        value = item.value,
+                                                        delete = { title ->
+                                                            selectListIngredient.remove(
+                                                                selectListIngredient.find { it.title == title }
+                                                            )
+                                                            val ingredient =
+                                                                FoodActivity().getIngredient(
+                                                                    context,
+                                                                    title
+                                                                )
+                                                            kilocaloriesState.value =
+                                                                (kilocaloriesState.value.toDouble()
+                                                                        - ingredient.kilocalories / 100 * item.value).toString()
+                                                            proteinsState.value =
+                                                                (proteinsState.value.toDouble()
+                                                                        - ingredient.proteins / 100 * item.value).toString()
+                                                            fatsState.value =
+                                                                (fatsState.value.toDouble()
+                                                                        - ingredient.fats / 100 * item.value).toString()
+                                                            carbohydratesState.value =
+                                                                (carbohydratesState.value.toDouble()
+                                                                        - ingredient.carbohydrates / 100 * item.value).toString()
+                                                        }
+                                                    )
+                                                }
                                             }
-                                        )
+                                        }
                                     }
-                                }
-                                Surface(
-                                    shape = RoundedCornerShape(10.dp),
-                                    modifier = Modifier
-                                        .border(3.dp, colorProtein, RoundedCornerShape(10.dp))
-                                        .weight(1f)
-                                ) {
-                                    Box(
-                                        modifier = Modifier.weight(1f)
-                                    ) {
-                                        TextFieldBlue(
-                                            value = "%.1f".format(proteinsState.value),
-                                            label = {
-                                                Text(
-                                                    LocalContext.current.getString(R.string.proteins),
-                                                    style = MaterialTheme.typography.bodySmall
-                                                )
-                                            },
-                                            onValueChange = { newLogin ->
-                                                proteinsState.value = newLogin
-                                            },
-                                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                            leadingIcon = {
-                                                Image(
-                                                    painterResource(R.drawable.proteins),
-                                                    contentDescription = null,
-                                                    modifier = Modifier
-                                                        .size(25.dp)
-                                                )
-                                            }
-                                        )
-                                    }
-                                }
-                            }
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceAround,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Surface(
-                                    shape = RoundedCornerShape(10.dp),
-                                    modifier = Modifier
-                                        .border(3.dp, colorFat, RoundedCornerShape(10.dp))
-                                        .weight(1f)
-                                ) {
-                                    Box(
-                                        modifier = Modifier.weight(1f)
-                                    ) {
-                                        TextFieldBlue(
-                                            value = "%.1f".format(fatsState.value),
-                                            label = {
-                                                Text(
-                                                    LocalContext.current.getString(R.string.fats),
-                                                    style = MaterialTheme.typography.bodySmall
-                                                )
-                                            },
-                                            onValueChange = { newLogin ->
-                                                fatsState.value = newLogin
-                                            },
-                                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                            leadingIcon = {
-                                                Image(
-                                                    painterResource(R.drawable.fats),
-                                                    contentDescription = null,
-                                                    modifier = Modifier
-                                                        .size(25.dp)
-                                                )
-                                            }
-                                        )
-                                    }
-                                }
 
-                                Surface(
-                                    shape = RoundedCornerShape(10.dp),
-                                    modifier = Modifier
-                                        .border(3.dp, colorCarb, RoundedCornerShape(10.dp))
-                                        .weight(1f)
-                                ) {
-                                    Box(
-                                        modifier = Modifier.weight(1f)
+                                    Search(
+                                        itemList = itemListIngredient,
+                                        onSearchResults = {
+                                            filteredListIngredient = it.toMutableList()
+                                        }
+                                    )
+
+                                    LazyColumn(
+                                        modifier = Modifier
+                                            .width(300.dp)
+                                            .height(200.dp)
                                     ) {
-                                        TextFieldBlue(
-                                            value = "%.1f".format(carbohydratesState.value),
-                                            label = {
-                                                Text(
-                                                    LocalContext.current.getString(R.string.carbohydrates),
-                                                    style = MaterialTheme.typography.bodySmall
-                                                )
-                                            },
-                                            onValueChange = { newLogin ->
-                                                carbohydratesState.value = newLogin
-                                            },
-                                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                            leadingIcon = {
-                                                Image(
-                                                    painterResource(R.drawable.carbohydrates),
-                                                    contentDescription = null,
-                                                    modifier = Modifier
-                                                        .size(25.dp)
+                                        items(filteredListIngredient) { item ->
+                                            key(item.title) {
+                                                ItemListText(
+                                                    title = item.title,
+                                                    textInDialog = "Введите вес в гр.",
+                                                    add = { title, value ->
+                                                        selectListIngredient.add(
+                                                            ItemText(
+                                                                title,
+                                                                value
+                                                            )
+                                                        )
+                                                        val ingredient =
+                                                            FoodActivity().getIngredient(
+                                                                context,
+                                                                title
+                                                            )
+                                                        kilocaloriesState.value =
+                                                            (kilocaloriesState.value.toDouble()
+                                                                    + ingredient.kilocalories / 100 * value).toString()
+                                                        proteinsState.value =
+                                                            (proteinsState.value.toDouble()
+                                                                    + ingredient.proteins / 100 * value).toString()
+                                                        fatsState.value =
+                                                            (fatsState.value.toDouble()
+                                                                    + ingredient.fats / 100 * value).toString()
+                                                        carbohydratesState.value =
+                                                            (carbohydratesState.value.toDouble()
+                                                                    + ingredient.carbohydrates / 100 * value).toString()
+                                                    }
                                                 )
                                             }
-                                        )
+                                        }
+                                    }
+
+                                    Row(
+                                        horizontalArrangement = Arrangement.SpaceAround,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Surface(
+                                            shape = RoundedCornerShape(10.dp),
+                                            modifier = Modifier
+                                                .border(3.dp, colorKilo, RoundedCornerShape(10.dp))
+                                                .weight(1f)
+                                        ) {
+                                            Box(
+                                                modifier = Modifier.weight(1f)
+                                            ) {
+                                                TextFieldBlue(
+                                                    value = "%.1f".format(kilocaloriesState.value.toDouble()),
+                                                    label = {
+                                                        Text(
+                                                            LocalContext.current.getString(R.string.kilocalories),
+                                                            style = MaterialTheme.typography.bodySmall
+                                                        )
+                                                    },
+                                                    onValueChange = { newLogin ->
+                                                        kilocaloriesState.value = newLogin
+                                                    },
+                                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                                    leadingIcon = {
+                                                        Image(
+                                                            painterResource(R.drawable.kilocalories),
+                                                            contentDescription = null,
+                                                            modifier = Modifier
+                                                                .size(25.dp)
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        }
+                                        Surface(
+                                            shape = RoundedCornerShape(10.dp),
+                                            modifier = Modifier
+                                                .border(
+                                                    3.dp,
+                                                    colorProtein,
+                                                    RoundedCornerShape(10.dp)
+                                                )
+                                                .weight(1f)
+                                        ) {
+                                            Box(
+                                                modifier = Modifier.weight(1f)
+                                            ) {
+                                                TextFieldBlue(
+                                                    value = "%.1f".format(proteinsState.value.toDouble()),
+                                                    label = {
+                                                        Text(
+                                                            LocalContext.current.getString(R.string.proteins),
+                                                            style = MaterialTheme.typography.bodySmall
+                                                        )
+                                                    },
+                                                    onValueChange = { newLogin ->
+                                                        proteinsState.value = newLogin
+                                                    },
+                                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                                    leadingIcon = {
+                                                        Image(
+                                                            painterResource(R.drawable.proteins),
+                                                            contentDescription = null,
+                                                            modifier = Modifier
+                                                                .size(25.dp)
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        }
+                                    }
+                                    Row(
+                                        horizontalArrangement = Arrangement.SpaceAround,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Surface(
+                                            shape = RoundedCornerShape(10.dp),
+                                            modifier = Modifier
+                                                .border(3.dp, colorFat, RoundedCornerShape(10.dp))
+                                                .weight(1f)
+                                        ) {
+                                            Box(
+                                                modifier = Modifier.weight(1f)
+                                            ) {
+                                                TextFieldBlue(
+                                                    value = "%.1f".format(fatsState.value.toDouble()),
+                                                    label = {
+                                                        Text(
+                                                            LocalContext.current.getString(R.string.fats),
+                                                            style = MaterialTheme.typography.bodySmall
+                                                        )
+                                                    },
+                                                    onValueChange = { newLogin ->
+                                                        fatsState.value = newLogin
+                                                    },
+                                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                                    leadingIcon = {
+                                                        Image(
+                                                            painterResource(R.drawable.fats),
+                                                            contentDescription = null,
+                                                            modifier = Modifier
+                                                                .size(25.dp)
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        }
+
+                                        Surface(
+                                            shape = RoundedCornerShape(10.dp),
+                                            modifier = Modifier
+                                                .border(3.dp, colorCarb, RoundedCornerShape(10.dp))
+                                                .weight(1f)
+                                        ) {
+                                            Box(
+                                                modifier = Modifier.weight(1f)
+                                            ) {
+                                                TextFieldBlue(
+                                                    value = "%.1f".format(carbohydratesState.value.toDouble()),
+                                                    label = {
+                                                        Text(
+                                                            LocalContext.current.getString(R.string.carbohydrates),
+                                                            style = MaterialTheme.typography.bodySmall
+                                                        )
+                                                    },
+                                                    onValueChange = { newLogin ->
+                                                        carbohydratesState.value = newLogin
+                                                    },
+                                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                                    leadingIcon = {
+                                                        Image(
+                                                            painterResource(R.drawable.carbohydrates),
+                                                            contentDescription = null,
+                                                            modifier = Modifier
+                                                                .size(25.dp)
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        }
                                     }
                                 }
                             }
