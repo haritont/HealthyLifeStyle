@@ -20,7 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.main.MainActivity
-import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.ui.theme.app.BlueLight
 import vika.app.healthy_lifestyle.ui.theme.general.ImageButton
 
@@ -53,7 +52,6 @@ fun  WeightTracker(
             ImageButton(icon = R.drawable.minus) {
                 weightState.doubleValue -= 0.1
                 MainActivity().saveWeight(weightState.doubleValue, context)
-                PersonalDataRepository(context).updateWeight(weightState.doubleValue)
             }
             Text(
                 text = "%.1f".format(weightState.doubleValue)
@@ -61,7 +59,6 @@ fun  WeightTracker(
             ImageButton(icon = R.drawable.add) {
                 weightState.doubleValue += 0.1
                 MainActivity().saveWeight(weightState.doubleValue, context)
-                PersonalDataRepository(context).updateWeight(weightState.doubleValue)
             }
         }
     }

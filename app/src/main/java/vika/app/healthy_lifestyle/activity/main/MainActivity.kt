@@ -9,7 +9,6 @@ import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.WeightRepository
 import vika.app.healthy_lifestyle.bean.main.PersonalData
 import vika.app.healthy_lifestyle.bean.main.Record
-import vika.app.healthy_lifestyle.bean.main.Weight
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.navigation.Navigation
@@ -32,12 +31,10 @@ class MainActivity : ComponentActivity() {
         return RecordRepository(context).getRecordByDate(DateToday().getToday())!!.progressSteps
     }
 
-    fun saveWeight(value: Double, context: Context){
-        WeightRepository(context).insertWeight(
-            Weight(
-                date = DateToday().getToday(),
-                value = value
-            )
+    fun saveWeight(value: Double, context: Context) {
+        WeightRepository(context).updateWeightByDate(
+            date = DateToday().getToday(),
+            value = value
         )
 
         PersonalDataRepository(context).updateWeight(value)
