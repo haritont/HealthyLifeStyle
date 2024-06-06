@@ -29,7 +29,7 @@ class CreateAdvice {
         val products =
             RecommendSystem(context, data.target, MealPlan()).getProducts(1)
 
-        if (products != null) {
+        if (products!!.isNotEmpty()) {
             return advice.plus(products[0].name)
         }
         return "Совет скоро появится"
@@ -39,7 +39,7 @@ class CreateAdvice {
         val advice = "Попробуйте заняться: "
         val physicalExercise = RecommendSystem(context, data.target, MealPlan()).getSports(1)
 
-        if (physicalExercise != null) {
+        if (physicalExercise!!.isNotEmpty()) {
             return advice.plus(physicalExercise[0].name)
         }
         return "Совет скоро появится"

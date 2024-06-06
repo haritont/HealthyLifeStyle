@@ -162,7 +162,7 @@ class LoadingActivity : ComponentActivity() {
     private fun insertNotifications() {
         val notificationsRepository = NotificationsRepository(this)
 
-        if (notificationsRepository.getAllNotifications() == null) {
+        if (notificationsRepository.getAllNotifications()!!.isEmpty()) {
             notificationsRepository.insertNotifications(
                 Notification(text = "Завтрак", hour = 8, minute = 0)
             )
@@ -188,11 +188,11 @@ class LoadingActivity : ComponentActivity() {
     private fun setRecordTarget() {
         val today = DateToday().getToday()
 
-        if (getTodayRecord(today) == null) {
+        //if (getTodayRecord(today) == null) {
             val target = PersonalTarget()
             target.count(getPersonalData(), this@LoadingActivity)
             saveTodayRecordTarget(today, target)
-        }
+        //}
     }
 
     private fun saveTodayRecordTarget(today: String, target: PersonalTarget) {

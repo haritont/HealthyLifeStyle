@@ -154,7 +154,7 @@ class RegistrationActivity: ComponentActivity()  {
                         }
 
                         val targets = listOf("Набрать вес", "Поддержать вес", "Снизить вес")
-                        val (selectedTarget, onTargetSelected) = remember { mutableStateOf(targets[targetState.value - 1]) }
+                        val (selectedTarget, onTargetSelected) = remember { mutableStateOf(targets[targetState.value]) }
                         Column {
                             Text(text = context.getString(R.string.target))
                             Column(Modifier.selectableGroup()) {
@@ -177,7 +177,7 @@ class RegistrationActivity: ComponentActivity()  {
                         }
 
                         val genders = listOf("Женский", "Мужской")
-                        val (selectedGender, onGenderSelected) = remember { mutableStateOf(genders[genderState.value - 1]) }
+                        val (selectedGender, onGenderSelected) = remember { mutableStateOf(genders[genderState.value]) }
                         Column {
                             Text(text = context.getString(R.string.gender))
                             Column(Modifier.selectableGroup()) {
@@ -237,7 +237,7 @@ class RegistrationActivity: ComponentActivity()  {
                             ProfileActivity().insertPersonalData(
                                 context,
                                 PersonalData(
-                                    genderId = genderState.value,
+                                    genderId = genderState.value + 1,
                                     height = heightState.value.toDouble(),
                                     weight = weightState.value.toDouble(),
                                     birthDate = birthDate,
