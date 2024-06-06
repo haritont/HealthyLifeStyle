@@ -42,62 +42,43 @@ fun SettingsScreen() {
                 text = "Настройка уведомлений",
                 fontWeight = FontWeight.Bold
             )
-            Row(
-                horizontalArrangement = Arrangement.SpaceAround,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Notification(
-                        title = "Завтрак",
-                        hour = notificationsRepository.getNotificationsHour("Завтрак"),
-                        minute = notificationsRepository.getNotificationsMinute("Завтрак")
-                    )
-                }
-                Box(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Notification(
-                        title = "Обед",
-                        hour = notificationsRepository.getNotificationsHour("Обед"),
-                        minute = notificationsRepository.getNotificationsMinute("Обед")
-                    )
-                }
-            }
-            Row(
-                horizontalArrangement = Arrangement.SpaceAround,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Notification(
-                        title = "Ужин",
-                        hour = notificationsRepository.getNotificationsHour("Ужин"),
-                        minute = notificationsRepository.getNotificationsMinute("Ужин")
-                    )
-                }
-                Box(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Notification(
-                        title = "Перекус",
-                        hour = notificationsRepository.getNotificationsHour("Перекус"),
-                        minute = notificationsRepository.getNotificationsMinute("Перекус")
-                    )
-                }
-            }
+
+            Notification(
+                title = "Завтрак",
+                hour = notificationsRepository.getNotificationsHour("Завтрак"),
+                minute = notificationsRepository.getNotificationsMinute("Завтрак")
+            )
+
+            Notification(
+                title = "Обед",
+                hour = notificationsRepository.getNotificationsHour("Обед"),
+                minute = notificationsRepository.getNotificationsMinute("Обед")
+            )
+
+            Notification(
+                title = "Ужин",
+                hour = notificationsRepository.getNotificationsHour("Ужин"),
+                minute = notificationsRepository.getNotificationsMinute("Ужин")
+            )
+
+            Notification(
+                title = "Перекус",
+                hour = notificationsRepository.getNotificationsHour("Перекус"),
+                minute = notificationsRepository.getNotificationsMinute("Перекус")
+            )
+
 
             val record = RecordRepository(context).getRecordByDate(DateToday().getToday())!!
-            val kilocaloriesState = remember { mutableStateOf(record.targetKilocalories.toString()) }
+            val kilocaloriesState =
+                remember { mutableStateOf(record.targetKilocalories.toString()) }
             val proteinsState = remember { mutableStateOf(record.targetProteins.toString()) }
             val fatsState = remember { mutableStateOf(record.targetFats.toString()) }
-            val carbohydratesState = remember { mutableStateOf(record.targetCarbohydrates.toString()) }
+            val carbohydratesState =
+                remember { mutableStateOf(record.targetCarbohydrates.toString()) }
 
             Text(
                 text = "Настроить цели по КБЖУ",
-                style = MaterialTheme.typography.bodyLarge
+                fontWeight = FontWeight.Bold
             )
 
             Row(
