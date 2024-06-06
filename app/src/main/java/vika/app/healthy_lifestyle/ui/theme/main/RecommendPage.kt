@@ -116,28 +116,28 @@ fun RecommendPage(
                     modifier = Modifier.padding(8.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
-                    color = if (markKilo == 0.5) Orange else if (markKilo == 0.0) Red else Color.Gray
+                    color = if (markKilo == 0.5 || markKilo == -1.0) Orange else if (markKilo == 0.0) Red else Color.Gray
                 )
                 Text(
                     text = recommend.progressProtein,
                     modifier = Modifier.padding(8.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
-                    color = if (markProtein == 0.5) Orange else if (markProtein == 0.0) Red else Color.Gray
+                    color = if (markProtein == 0.5|| markProtein == -1.0) Orange else if (markProtein == 0.0) Red else Color.Gray
                 )
                 Text(
                     text = recommend.progressFat,
                     modifier = Modifier.padding(8.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
-                    color = if (markFat == 0.5) Orange else if (markFat == 0.0) Red else Color.Gray
+                    color = if (markFat == 0.5 || markFat == -1.0) Orange else if (markFat == 0.0) Red else Color.Gray
                 )
                 Text(
                     text = recommend.progressCarb,
                     modifier = Modifier.padding(8.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
-                    color = if (markCarb == 0.5) Orange else if (markCarb == 0.0) Red else Color.Gray
+                    color = if (markCarb == 0.5 || markCarb == -1.0) Orange else if (markCarb == 0.0) Red else Color.Gray
                 )
             }
         }
@@ -181,7 +181,8 @@ fun RecommendPage(
                         kilocalories = item.kilocalories * item.value / 100,
                         proteins = item.proteins * item.value / 100,
                         fats = item.fats * item.value / 100,
-                        carbohydrates = item.carbohydrates * item.value / 100
+                        carbohydrates = item.carbohydrates * item.value / 100,
+                        value = item.value
                     )
                 }
             }
@@ -276,28 +277,28 @@ fun RecommendPage(
                                 modifier = Modifier.padding(8.dp),
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = if (markKilo == 0.5) Orange else if (markKilo == 0.0) Red else Color.Gray
+                                color = if (markKilo == 0.5 || markKilo == -1.0) Orange else if (markKilo == 0.0) Red else Color.Gray
                             )
                             Text(
                                 text = recommend.progressProtein,
                                 modifier = Modifier.padding(8.dp),
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = if (markProtein == 0.5) Orange else if (markProtein == 0.0) Red else Color.Gray
+                                color = if (markProtein == 0.5|| markProtein == -1.0) Orange else if (markProtein == 0.0) Red else Color.Gray
                             )
                             Text(
                                 text = recommend.progressFat,
                                 modifier = Modifier.padding(8.dp),
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = if (markFat == 0.5) Orange else if (markFat == 0.0) Red else Color.Gray
+                                color = if (markFat == 0.5 || markFat == -1.0) Orange else if (markFat == 0.0) Red else Color.Gray
                             )
                             Text(
                                 text = recommend.progressCarb,
                                 modifier = Modifier.padding(8.dp),
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = if (markCarb == 0.5) Orange else if (markCarb == 0.0) Red else Color.Gray
+                                color = if (markCarb == 0.5 || markCarb == -1.0) Orange else if (markCarb == 0.0) Red else Color.Gray
                             )
                         }
                     }

@@ -81,4 +81,8 @@ class IngredientRepository(context: Context) {
     fun updateIngredientFavoriteByType(type: String, favorite: Boolean) = runBlocking{
         ingredientDao.updateIngredientFavoriteByType(type, favorite)
     }
+
+    fun getAllFavoriteProducts(): List<Ingredient>? = runBlocking{
+        ingredientDao.getAllFavoriteProducts()?.let { ingredientMapper.toIngredientList(it) }
+    }
 }

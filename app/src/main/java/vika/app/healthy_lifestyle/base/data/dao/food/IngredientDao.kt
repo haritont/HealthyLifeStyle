@@ -51,4 +51,7 @@ interface IngredientDao {
     suspend fun getAllProductByType(type: String): List<IngredientEntity>?
     @Query("UPDATE Ingredient SET favorite = :favorite WHERE type = :type")
     suspend fun updateIngredientFavoriteByType(type: String, favorite: Boolean)
+
+    @Query("SELECT * FROM Ingredient WHERE favorite = 1")
+    suspend fun getAllFavoriteProducts(): List<IngredientEntity>?
 }

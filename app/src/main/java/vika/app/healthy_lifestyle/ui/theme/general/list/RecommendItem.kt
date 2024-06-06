@@ -26,7 +26,8 @@ fun RecommendItem(
     kilocalories: Double,
     proteins: Double,
     fats: Double,
-    carbohydrates: Double
+    carbohydrates: Double,
+    value: Double
 ) {
     Card(
         modifier = Modifier
@@ -58,6 +59,12 @@ fun RecommendItem(
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
                         color = Black
+                    )
+                    Text(
+                        text = "%.1f".format(value).plus(" гр."),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Gray
                     )
                 }
             }

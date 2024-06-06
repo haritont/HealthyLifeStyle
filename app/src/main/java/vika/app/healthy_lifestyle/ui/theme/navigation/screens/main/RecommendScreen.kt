@@ -25,6 +25,7 @@ import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.bean.food.Ingredient
 import vika.app.healthy_lifestyle.bean.food.Nutrition
+import vika.app.healthy_lifestyle.recommend.MealPlanManager
 import vika.app.healthy_lifestyle.recommend.RecommendSystem
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.Blue
@@ -99,10 +100,10 @@ fun RecommendScreen() {
         }
     }
 
-    val breakfastRecommend = RecommendSystem(context, type, 0)
-    val lunchRecommend = RecommendSystem(context, type, 1)
-    val dinnerRecommend = RecommendSystem(context, type, 2)
-    val snackRecommend = RecommendSystem(context, type, 3)
+    val breakfastRecommend = RecommendSystem(context, type, MealPlanManager().getMealPlan(0, context))
+    val lunchRecommend = RecommendSystem(context, type, MealPlanManager().getMealPlan(1, context))
+    val dinnerRecommend = RecommendSystem(context, type, MealPlanManager().getMealPlan(2, context))
+    val snackRecommend = RecommendSystem(context, type, MealPlanManager().getMealPlan(3, context))
 
     var breakfastCheck by remember { mutableStateOf(true) }
     var lunchCheck by remember { mutableStateOf(false) }

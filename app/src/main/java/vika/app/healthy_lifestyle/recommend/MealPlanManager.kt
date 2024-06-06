@@ -1,77 +1,10 @@
 package vika.app.healthy_lifestyle.recommend
 
-class MealPlanManager {
-    private val mealPlans: List<MealPlan> = listOf(
-        MealPlan(
-            1, 0, 20, 30, 30, 40, 30, 50,
-            25, 30,
-            listOf("Фрукт", "Сладость", "Яйцо", "Мясо", "Дичь", "Субпродукт",
-                "Масло", "Орех", "Сыр", "Овощ", "Крупа", "Вода", "Напиток")
-        ),
-        MealPlan(
-            1, 1, 25, 35, 30, 40, 30, 45,
-            30, 35,
-            listOf("Фрукт", "Сладость", "Яйцо", "Мясо", "Дичь", "Субпродукт",
-                "Масло", "Орех", "Сыр", "Овощ", "Крупа", "Вода", "Напиток")
-        ),
-        MealPlan(
-            1, 2, 20, 30, 30, 40, 30, 50,
-            25, 30,
-            listOf("Фрукт", "Сладость", "Яйцо", "Мясо", "Дичь", "Субпродукт",
-                "Масло", "Орех", "Сыр", "Овощ", "Крупа", "Вода", "Напиток")
-        ),
-        MealPlan(
-            1, 3, 15, 25, 20, 30, 50, 60,
-            10, 15,
-            listOf("Фрукт", "Сладость", "Яйцо", "Мясо", "Дичь", "Субпродукт",
-                "Масло", "Орех", "Сыр", "Овощ", "Крупа", "Вода", "Напиток")
-        ),
-        MealPlan(
-            2, 0, 15, 25, 25, 35, 40, 60,
-            20, 25,
-            listOf("Вода", "Зелень", "Яйцо", "Бобы", "Рыба", "Ягоды",
-                "Грибы", "Орех", "Приправа", "Овощ", "Уксус", "Фрукт", "Вода", "Напиток")
-        ),
-        MealPlan(
-            2, 1, 20, 30, 25, 35, 40, 50,
-            30, 35,
-            listOf("Вода", "Зелень", "Яйцо", "Бобы", "Рыба", "Ягоды",
-                "Грибы", "Орех", "Приправа", "Овощ", "Уксус", "Фрукт", "Вода", "Напиток")
-        ),
-        MealPlan(
-            2, 2, 15, 25, 25, 35, 40, 60,
-            25, 30,
-            listOf("Вода", "Зелень", "Яйцо", "Бобы", "Рыба", "Ягоды",
-                "Грибы", "Орех", "Приправа", "Овощ", "Уксус", "Фрукт", "Вода", "Напиток")
-        ),
-        MealPlan(
-            2, 3, 10, 20, 15, 25, 60, 70,
-            15, 20,
-            listOf("Вода", "Зелень", "Яйцо", "Бобы", "Рыба", "Ягоды",
-                "Грибы", "Орех", "Приправа", "Овощ", "Уксус", "Фрукт", "Вода", "Напиток")
-        ),
-        MealPlan(
-            3, 0, 25, 35, 15, 25, 40, 50,
-            25, 30,
-            listOf("Зелень", "Яйцо", "Ягоды", "Грибы", "Дичь", "Овощ", "Вода", "Напиток")
-        ),
-        MealPlan(
-            3, 1, 25, 35, 15, 25, 40, 50,
-            35, 40,
-            listOf("Зелень", "Яйцо", "Ягоды", "Грибы", "Дичь", "Овощ", "Вода", "Напиток")
-        ),
-        MealPlan(
-            3, 2, 20, 30, 15, 25, 40, 50,
-            20, 25,
-            listOf("Зелень", "Яйцо", "Ягоды", "Грибы", "Дичь", "Овощ", "Вода", "Напиток")
-        ),
-        MealPlan(
-            3, 3, 10, 20, 10, 20, 60, 70,
-            5, 10,
-            listOf("Зелень", "Яйцо", "Ягоды", "Грибы", "Дичь", "Овощ", "Вода", "Напиток")
-        )
-    )
+import android.content.Context
+import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
+import vika.app.healthy_lifestyle.calculations.DateToday
 
+class MealPlanManager {
     private val sportPlan: List<SportPlan> = listOf(
         SportPlan(
             2,
@@ -87,8 +20,41 @@ class MealPlanManager {
         )
     )
 
-    fun getMealPlan(target: Int?, meal: Int?): MealPlan? {
-        return mealPlans.find { it.target == target && it.meal == meal }
+    fun getMealPlan(meal: Int, context: Context): MealPlan {
+        val record = RecordRepository(context).getRecordByDate(DateToday().getToday())!!
+
+        when (meal) {
+            0 -> {
+                return MealPlan(
+                    kiloTarget = record.targetKilocalories * 0.3,
+                    proteinTarget = record.targetProteins * 0.3,
+                    fatTarget = record.targetFats * 0.3,
+                    carbTarget = record.targetCarbohydrates * 0.3
+                )
+            }
+            1 -> {
+                return MealPlan(
+                    kiloTarget = record.targetKilocalories * 0.3,
+                    proteinTarget = record.targetProteins * 0.3,
+                    fatTarget = record.targetFats * 0.3,
+                    carbTarget = record.targetCarbohydrates * 0.3
+                )
+            }
+            2 -> {
+                return MealPlan(
+                    kiloTarget = record.targetKilocalories * 0.2,
+                    proteinTarget = record.targetProteins * 0.2,
+                    fatTarget = record.targetFats * 0.2,
+                    carbTarget = record.targetCarbohydrates * 0.2
+                )
+            }
+            else -> return MealPlan(
+                kiloTarget = record.targetKilocalories * 0.2,
+                proteinTarget = record.targetProteins * 0.2,
+                fatTarget = record.targetFats * 0.2,
+                carbTarget = record.targetCarbohydrates * 0.2
+            )
+        }
     }
 
     fun getSportPlan(target: Int): SportPlan?{

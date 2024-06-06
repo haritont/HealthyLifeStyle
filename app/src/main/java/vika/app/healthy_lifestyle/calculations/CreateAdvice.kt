@@ -2,6 +2,7 @@ package vika.app.healthy_lifestyle.calculations
 
 import android.content.Context
 import vika.app.healthy_lifestyle.bean.main.PersonalData
+import vika.app.healthy_lifestyle.recommend.MealPlan
 import vika.app.healthy_lifestyle.recommend.RecommendSystem
 
 class CreateAdvice {
@@ -26,7 +27,7 @@ class CreateAdvice {
         val advice = "Попробуйте на ".plus(meal.lowercase()).plus(" : ")
 
         val products =
-            RecommendSystem(context, data.target, MealCalc().getIndexMeal(meal)).getProducts(1)
+            RecommendSystem(context, data.target, MealPlan()).getProducts(1)
 
         if (products != null) {
             return advice.plus(products[0].name)
@@ -36,7 +37,7 @@ class CreateAdvice {
 
     fun getSportAdvice(context: Context, data: PersonalData): String{
         val advice = "Попробуйте заняться: "
-        val physicalExercise = RecommendSystem(context, data.target, 0).getSports(1)
+        val physicalExercise = RecommendSystem(context, data.target, MealPlan()).getSports(1)
 
         if (physicalExercise != null) {
             return advice.plus(physicalExercise[0].name)

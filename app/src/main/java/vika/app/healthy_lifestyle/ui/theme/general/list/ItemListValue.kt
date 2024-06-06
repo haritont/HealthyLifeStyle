@@ -58,7 +58,7 @@ fun ItemListValue(
                     maxLines = 3
                 )
                 Text(
-                    text = value.toString(),
+                    text = value.toString().plus(" гр."),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                     color = Color.Gray,
