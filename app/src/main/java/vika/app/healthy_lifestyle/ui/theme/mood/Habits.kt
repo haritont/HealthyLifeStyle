@@ -1,6 +1,7 @@
 package vika.app.healthy_lifestyle.ui.theme.mood
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
@@ -213,9 +213,9 @@ fun HabitCard(
     val context = LocalContext.current
 
     val habitRecord = MoodActivity().getHabitRecord(context, habit.id, true)
-    var isTrack by remember { mutableStateOf(false)}
+    var isTrack by remember { mutableStateOf(false) }
     var trackingDays by remember { mutableStateOf("Количество дней: 1") }
-    if (habitRecord != null){
+    if (habitRecord != null) {
         isTrack = habitRecord.tracking
         trackingDays = "Количество дней: ".plus(
             DateToday().getDistanceDays(habitRecord.dateStart, DateToday().getToday()).toString()
@@ -252,25 +252,31 @@ fun HabitCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-
-            Button(onClick = {
-                if (isTrack){
-                    habitRecord!!.dateEnd = DateToday().getToday()
-                    MoodActivity().insertHabitRecord(context, habitRecord)
-                }
-                else{
-                    MoodActivity().insertHabitRecord(
-                        context,
-                        HabitRecord(idHabit = habit.id, tracking = true, dateStart = DateToday().getToday())
-                    )
-                }
-                isTrack = !isTrack
-            }) {
-                Text(
-                    if (!isTrack) "Начать отслеживание"
-                    else "Прекратить отслеживание"
-                )
-            }
+            Image(
+                painterResource(
+                    if (!isTrack) R.drawable.start
+                    else R.drawable.stop
+                ),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(25.dp)
+                    .clickable {
+                        if (isTrack) {
+                            habitRecord!!.dateEnd = DateToday().getToday()
+                            MoodActivity().insertHabitRecord(context, habitRecord)
+                        } else {
+                            MoodActivity().insertHabitRecord(
+                                context,
+                                HabitRecord(
+                                    idHabit = habit.id,
+                                    tracking = true,
+                                    dateStart = DateToday().getToday()
+                                )
+                            )
+                        }
+                        isTrack = !isTrack
+                    }
+            )
         }
     }
 }
