@@ -1,5 +1,7 @@
 package vika.app.healthy_lifestyle.ui.theme.navigation.screens.main
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -192,7 +194,136 @@ fun SettingsScreen() {
                     carbohydratesState.value.toDouble(),
                     DateToday().getToday()
                 )
+                val sharedPreferences: SharedPreferences = context.getSharedPreferences("shared_preferences", Context.MODE_PRIVATE)
+                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                editor.putString("kilocalories", kilocaloriesState.value)
+                editor.putString("proteins", proteinsState.value)
+                editor.putString("fats", fatsState.value)
+                editor.putString("carbs", carbohydratesState.value)
+                editor.apply()
+            }
+
+            val breakfastState = remember { mutableStateOf(30.toString()) }
+            val lunchState = remember { mutableStateOf(30.toString()) }
+            val dinnerState = remember { mutableStateOf(20.toString()) }
+            val snackState = remember { mutableStateOf(20.toString()) }
+        Text(
+            text = "Настроить цели на приемы пищи",
+            fontWeight = FontWeight.Bold
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier.weight(1f)
+            ) {
+                TextFieldBlue(
+                    value = breakfastState.value.plus("%"),
+                    label = {
+                        Text(
+                            "Завтрак",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    },
+                    onValueChange = { newLogin -> breakfastState.value = newLogin },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    leadingIcon = {
+                        Image(
+                            painterResource(R.drawable.kilocalories),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(25.dp)
+                        )
+                    }
+                )
+            }
+            Box(
+                modifier = Modifier.weight(1f)
+            ) {
+                TextFieldBlue(
+                    value = lunchState.value.plus("%"),
+                    label = {
+                        Text(
+                            "Обед",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    },
+                    onValueChange = { newLogin -> lunchState.value = newLogin },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    leadingIcon = {
+                        Image(
+                            painterResource(R.drawable.proteins),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(25.dp)
+                        )
+                    }
+                )
             }
         }
+        Row(
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier.weight(1f)
+            ) {
+                TextFieldBlue(
+                    value = dinnerState.value.plus("%"),
+                    label = {
+                        Text(
+                            "Ужин",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    },
+                    onValueChange = { newLogin -> dinnerState.value = newLogin },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    leadingIcon = {
+                        Image(
+                            painterResource(R.drawable.fats),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(25.dp)
+                        )
+                    }
+                )
+            }
+
+            Box(
+                modifier = Modifier.weight(1f)
+            ) {
+                TextFieldBlue(
+                    value = snackState.value.plus("%"),
+                    label = {
+                        Text(
+                           "Перекус",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    },
+                    onValueChange = { newLogin -> snackState.value = newLogin },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    leadingIcon = {
+                        Image(
+                            painterResource(R.drawable.carbohydrates),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(25.dp)
+                        )
+                    }
+                )
+            }
+        }
+        ButtonBlue(text = "Сохранить") {
+            val sharedPreferences: SharedPreferences = context.getSharedPreferences("shared_preferences", Context.MODE_PRIVATE)
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putString("breakfast", breakfastState.value)
+            editor.putString("lunch", lunchState.value)
+            editor.putString("dinner", dinnerState.value)
+            editor.putString("snack", snackState.value)
+            editor.apply()
+        }
+    }
     }
 }
