@@ -117,9 +117,7 @@ fun Habits(
             }
         ) {
             Card(
-                modifier = Modifier
-                    .height(400.dp)
-                    .padding(16.dp),
+                modifier = Modifier.padding(16.dp),
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Column(
