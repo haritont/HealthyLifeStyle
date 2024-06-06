@@ -152,7 +152,7 @@ class FoodActivity : ComponentActivity() {
         )
 
         val habit = HabitRepository(context).getByProduct(ingredient.type)
-        if (habit != null) {
+        if (habit != null && !habit.isPositive) {
             val record = HabitRecordRepository(context).getRecordByIdHabit(habit.id, true)
             if (record != null) {
                 record.tracking = false

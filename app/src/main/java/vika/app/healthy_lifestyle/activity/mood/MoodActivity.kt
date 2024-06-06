@@ -60,18 +60,26 @@ class MoodActivity : ComponentActivity() {
         HabitRecordRepository(context).insertHabitRecord(habitRecord)
         val habit = HabitRepository(context).getById(habitRecord.idHabit)
         if (habitRecord.dateEnd == "") {
-            IngredientRepository(context).updateIngredientExceptionByType(habit.product, true)
+            if (habit.isPositive) {
+                IngredientRepository(context).updateIngredientFavoriteByType(habit.product, true)
+            } else {
+                IngredientRepository(context).updateIngredientExceptionByType(habit.product, true)
+            }
         } else {
-            IngredientRepository(context).updateIngredientExceptionByType(habit.product, false)
+            if (habit.isPositive) {
+                IngredientRepository(context).updateIngredientFavoriteByType(habit.product, false)
+            } else {
+                IngredientRepository(context).updateIngredientExceptionByType(habit.product, false)
+            }
         }
     }
 
-    fun insertHabit(context: Context, name: String, type: String) {
+    fun insertHabit(context: Context, name: String, type: String, isPositive: Boolean) {
         HabitRepository(context).insertHabit(
             Habit(
                 name = name,
                 product = type,
-                isPositive = false
+                isPositive = isPositive
             )
         )
     }

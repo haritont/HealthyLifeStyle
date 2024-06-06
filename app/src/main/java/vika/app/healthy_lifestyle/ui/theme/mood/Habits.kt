@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -108,6 +109,8 @@ fun Habits(
             "Яйцо"
         )
         val typeState = remember { mutableStateOf(options[0]) }
+        var checked by remember { mutableStateOf(false) }
+
         Dialog(
             onDismissRequest = {
                 openDialogAddHabit = !openDialogAddHabit
@@ -155,8 +158,21 @@ fun Habits(
                         options,
                         options[0]
                     ) {
-                            currentOption ->
+                        currentOption ->
                         typeState.value = currentOption
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Checkbox(
+                            checked = checked,
+                            onCheckedChange = { checked = it }
+                        )
+                        Text(
+                            text = "Хочу добавить продукт в рацион",
+                            modifier = Modifier.padding(8.dp)
+                        )
                     }
                 }
 
@@ -170,7 +186,8 @@ fun Habits(
                             MoodActivity().insertHabit(
                                 context,
                                 nameState.value,
-                                typeState.value
+                                typeState.value,
+                                checked
                             )
                         },
                         modifier = Modifier.padding(8.dp),
