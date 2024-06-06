@@ -170,8 +170,7 @@ fun MoreDish(
             }
         ) {
             Card(
-                modifier = Modifier
-                    .padding(8.dp),
+                modifier = Modifier.padding(8.dp),
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Column(
@@ -184,19 +183,19 @@ fun MoreDish(
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Dropdown(
-                            options,
-                            dish.type
-                        ) { currentOption ->
-                            typeState.value = currentOption
-                        }
-
                         Text(
                             text = title,
                             modifier = Modifier.padding(8.dp),
                             fontWeight = FontWeight.Bold,
                             color = Black
                         )
+
+                        Dropdown(
+                            options,
+                            dish.type
+                        ) { currentOption ->
+                            typeState.value = currentOption
+                        }
 
                         Image(
                             modifier = Modifier

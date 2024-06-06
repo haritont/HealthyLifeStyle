@@ -128,7 +128,7 @@ fun MoreTraining(
         Dialog(
             onDismissRequest = {
                 openDialog = false
-                onOpenChange(openDialog)
+                onOpenChange(false)
             }
         ) {
             Card(
@@ -142,6 +142,13 @@ fun MoreTraining(
                     modifier = Modifier.padding(8.dp)
                 )
                 {
+                    Text(
+                        text = title,
+                        modifier = Modifier.padding(8.dp),
+                        fontWeight = FontWeight.Bold,
+                        color = Black
+                    )
+
                     Row(
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
@@ -152,13 +159,6 @@ fun MoreTraining(
                         ) { currentOption ->
                             typeState.value = currentOption
                         }
-
-                        Text(
-                            text = title,
-                            modifier = Modifier.padding(8.dp),
-                            fontWeight = FontWeight.Bold,
-                            color = Black
-                        )
 
                         Image(
                             modifier = Modifier
@@ -334,7 +334,7 @@ fun MoreTraining(
                                         selectListPhysicalExercise
                                     )
                                     openDialog = false
-                                    onOpenChange(openDialog)
+                                    onOpenChange(false)
                                     Toast.makeText(
                                         context,
                                         "Изменено: ".plus(nameState.value),
@@ -349,7 +349,7 @@ fun MoreTraining(
                         TextButton(
                             onClick = {
                                 openDialog = false
-                                onOpenChange(openDialog)
+                                onOpenChange(false)
                             },
                             modifier = Modifier.padding(8.dp),
                         ) {

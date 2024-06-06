@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
@@ -46,7 +45,7 @@ fun MorePhysicalExercise(
     isOpen: Boolean,
     onOpenChange: (Boolean) -> Unit,
     title: String
-){
+) {
     var openDialog by remember { mutableStateOf(isOpen) }
 
     val context = LocalContext.current
@@ -93,14 +92,11 @@ fun MorePhysicalExercise(
         Dialog(
             onDismissRequest = {
                 openDialog = false
-                onOpenChange(openDialog)
+                onOpenChange(false)
             }
         ) {
             Card(
-                modifier = Modifier
-                    .height(400.dp)
-                    .width(450.dp)
-                    .padding(16.dp),
+                modifier = Modifier.padding(16.dp),
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Column(
@@ -109,6 +105,13 @@ fun MorePhysicalExercise(
                     modifier = Modifier.padding(8.dp)
                 )
                 {
+                    Text(
+                        text = title,
+                        modifier = Modifier.padding(8.dp),
+                        fontWeight = FontWeight.Bold,
+                        color = Black
+                    )
+
                     Row(
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
@@ -116,17 +119,9 @@ fun MorePhysicalExercise(
                         Dropdown(
                             options,
                             physicalExercise.type
-                        ) {
-                                currentOption ->
+                        ) { currentOption ->
                             typeState.value = currentOption
                         }
-
-                        Text(
-                            text = title,
-                            modifier = Modifier.padding(8.dp),
-                            fontWeight = FontWeight.Bold,
-                            color = Black
-                        )
 
                         Image(
                             modifier = Modifier
@@ -186,7 +181,7 @@ fun MorePhysicalExercise(
                     ) {
 
                         TextFieldBlue(
-                            value = metState.value.toString(),
+                            value = metState.value,
                             label = {
                                 Text(
                                     LocalContext.current.getString(R.string.kilocalories),
@@ -212,11 +207,11 @@ fun MorePhysicalExercise(
                         TextButton(
                             onClick = {
                                 var check = true
-                                if (nameState.value == ""){
+                                if (nameState.value == "") {
                                     check = false
                                     colorName = RedLight
                                 }
-                                if (metState.value== ""){
+                                if (metState.value == "") {
                                     check = false
                                     colorMet = RedLight
                                 }
@@ -231,7 +226,7 @@ fun MorePhysicalExercise(
                                         exceptionState
                                     )
                                     openDialog = false
-                                    onOpenChange(openDialog)
+                                    onOpenChange(false)
                                     Toast.makeText(
                                         context,
                                         "Изменено: ".plus(nameState.value),
@@ -246,7 +241,7 @@ fun MorePhysicalExercise(
                         TextButton(
                             onClick = {
                                 openDialog = false
-                                onOpenChange(openDialog)
+                                onOpenChange(false)
                             },
                             modifier = Modifier.padding(8.dp),
                         ) {

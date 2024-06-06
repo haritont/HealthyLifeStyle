@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
@@ -124,14 +123,11 @@ fun MoreIngredient(
         Dialog(
             onDismissRequest = {
                 openDialog = false
-                onOpenChange(openDialog)
+                onOpenChange(false)
             }
         ) {
             Card(
-                modifier = Modifier
-                    .height(400.dp)
-                    .width(450.dp)
-                    .padding(16.dp),
+                modifier = Modifier.padding(16.dp),
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Column(
@@ -140,6 +136,12 @@ fun MoreIngredient(
                     modifier = Modifier.padding(8.dp)
                 )
                 {
+                    Text(
+                        text = title,
+                        modifier = Modifier.padding(8.dp),
+                        fontWeight = FontWeight.Bold,
+                        color = Black
+                    )
                     Row(
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
@@ -150,13 +152,6 @@ fun MoreIngredient(
                         ) { currentOption ->
                             typeState.value = currentOption
                         }
-
-                        Text(
-                            text = title,
-                            modifier = Modifier.padding(8.dp),
-                            fontWeight = FontWeight.Bold,
-                            color = Black
-                        )
 
                         Image(
                             modifier = Modifier
@@ -391,7 +386,7 @@ fun MoreIngredient(
                                         exceptionState
                                     )
                                     openDialog = false
-                                    onOpenChange(openDialog)
+                                    onOpenChange(false)
                                     Toast.makeText(
                                         context,
                                         "Изменено: ".plus(nameState.value),
@@ -406,7 +401,7 @@ fun MoreIngredient(
                         TextButton(
                             onClick = {
                                 openDialog = false
-                                onOpenChange(openDialog)
+                                onOpenChange(false)
                             },
                             modifier = Modifier.padding(8.dp),
                         ) {
