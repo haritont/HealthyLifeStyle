@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -17,23 +16,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieClipSpec
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieAnimatable
 import com.airbnb.lottie.compose.rememberLottieComposition
-import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.main.MainActivity
 
 @Composable
 fun WaterItem(
-    value: Int,
-    onAddValue: (Int) -> Unit
+    water: Water
 ) {
     val context = LocalContext.current
     val composition by rememberLottieComposition(
-        spec = LottieCompositionSpec.Asset("water.json")
+        spec = if (water.isStart) {
+            LottieCompositionSpec.Asset("water_add.json")
+        } else {
+            LottieCompositionSpec.Asset("water.json")
+        }
     )
     var isPlaying by remember { mutableStateOf(false) }
     val progress by animateLottieCompositionAsState(
@@ -41,36 +39,34 @@ fun WaterItem(
         isPlaying = isPlaying
     )
 
-    LaunchedEffect(key1 = progress){
-        if (progress == 0f){
+    LaunchedEffect(key1 = progress) {
+        if (progress == 0f) {
             isPlaying = true
         }
-        if (progress == 1f){
+        if (progress == 1f) {
             isPlaying = false
         }
     }
 
-    Column (
+    Column(
         verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(10.dp)
-    ){
+    ) {
         LottieAnimation(
             composition = composition,
             modifier = Modifier
                 .clickable(
                     onClick = {
-                        isPlaying = true
-                        onAddValue(value)
-                        MainActivity().onClickWater(context, value)
+                        if (water.isStart) {
+                            isPlaying = true
+                            water.onAddValue(water.value)
+                            MainActivity().onClickWater(context, water.value)
+                        }
                     }
                 )
                 .size(40.dp),
-            progress = {progress}
-        )
-
-        Text(
-            text = value.toString().plus(LocalContext.current.getString(R.string.milliliter_abbreviation))
+            progress = { progress }
         )
     }
 }
