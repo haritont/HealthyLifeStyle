@@ -19,32 +19,34 @@ class RecordRepository(context: Context) {
         recordMapper = DefaultRecordMapper()
     }
 
-    fun insertRecord(record: Record) = runBlocking{
+    fun insertRecord(record: Record) = runBlocking {
         recordDao.insert(recordMapper.toRecordEntity(record))
     }
 
-    fun getRecordByDate(date: String): Record?  = runBlocking{
+    fun getRecordByDate(date: String): Record? = runBlocking {
         recordDao.getAllByDate(date)?.let { recordMapper.toRecord(it) }
     }
 
-    fun updateProgressFoodRecord(date: String, kilocalories: Double, proteins: Double,
-                                         fats: Double, carbohydrates: Double)  = runBlocking{
+    fun updateProgressFoodRecord(
+        date: String, kilocalories: Double, proteins: Double,
+        fats: Double, carbohydrates: Double
+    ) = runBlocking {
         recordDao.updateProgressFoodRecord(date, kilocalories, proteins, fats, carbohydrates)
     }
 
-    fun updateProgressFoodRecord(date: String, kilocalories: Double)  = runBlocking{
+    fun updateProgressFoodRecord(date: String, kilocalories: Double) = runBlocking {
         recordDao.updateProgressFoodRecord(date, kilocalories)
     }
 
-    fun updateBurnedKilocalories(date: String, kilocalories: Double)  = runBlocking{
+    fun updateBurnedKilocalories(date: String, kilocalories: Double) = runBlocking {
         recordDao.updateBurnedKilocalories(date, kilocalories)
     }
 
-    fun updateProgressStepsRecord(date: String, steps: Int)  = runBlocking{
+    fun updateProgressStepsRecord(date: String, steps: Int) = runBlocking {
         recordDao.updateProgressStepsRecord(date, steps)
     }
 
-    fun updateProgressWaterRecord(date: String, water: Int)  = runBlocking{
+    fun updateProgressWaterRecord(date: String, water: Int) = runBlocking {
         recordDao.updateProgressWaterRecord(date, water)
     }
 
@@ -90,5 +92,18 @@ class RecordRepository(context: Context) {
 
     fun progressSteps(today: String): Int {
         return getRecordByDate(today)!!.progressSteps
+    }
+
+    fun updateTargetByDate(
+        kilocalories: Double,
+        proteins: Double,
+        fats: Double,
+        carbohydrates: Double,
+        date: String
+    ) = runBlocking {
+        recordDao.updateTargetKilocalories(date, kilocalories)
+        recordDao.updateTargetProteins(date, proteins)
+        recordDao.updateTargetFats(date, fats)
+        recordDao.updateTargetCarbohydrates(date, carbohydrates)
     }
 }

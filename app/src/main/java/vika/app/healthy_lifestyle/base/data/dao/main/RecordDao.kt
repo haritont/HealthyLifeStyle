@@ -30,4 +30,16 @@ interface RecordDao {
 
     @Query("UPDATE Record SET burnedKilocalories = :kilocalories WHERE date = :date")
     suspend fun updateBurnedKilocalories(date: String, kilocalories: Double)
+
+    @Query("UPDATE Record SET targetKilocalories = :kilocalories WHERE date = :date")
+    suspend fun updateTargetKilocalories(date: String, kilocalories: Double)
+
+    @Query("UPDATE Record SET targetProteins = :proteins WHERE date = :date")
+    suspend fun updateTargetProteins(date: String, proteins: Double)
+
+    @Query("UPDATE Record SET targetFats = :fats WHERE date = :date")
+    suspend fun updateTargetFats(date: String, fats: Double)
+
+    @Query("UPDATE Record SET targetCarbohydrates = :carbohydrates WHERE date = :date")
+    suspend fun updateTargetCarbohydrates(date: String, carbohydrates: Double)
 }
