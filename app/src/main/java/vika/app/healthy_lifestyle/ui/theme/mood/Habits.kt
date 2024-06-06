@@ -55,7 +55,10 @@ fun Habits(
     var openDialogAddHabit by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    Row {
+    Row (
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ){
         Text(
             text = "Пищевые привычки",
             modifier = Modifier.padding(8.dp),
@@ -168,7 +171,7 @@ fun Habits(
                             onCheckedChange = { checked = it }
                         )
                         Text(
-                            text = "Хочу добавить продукт в рацион",
+                            text = "Хочу добавить это продукт в рацион",
                             modifier = Modifier.padding(8.dp)
                         )
                     }

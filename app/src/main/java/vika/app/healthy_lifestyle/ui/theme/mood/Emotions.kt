@@ -49,7 +49,10 @@ fun Emotions (
     val context = LocalContext.current
 
     var openDialogAddEmotion by remember { mutableStateOf(false) }
-    Row {
+    Row (
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ){
         Text(
             text = "Эмоции",
             modifier = Modifier.padding(8.dp),
