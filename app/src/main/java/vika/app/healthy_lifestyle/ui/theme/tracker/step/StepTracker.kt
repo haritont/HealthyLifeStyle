@@ -37,7 +37,7 @@ fun StepTracker() {
     ) {
         CircularProgressBar(
             text ="Шаги",
-            progressValue = SportActivity().getProgressSteps(context).toDouble(),
+            progressValue = SportActivity().getProgressSteps(context).toDouble() - 1.0,
             targetValue = 10000.0,
             burnedValue = MainActivity().getBurnedKilocalories(context),
             isStepTracker = true

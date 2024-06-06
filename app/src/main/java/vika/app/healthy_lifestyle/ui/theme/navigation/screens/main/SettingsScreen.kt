@@ -208,7 +208,7 @@ fun SettingsScreen() {
             val dinnerState = remember { mutableStateOf(20.toString()) }
             val snackState = remember { mutableStateOf(20.toString()) }
         Text(
-            text = "Настроить цели на приемы пищи",
+            text = "Настроить цели на приемы пищи в %",
             fontWeight = FontWeight.Bold
         )
 
@@ -220,7 +220,7 @@ fun SettingsScreen() {
                 modifier = Modifier.weight(1f)
             ) {
                 TextFieldBlue(
-                    value = breakfastState.value.plus("%"),
+                    value = breakfastState.value,
                     label = {
                         Text(
                             "Завтрак",
@@ -231,7 +231,7 @@ fun SettingsScreen() {
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     leadingIcon = {
                         Image(
-                            painterResource(R.drawable.kilocalories),
+                            painterResource(R.drawable.proteins),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(25.dp)
@@ -243,7 +243,7 @@ fun SettingsScreen() {
                 modifier = Modifier.weight(1f)
             ) {
                 TextFieldBlue(
-                    value = lunchState.value.plus("%"),
+                    value = lunchState.value,
                     label = {
                         Text(
                             "Обед",
@@ -254,7 +254,7 @@ fun SettingsScreen() {
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     leadingIcon = {
                         Image(
-                            painterResource(R.drawable.proteins),
+                            painterResource(R.drawable.dish),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(25.dp)
@@ -271,7 +271,7 @@ fun SettingsScreen() {
                 modifier = Modifier.weight(1f)
             ) {
                 TextFieldBlue(
-                    value = dinnerState.value.plus("%"),
+                    value = dinnerState.value,
                     label = {
                         Text(
                             "Ужин",
@@ -282,7 +282,7 @@ fun SettingsScreen() {
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     leadingIcon = {
                         Image(
-                            painterResource(R.drawable.fats),
+                            painterResource(R.drawable.dish),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(25.dp)
@@ -295,7 +295,7 @@ fun SettingsScreen() {
                 modifier = Modifier.weight(1f)
             ) {
                 TextFieldBlue(
-                    value = snackState.value.plus("%"),
+                    value = snackState.value,
                     label = {
                         Text(
                            "Перекус",
@@ -306,7 +306,7 @@ fun SettingsScreen() {
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     leadingIcon = {
                         Image(
-                            painterResource(R.drawable.carbohydrates),
+                            painterResource(R.drawable.ingredient),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(25.dp)

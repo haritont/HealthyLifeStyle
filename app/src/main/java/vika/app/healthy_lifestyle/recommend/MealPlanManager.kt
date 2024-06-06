@@ -25,10 +25,11 @@ class MealPlanManager {
         val record = RecordRepository(context).getRecordByDate(DateToday().getToday())!!
         val sharedPreferences: SharedPreferences =
             context.getSharedPreferences("shared_preferences", Context.MODE_PRIVATE)
-        val breakfast = sharedPreferences.getString("breakfast", null)?.toDouble() ?: 0.3
-        val lunch = sharedPreferences.getString("lunch", null)?.toDouble() ?: 0.3
-        val dinner = sharedPreferences.getString("dinner", null)?.toDouble() ?: 0.2
-        val snack = sharedPreferences.getString("snack", null)?.toDouble() ?: 0.2
+
+        val breakfast = (sharedPreferences.getString("breakfast", null)?.toDouble() ?: 30.0) / 100.0
+        val lunch = (sharedPreferences.getString("lunch", null)?.toDouble() ?: 30.0) / 100.0
+        val dinner = (sharedPreferences.getString("dinner", null)?.toDouble() ?: 20.0) / 100.0
+        val snack = (sharedPreferences.getString("snack", null)?.toDouble() ?: 20.0) / 100.0
 
         when (meal) {
             0 -> {

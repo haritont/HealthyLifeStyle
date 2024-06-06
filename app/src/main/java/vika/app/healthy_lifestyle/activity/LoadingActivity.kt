@@ -190,7 +190,7 @@ class LoadingActivity : ComponentActivity() {
 
         if (getTodayRecord(today) == null) {
             val target = PersonalTarget()
-            target.count(getPersonalData())
+            target.count(getPersonalData(), this@LoadingActivity)
             saveTodayRecordTarget(today, target)
         }
     }
