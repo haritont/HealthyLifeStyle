@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.base.data.repository.main.NotificationsRepository
+import vika.app.healthy_lifestyle.notification.rescheduleNotification
 import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
 
@@ -105,6 +106,7 @@ fun Notification(
         }
         ButtonBlue(text = "Сохранить") {
             NotificationsRepository(context).updateHoursAndMinutesNotifications(title, hourState.toInt(), minuteState.toInt())
+            rescheduleNotification(context, "Пора заполнить ".plus(title.lowercase()), hourState.toInt(), minuteState.toInt())
         }
     }
 }

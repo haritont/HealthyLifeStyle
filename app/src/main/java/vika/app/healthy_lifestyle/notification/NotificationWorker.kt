@@ -6,9 +6,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.work.Data
+import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import androidx.work.WorkRequest
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import vika.app.healthy_lifestyle.R
@@ -55,9 +55,10 @@ fun scheduleNotification(context: Context, meal: String, hour: Int, minute: Int)
 
     val delay = notificationTime.timeInMillis - now.timeInMillis
 
-    val workRequest: WorkRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
+    val workRequest: OneTimeWorkRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
         .setInitialDelay(delay, TimeUnit.MILLISECONDS)
         .setInputData(Data.Builder().putString("MEAL", meal).build())
+        .addTag(meal)
         .build()
 
     WorkManager.getInstance(context).enqueue(workRequest)

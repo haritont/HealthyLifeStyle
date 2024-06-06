@@ -1,6 +1,8 @@
 package vika.app.healthy_lifestyle.ui.theme.navigation.screens.main
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -20,26 +22,52 @@ fun SettingsScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         item {
-            Notification(
-                title = "Завтрак",
-                hour = notificationsRepository.getNotificationsHour("Завтрак"),
-                minute = notificationsRepository.getNotificationsMinute("Завтрак")
-            )
-            Notification(
-                title = "Обед",
-                hour = notificationsRepository.getNotificationsHour("Обед"),
-                minute = notificationsRepository.getNotificationsMinute("Обед")
-            )
-            Notification(
-                title = "Ужин",
-                hour = notificationsRepository.getNotificationsHour("Ужин"),
-                minute = notificationsRepository.getNotificationsMinute("Ужин")
-            )
-            Notification(
-                title = "Перекус",
-                hour = notificationsRepository.getNotificationsHour("Перекус"),
-                minute = notificationsRepository.getNotificationsMinute("Перекус")
-            )
+            Row(
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Notification(
+                        title = "Завтрак",
+                        hour = notificationsRepository.getNotificationsHour("Завтрак"),
+                        minute = notificationsRepository.getNotificationsMinute("Завтрак")
+                    )
+                }
+                Box(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Notification(
+                        title = "Обед",
+                        hour = notificationsRepository.getNotificationsHour("Обед"),
+                        minute = notificationsRepository.getNotificationsMinute("Обед")
+                    )
+                }
+            }
+            Row(
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Notification(
+                        title = "Ужин",
+                        hour = notificationsRepository.getNotificationsHour("Ужин"),
+                        minute = notificationsRepository.getNotificationsMinute("Ужин")
+                    )
+                }
+                Box(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Notification(
+                        title = "Перекус",
+                        hour = notificationsRepository.getNotificationsHour("Перекус"),
+                        minute = notificationsRepository.getNotificationsMinute("Перекус")
+                    )
+                }
+            }
         }
     }
 }
