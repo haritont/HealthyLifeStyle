@@ -210,10 +210,10 @@ fun Dream (
                                 )
                             hourState = sleep.first.toString()
                             minuteState = sleep.second.toString()
-                                MoodActivity().addDream(
+                            MoodActivity().addDream(
                                     hourState.toInt(),
                                     minuteState.toInt()
-                                )
+                            )
                             openDialogCalculateDream = false
                         }
                     }

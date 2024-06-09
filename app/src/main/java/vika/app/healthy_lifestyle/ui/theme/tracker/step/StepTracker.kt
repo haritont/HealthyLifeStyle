@@ -29,7 +29,6 @@ fun StepTracker() {
         isTrack = true
     }
 
-    val steps = SportActivity().getProgressSteps(context).toDouble()
     Column(
         modifier = Modifier
             .padding(16.dp),
@@ -38,7 +37,7 @@ fun StepTracker() {
     ) {
         CircularProgressBar(
             text ="Шаги",
-            progressValue = if (steps == 0.0) steps else steps - 1.0,
+            progressValue = SportActivity().getProgressSteps(context).toDouble(),
             targetValue = 10000.0,
             burnedValue = MainActivity().getBurnedKilocalories(context),
             isStepTracker = true
