@@ -29,4 +29,8 @@ class TypeRepository(context: Context) {
     fun getAllByPhys():List<String>?= runBlocking{
         typeDao.getAllTypeByPhys()
     }
+
+    fun getByName(type: String): Type = runBlocking{
+        typeMapper.toType(typeDao.getAllByName(type))
+    }
 }

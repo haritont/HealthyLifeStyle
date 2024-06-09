@@ -1,5 +1,7 @@
 package vika.app.healthy_lifestyle.bean.food
 
+import vika.app.healthy_lifestyle.bean.main.Type
+
 
 data class Ingredient(
     var id: Long = 0,
@@ -10,6 +12,6 @@ data class Ingredient(
     var carbohydrates: Double,
     var favorite: Boolean = false,
     var exception: Boolean = false,
-    var type: String = "",
+    var type: Type,
     var isDish: Boolean = false
 )
