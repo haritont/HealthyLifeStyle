@@ -47,7 +47,6 @@ import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.RedLight
 import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
-import vika.app.healthy_lifestyle.ui.theme.general.defaultOptionPhys
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListDelete
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListText
 import vika.app.healthy_lifestyle.ui.theme.general.list.Search
@@ -109,10 +108,7 @@ fun MoreTraining(
         val nameState = remember { mutableStateOf(title) }
         val metState = remember { mutableStateOf(training.met.toString()) }
 
-        var options = TypeRepository(context).getAllByPhys()
-        if (options!!.isEmpty()){
-            options = defaultOptionPhys
-        }
+        val options = TypeRepository(context).getAllByPhys()!!
         val typeState = remember { mutableStateOf(training.type.type) }
 
         var favoriteState by remember { mutableStateOf(training.favorite) }

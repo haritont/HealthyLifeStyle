@@ -56,10 +56,7 @@ fun AddIngredient(
     val fatsState = remember { mutableStateOf("") }
     val carbohydratesState = remember { mutableStateOf("") }
 
-    var options = TypeRepository(context).getAllByProduct()
-    if (options!!.isEmpty()){
-        options = defaultOptionProduct
-    }
+    val options = TypeRepository(context).getAllByProduct()!!
 
     val typeState = remember { mutableStateOf(options[0]) }
 

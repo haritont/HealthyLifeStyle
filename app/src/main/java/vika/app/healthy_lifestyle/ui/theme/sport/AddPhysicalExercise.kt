@@ -40,7 +40,6 @@ import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.RedLight
 import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
-import vika.app.healthy_lifestyle.ui.theme.general.defaultOptionPhys
 
 @Composable
 fun AddPhysicalExercise(
@@ -64,10 +63,7 @@ fun AddPhysicalExercise(
     val nameState = remember { mutableStateOf("") }
     val metState = remember { mutableStateOf("") }
 
-    var options = TypeRepository(context).getAllByPhys()
-    if (options!!.isEmpty()){
-        options = defaultOptionPhys
-    }
+    val options = TypeRepository(context).getAllByPhys()!!
 
     val typeState = remember { mutableStateOf(options[0]) }
 

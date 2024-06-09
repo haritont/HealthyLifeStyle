@@ -71,10 +71,7 @@ fun MoreIngredient(
         val fatsState = remember { mutableStateOf(ingredient.fats.toString()) }
         val carbohydratesState = remember { mutableStateOf(ingredient.carbohydrates.toString()) }
 
-        var options = TypeRepository(context).getAllByProduct()
-        if (options!!.isEmpty()){
-            options = defaultOptionProduct
-        }
+        val options = TypeRepository(context).getAllByProduct()!!
         val typeState = remember { mutableStateOf(ingredient.type.type) }
 
         var favoriteState by remember { mutableStateOf(ingredient.favorite) }

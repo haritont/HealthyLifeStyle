@@ -45,7 +45,6 @@ import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.RedLight
 import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
-import vika.app.healthy_lifestyle.ui.theme.general.defaultOptionProduct
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListDelete
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListText
 import vika.app.healthy_lifestyle.ui.theme.general.list.Search
@@ -80,10 +79,7 @@ fun AddDish(
 
     val nameState = remember { mutableStateOf("") }
 
-    var options = TypeRepository(context).getAllByProduct()
-    if (options!!.isEmpty()){
-        options = defaultOptionProduct
-    }
+    val options = TypeRepository(context).getAllByProduct()!!
 
     val typeState = remember { mutableStateOf(options[0]) }
 

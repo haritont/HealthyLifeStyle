@@ -110,10 +110,7 @@ fun MoreDish(
         val fatsState = remember { mutableStateOf(dish.fats.toString()) }
         val carbohydratesState = remember { mutableStateOf(dish.carbohydrates.toString()) }
 
-        var options = TypeRepository(context).getAllByProduct()
-        if (options!!.isEmpty()){
-            options = defaultOptionProduct
-        }
+        val options = TypeRepository(context).getAllByProduct()!!
         val typeState = remember { mutableStateOf(dish.type.type) }
 
         var favoriteState by remember { mutableStateOf(dish.favorite) }

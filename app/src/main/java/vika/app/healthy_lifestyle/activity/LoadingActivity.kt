@@ -38,6 +38,7 @@ import vika.app.healthy_lifestyle.base.data.repository.sport.PhysicalExerciseRep
 import vika.app.healthy_lifestyle.bean.main.Notification
 import vika.app.healthy_lifestyle.bean.main.PersonalData
 import vika.app.healthy_lifestyle.bean.main.Record
+import vika.app.healthy_lifestyle.bean.main.Type
 import vika.app.healthy_lifestyle.bean.main.Weight
 import vika.app.healthy_lifestyle.bean.mood.Dream
 import vika.app.healthy_lifestyle.calculations.DateToday
@@ -46,6 +47,8 @@ import vika.app.healthy_lifestyle.notification.createNotificationChannel
 import vika.app.healthy_lifestyle.notification.scheduleNotification
 import vika.app.healthy_lifestyle.server.api.DefaultApiServiceRepository
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
+import vika.app.healthy_lifestyle.ui.theme.general.defaultOptionPhys
+import vika.app.healthy_lifestyle.ui.theme.general.defaultOptionProduct
 
 class LoadingActivity : ComponentActivity() {
     private val scope = CoroutineScope(Dispatchers.Main)
@@ -108,6 +111,29 @@ class LoadingActivity : ComponentActivity() {
 
                 insertNotifications()
                 setRecordTarget()
+
+                var options = TypeRepository(this@LoadingActivity).getAllByProduct()
+                if (options!!.isEmpty()){
+                    options = defaultOptionProduct
+                    for (option in options){
+                        TypeRepository(this@LoadingActivity).insert(
+                            Type(
+                                type = option,
+                                isProduct = true
+                            )
+                        )
+                    }
+
+                    options = defaultOptionPhys
+                    for (option in options){
+                        TypeRepository(this@LoadingActivity).insert(
+                            Type(
+                                type = option,
+                                isProduct = false
+                            )
+                        )
+                    }
+                }
 
                 try {
                     val service = DefaultApiServiceRepository()
