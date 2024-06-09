@@ -16,6 +16,7 @@ import vika.app.healthy_lifestyle.bean.ItemText
 import vika.app.healthy_lifestyle.bean.food.Ingredient
 import vika.app.healthy_lifestyle.bean.food.Nutrition
 import vika.app.healthy_lifestyle.bean.food.Recipe
+import vika.app.healthy_lifestyle.bean.main.Type
 import vika.app.healthy_lifestyle.bean.mood.HabitRecord
 import vika.app.healthy_lifestyle.calculations.CreateAdvice
 import vika.app.healthy_lifestyle.calculations.DateToday
@@ -57,6 +58,14 @@ class FoodActivity : ComponentActivity() {
                 carbohydrates += ingredient.carbohydrates * item.value / 100
             }
 
+            var typeNew = TypeRepository(context).getByName(type)
+            if (typeNew == null){
+                typeNew = Type(
+                    type = type,
+                    isProduct = true
+                )
+                TypeRepository(context).insert(typeNew)
+            }
             IngredientRepository(context).insertIngredient(
                 Ingredient(
                     name = name,
@@ -64,7 +73,7 @@ class FoodActivity : ComponentActivity() {
                     proteins = proteins,
                     fats = fats,
                     carbohydrates = carbohydrates,
-                    type = TypeRepository(context).getByName(type),
+                    type = typeNew,
                     isDish = true
                 )
             )
@@ -89,6 +98,14 @@ class FoodActivity : ComponentActivity() {
         proteins: Double, fats: Double, carbohydrates: Double, type: String,
         favorite: Boolean, exception: Boolean
     ) {
+        var typeNew = TypeRepository(context).getByName(type)
+        if (typeNew == null){
+            typeNew = Type(
+                type = type,
+                isProduct = true
+            )
+            TypeRepository(context).insert(typeNew)
+        }
         IngredientRepository(context).insertIngredient(
             Ingredient(
                 id = id,
@@ -97,7 +114,7 @@ class FoodActivity : ComponentActivity() {
                 proteins = proteins,
                 fats = fats,
                 carbohydrates = carbohydrates,
-                type = TypeRepository(context).getByName(type),
+                type = typeNew,
                 favorite = favorite,
                 exception = exception
             )
@@ -116,6 +133,14 @@ class FoodActivity : ComponentActivity() {
         context: Context, name: String, kilocalories: Double,
         proteins: Double, fats: Double, carbohydrates: Double, type: String
     ) {
+        var typeNew = TypeRepository(context).getByName(type)
+        if (typeNew == null){
+            typeNew = Type(
+                type = type,
+                isProduct = true
+            )
+            TypeRepository(context).insert(typeNew)
+        }
         val exists = IngredientRepository(context).isIngredientExists(name)
         if (!exists) {
             IngredientRepository(context).insertIngredient(
@@ -125,7 +150,7 @@ class FoodActivity : ComponentActivity() {
                     proteins = proteins,
                     fats = fats,
                     carbohydrates = carbohydrates,
-                    type = TypeRepository(context).getByName(type)
+                    type = typeNew
                 )
             )
         }
@@ -237,6 +262,14 @@ class FoodActivity : ComponentActivity() {
         exception: Boolean,
         selectListIngredient: MutableList<ItemText>
     ) {
+        var typeNew = TypeRepository(context).getByName(type)
+        if (typeNew == null){
+            typeNew = Type(
+                type = type,
+                isProduct = true
+            )
+            TypeRepository(context).insert(typeNew)
+        }
         IngredientRepository(context).insertIngredient(
             Ingredient(
                 id = id,
@@ -245,7 +278,7 @@ class FoodActivity : ComponentActivity() {
                 proteins = proteins,
                 fats = fats,
                 carbohydrates = carbohydrates,
-                type = TypeRepository(context).getByName(type),
+                type = typeNew,
                 favorite = favorite,
                 exception = exception,
                 isDish = true

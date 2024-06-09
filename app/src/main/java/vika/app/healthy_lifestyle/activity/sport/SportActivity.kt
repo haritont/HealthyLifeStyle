@@ -12,6 +12,7 @@ import vika.app.healthy_lifestyle.base.data.repository.sport.ActivismRepository
 import vika.app.healthy_lifestyle.base.data.repository.sport.PhysicalExerciseRepository
 import vika.app.healthy_lifestyle.base.data.repository.sport.TrainingRepository
 import vika.app.healthy_lifestyle.bean.ItemText
+import vika.app.healthy_lifestyle.bean.main.Type
 import vika.app.healthy_lifestyle.bean.sport.Activism
 import vika.app.healthy_lifestyle.bean.sport.PhysicalExercise
 import vika.app.healthy_lifestyle.bean.sport.Training
@@ -93,12 +94,20 @@ class SportActivity : ComponentActivity() {
         context: Context, id: Long, name: String, met: Double,
         type: String, favorite: Boolean, exception: Boolean
     ) {
+        var typeNew = TypeRepository(context).getByName(type)
+        if (typeNew == null){
+            typeNew = Type(
+                type = type,
+                isProduct = true
+            )
+            TypeRepository(context).insert(typeNew)
+        }
         PhysicalExerciseRepository(context).insertPhysicalExercise(
             PhysicalExercise(
                 id = id,
                 name = name,
                 met = met,
-                type = TypeRepository(context).getByName(type),
+                type = typeNew,
                 favorite = favorite,
                 exception = exception
             )
@@ -120,12 +129,20 @@ class SportActivity : ComponentActivity() {
     fun updateTraining(context: Context, id: Long, name: String, met: Double,
                        type: String, favorite: Boolean, exception: Boolean,
                        listPhysicalExercise: List<ItemText>) {
+        var typeNew = TypeRepository(context).getByName(type)
+        if (typeNew == null){
+            typeNew = Type(
+                type = type,
+                isProduct = true
+            )
+            TypeRepository(context).insert(typeNew)
+        }
         PhysicalExerciseRepository(context).insertPhysicalExercise(
             PhysicalExercise(
                 id = id,
                 name = name,
                 met = met,
-                type = TypeRepository(context).getByName(type),
+                type = typeNew,
                 favorite = favorite,
                 exception = exception,
                 training = true
@@ -147,11 +164,19 @@ class SportActivity : ComponentActivity() {
 
     fun insertPhysicalExercise(context: Context, name: String, met: Double, type: String) {
         if (!PhysicalExerciseRepository(context).isPhysicalExerciseExists(name)) {
+            var typeNew = TypeRepository(context).getByName(type)
+            if (typeNew == null){
+                typeNew = Type(
+                    type = type,
+                    isProduct = true
+                )
+                TypeRepository(context).insert(typeNew)
+            }
             PhysicalExerciseRepository(context).insertPhysicalExercise(
                 PhysicalExercise(
                     name = name,
                     met = met,
-                    type = TypeRepository(context).getByName(type)
+                    type = typeNew
                 )
             )
         }
@@ -160,11 +185,19 @@ class SportActivity : ComponentActivity() {
     fun insertTraining(context: Context, name: String, met: Double,
                        type: String, listPhysicalExercise: List<ItemText>) {
         if (!PhysicalExerciseRepository(context).isPhysicalExerciseExists(name)) {
+            var typeNew = TypeRepository(context).getByName(type)
+            if (typeNew == null){
+                typeNew = Type(
+                    type = type,
+                    isProduct = true
+                )
+                TypeRepository(context).insert(typeNew)
+            }
             PhysicalExerciseRepository(context).insertPhysicalExercise(
                 PhysicalExercise(
                     name = name,
                     met = met,
-                    type = TypeRepository(context).getByName(type),
+                    type = typeNew,
                     training = true
                 )
             )
