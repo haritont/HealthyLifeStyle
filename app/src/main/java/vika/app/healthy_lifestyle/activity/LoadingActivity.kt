@@ -29,6 +29,7 @@ import vika.app.healthy_lifestyle.base.data.repository.food.IngredientRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.NotificationsRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
+import vika.app.healthy_lifestyle.base.data.repository.main.TypeRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.WeightRepository
 import vika.app.healthy_lifestyle.base.data.repository.mood.DreamRepository
 import vika.app.healthy_lifestyle.base.data.repository.mood.EmotionRepository
@@ -101,6 +102,7 @@ class LoadingActivity : ComponentActivity() {
                         val ingredients = service.getAllIngredients()
                         for (ingredient in ingredients) {
                             IngredientRepository(this@LoadingActivity).insertIngredient(ingredient)
+                            TypeRepository(this@LoadingActivity).insert(ingredient.type)
                         }
                     }
 
@@ -108,6 +110,7 @@ class LoadingActivity : ComponentActivity() {
                         val physicalExercises = service.getAllPhysicalExercise()
                         for (physicalExercise in physicalExercises) {
                             PhysicalExerciseRepository(this@LoadingActivity).insertPhysicalExercise(physicalExercise)
+                            TypeRepository(this@LoadingActivity).insert(physicalExercise.type)
                         }
                     }
 
