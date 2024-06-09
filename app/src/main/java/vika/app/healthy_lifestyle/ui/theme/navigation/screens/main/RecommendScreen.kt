@@ -25,6 +25,7 @@ import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.bean.food.Ingredient
 import vika.app.healthy_lifestyle.bean.food.Nutrition
+import vika.app.healthy_lifestyle.bean.main.Type
 import vika.app.healthy_lifestyle.recommend.MealPlanManager
 import vika.app.healthy_lifestyle.recommend.RecommendSystem
 import vika.app.healthy_lifestyle.ui.theme.app.Black
@@ -41,19 +42,19 @@ fun RecommendScreen() {
 
     val breakfast = Ingredient(
         name = "Завтрак", kilocalories = 0.0, proteins = 0.0,
-        fats = 0.0, carbohydrates = 0.0
+        fats = 0.0, carbohydrates = 0.0, type = Type()
     )
     val lunch = Ingredient(
         name = "Обед", kilocalories = 0.0, proteins = 0.0,
-        fats = 0.0, carbohydrates = 0.0
+        fats = 0.0, carbohydrates = 0.0, type = Type()
     )
     val dinner = Ingredient(
         name = "Ужин", kilocalories = 0.0, proteins = 0.0,
-        fats = 0.0, carbohydrates = 0.0
+        fats = 0.0, carbohydrates = 0.0, type = Type()
     )
     val snack = Ingredient(
         name = "Перекус", kilocalories = 0.0, proteins = 0.0,
-        fats = 0.0, carbohydrates = 0.0
+        fats = 0.0, carbohydrates = 0.0, type = Type()
     )
 
     val breakfastList = mutableListOf<Nutrition>()

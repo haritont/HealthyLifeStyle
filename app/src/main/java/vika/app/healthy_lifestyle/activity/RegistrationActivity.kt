@@ -253,6 +253,7 @@ class RegistrationActivity: ComponentActivity()  {
                                 )
                             )
                             startActivity(Intent(this@RegistrationActivity, LoadingActivity::class.java))
+                            finish()
                         }
                     }
                 }

@@ -110,7 +110,7 @@ fun MoreTraining(
         val metState = remember { mutableStateOf(training.met.toString()) }
 
         var options = TypeRepository(context).getAllByPhys()
-        if (options == null){
+        if (options!!.isEmpty()){
             options = defaultOptionPhys
         }
         val typeState = remember { mutableStateOf(training.type.type) }

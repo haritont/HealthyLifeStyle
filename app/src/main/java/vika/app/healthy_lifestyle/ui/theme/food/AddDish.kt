@@ -81,7 +81,7 @@ fun AddDish(
     val nameState = remember { mutableStateOf("") }
 
     var options = TypeRepository(context).getAllByProduct()
-    if (options == null){
+    if (options!!.isEmpty()){
         options = defaultOptionProduct
     }
 

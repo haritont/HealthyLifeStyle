@@ -28,15 +28,14 @@
         android:theme="@style/Theme.Healthy_Lifestyle"
         tools:targetApi="31"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.AuthorizationActivity" />
-        <activity android:name="vika.app.healthy_lifestyle.activity.main.MainActivity" />
-        <activity android:name="vika.app.healthy_lifestyle.activity.LoadingActivity"
-            android:exported="true">
+        <activity android:name="vika.app.healthy_lifestyle.activity.AuthorizationActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="vika.app.healthy_lifestyle.activity.main.MainActivity" />
+        <activity android:name="vika.app.healthy_lifestyle.activity.LoadingActivity"/>
         <activity android:name="vika.app.healthy_lifestyle.activity.main.ProfileActivity" />
         <activity android:name="vika.app.healthy_lifestyle.activity.main.SettingsActivity" />
         <activity android:name="vika.app.healthy_lifestyle.activity.mood.MoodActivity" />

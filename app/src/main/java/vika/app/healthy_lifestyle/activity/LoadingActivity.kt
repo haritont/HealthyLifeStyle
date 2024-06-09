@@ -77,14 +77,12 @@ class LoadingActivity : ComponentActivity() {
                         onError = { message ->
                             errorMessage = message
                             isLoading = false
+                            startActivity(Intent(this@LoadingActivity, MainActivity::class.java))
+                            finish()
                         },
                         onSuccess = {
-                            if (PersonalDataRepository(this@LoadingActivity).getPersonalData() == null){
-                                startActivity(Intent(this@LoadingActivity, RegistrationActivity::class.java))
-                            }
-                            else {
-                                startActivity(Intent(this@LoadingActivity, MainActivity::class.java))
-                            }
+                            startActivity(Intent(this@LoadingActivity, MainActivity::class.java))
+                            finish()
                         }
                     )
                 }
@@ -95,6 +93,22 @@ class LoadingActivity : ComponentActivity() {
     private fun loadData(onError: (String) -> Unit, onSuccess: () -> Unit) {
         scope.launch {
             withContext(Dispatchers.IO) {
+                if (WeightRepository(this@LoadingActivity).getToday() == null) {
+                    WeightRepository(this@LoadingActivity).insertWeight(
+                        Weight(
+                            date = DateToday().getToday(),
+                            value = getPersonalData().weight
+                        )
+                    )
+                }
+
+                if (getTodayDream(DateToday().getToday()) == null) {
+                    saveDream(Dream(date = DateToday().getToday()))
+                }
+
+                insertNotifications()
+                setRecordTarget()
+
                 try {
                     val service = DefaultApiServiceRepository()
 
@@ -134,22 +148,6 @@ class LoadingActivity : ComponentActivity() {
                     }
                     return@withContext
                 }
-
-                if (WeightRepository(this@LoadingActivity).getToday() == null) {
-                    WeightRepository(this@LoadingActivity).insertWeight(
-                        Weight(
-                            date = DateToday().getToday(),
-                            value = getPersonalData().weight
-                        )
-                    )
-                }
-
-                if (getTodayDream(DateToday().getToday()) == null) {
-                    saveDream(Dream(date = DateToday().getToday()))
-                }
-
-                insertNotifications()
-                setRecordTarget()
 
                 withContext(Dispatchers.Main) {
                     onSuccess()

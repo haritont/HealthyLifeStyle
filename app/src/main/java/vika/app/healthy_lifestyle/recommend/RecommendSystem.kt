@@ -36,7 +36,7 @@ class RecommendSystem(
         val plan = MealPlanManager().getSportPlan(target)
 
         for (physicalExercise in physicalExercises) {
-            if (physicalExercise.type in plan!!.types) {
+            if (physicalExercise.type.type in plan!!.types) {
                 recommendSports.add(physicalExercise)
             }
         }

@@ -28,6 +28,7 @@ import androidx.compose.ui.window.Dialog
 import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.bean.food.Ingredient
 import vika.app.healthy_lifestyle.bean.food.Nutrition
+import vika.app.healthy_lifestyle.bean.main.Type
 import vika.app.healthy_lifestyle.recommend.RecommendSystem
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.Blue
@@ -195,7 +196,7 @@ fun RecommendPage(
             val newProductList = recommend.getReplaceProduct(productsList)
             val newMeal = Ingredient(
                 name = "Рекомендуемый набор продуктов", kilocalories = 0.0, proteins = 0.0,
-                fats = 0.0, carbohydrates = 0.0
+                fats = 0.0, carbohydrates = 0.0, type = Type()
             )
             for (product in newProductList){
                 newMeal.kilocalories += product.value * product.kilocalories / 100

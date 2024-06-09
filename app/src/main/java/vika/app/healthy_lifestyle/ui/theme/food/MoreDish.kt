@@ -111,7 +111,7 @@ fun MoreDish(
         val carbohydratesState = remember { mutableStateOf(dish.carbohydrates.toString()) }
 
         var options = TypeRepository(context).getAllByProduct()
-        if (options == null){
+        if (options!!.isEmpty()){
             options = defaultOptionProduct
         }
         val typeState = remember { mutableStateOf(dish.type.type) }

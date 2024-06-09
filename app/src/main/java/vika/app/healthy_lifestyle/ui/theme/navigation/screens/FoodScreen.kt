@@ -46,7 +46,7 @@ fun FoodScreen() {
             itemListIngredient.add(
                 Item(
                     ingredient.name,
-                    ingredient.type,
+                    ingredient.type.type,
                     ingredient.favorite,
                     ingredient.exception,
                     if (ingredient.isDish) 1 else 0

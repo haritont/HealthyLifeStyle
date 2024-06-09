@@ -68,7 +68,7 @@ fun MorePhysicalExercise(
         val metState = remember { mutableStateOf(physicalExercise.met.toString()) }
 
         var options = TypeRepository(context).getAllByPhys()
-        if (options == null){
+        if (options!!.isEmpty()){
             options = defaultOptionPhys
         }
         val typeState = remember { mutableStateOf(physicalExercise.type.type) }

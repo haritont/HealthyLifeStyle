@@ -1,6 +1,7 @@
 package vika.app.healthy_lifestyle.activity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.runBlocking
 import vika.app.healthy_lifestyle.R
+import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
@@ -35,6 +37,14 @@ class AuthorizationActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Healthy_LifestyleTheme {
+                if (PersonalDataRepository(this@AuthorizationActivity).getPersonalData() == null){
+                    startActivity(Intent(this@AuthorizationActivity, RegistrationActivity::class.java))
+                }
+                else {
+                    startActivity(Intent(this@AuthorizationActivity, LoadingActivity::class.java))
+                }
+                finish()
+
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
