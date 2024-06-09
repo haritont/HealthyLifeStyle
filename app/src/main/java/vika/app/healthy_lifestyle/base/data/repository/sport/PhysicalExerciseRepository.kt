@@ -12,6 +12,7 @@ class PhysicalExerciseRepository(context: Context) {
     private val physicalExerciseDao: PhysicalExerciseDao
     private val physicalExerciseDatabase: PhysicalExerciseDatabase = PhysicalExerciseDatabase.getInstance(context)
     private val physicalExerciseMapper: PhysicalExerciseMapper
+    private val appContext: Context = context
 
     init {
         physicalExerciseDao = physicalExerciseDatabase.physicalExerciseDao()
@@ -23,23 +24,15 @@ class PhysicalExerciseRepository(context: Context) {
     }
 
     fun getPhysicalExerciseByName(name: String): PhysicalExercise = runBlocking{
-        physicalExerciseMapper.toPhysicalExercise(physicalExerciseDao.getPhysicalExerciseByName(name))
+        physicalExerciseMapper.toPhysicalExercise(physicalExerciseDao.getPhysicalExerciseByName(name), appContext)
     }
 
     fun getAllPhysicalExercises(): List<PhysicalExercise> = runBlocking{
-        physicalExerciseMapper.toPhysicalExerciseList(physicalExerciseDao.getPhysicalExercise())
-    }
-
-    fun getAllTrainings(): List<PhysicalExercise> = runBlocking{
-        physicalExerciseMapper.toPhysicalExerciseList(physicalExerciseDao.getPhysicalExerciseTraining())
+        physicalExerciseMapper.toPhysicalExerciseList(physicalExerciseDao.getPhysicalExercise(), appContext)
     }
 
     fun getPhysicalExerciseById(id: Long): PhysicalExercise = runBlocking{
-        physicalExerciseMapper.toPhysicalExercise(physicalExerciseDao.getPhysicalExerciseById(id))
-    }
-
-    fun getNamesPhysicalExercises(): List<String>  = runBlocking{
-        physicalExerciseDao.getNamesPhysicalExercises()
+        physicalExerciseMapper.toPhysicalExercise(physicalExerciseDao.getPhysicalExerciseById(id), appContext)
     }
 
     fun isPhysicalExerciseExists(namePhysicalExercise: String): Boolean  = runBlocking{
@@ -55,10 +48,6 @@ class PhysicalExerciseRepository(context: Context) {
     }
 
     fun getAll(): List<PhysicalExercise>? = runBlocking{
-        physicalExerciseDao.getAll()?.let { physicalExerciseMapper.toPhysicalExerciseList(it) }
-    }
-
-    fun getAllByType(type:String): List<PhysicalExercise> = runBlocking{
-        physicalExerciseMapper.toPhysicalExerciseList(physicalExerciseDao.getAllByType(type))
+        physicalExerciseDao.getAll()?.let { physicalExerciseMapper.toPhysicalExerciseList(it, appContext) }
     }
 }

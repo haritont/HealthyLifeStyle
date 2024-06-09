@@ -12,6 +12,7 @@ class IngredientRepository(context: Context) {
     private val ingredientDao: IngredientDao
     private val ingredientDatabase: IngredientDatabase = IngredientDatabase.getInstance(context)
     private val ingredientMapper: IngredientMapper
+    private val appContext: Context = context
 
     init {
         ingredientDao = ingredientDatabase.ingredientDao()
@@ -30,24 +31,12 @@ class IngredientRepository(context: Context) {
         ingredientDao.insert(ingredientMapper.toIngredientEntity(ingredient))
     }
 
-    fun getAllIngredients(): List<Ingredient>? = runBlocking{
-        ingredientDao.getAllIngredients()?.let { ingredientMapper.toIngredientList(it) }
-    }
-
     fun getIngredientByName(name: String): Ingredient = runBlocking{
-        ingredientMapper.toIngredient(ingredientDao.getByName(name))
+        ingredientMapper.toIngredient(ingredientDao.getByName(name), appContext)
     }
 
     fun getIngredientById(id: Long): Ingredient = runBlocking{
-        ingredientMapper.toIngredient(ingredientDao.getById(id))
-    }
-
-    fun getIngredientRowCount(): Int = runBlocking{
-        ingredientDao.getRowCount()
-    }
-
-    fun getNamesIngredients(): List<String> = runBlocking {
-        ingredientDao.getAllNames()
+        ingredientMapper.toIngredient(ingredientDao.getById(id), appContext)
     }
 
     fun isIngredientExists(nameIngredient: String): Boolean = runBlocking{
@@ -55,27 +44,15 @@ class IngredientRepository(context: Context) {
     }
 
     fun getAllProduct(): List<Ingredient>? = runBlocking{
-        ingredientDao.getAll()?.let { ingredientMapper.toIngredientList(it) }
+        ingredientDao.getAll()?.let { ingredientMapper.toIngredientList(it, appContext) }
     }
 
     fun updateIngredientExceptionByType(type: String, exception: Boolean)  = runBlocking{
         ingredientDao.updateIngredientExceptionByType(type, exception)
     }
 
-    fun getIngredientByValueTarget(value: Double, targetKilo: Double, targetProtein: Double,
-                                   targetFat: Double, targetCarb: Double): List<Ingredient> = runBlocking{
-        ingredientMapper.toIngredientList(
-            ingredientDao.getIngredientByValueTarget(
-            value,
-            targetKilo,
-            targetProtein,
-            targetFat,
-            targetCarb
-        ))
-    }
-
     fun getAllProductByType(type: String): List<Ingredient>? = runBlocking{
-        ingredientDao.getAllProductByType(type)?.let { ingredientMapper.toIngredientList(it) }
+        ingredientDao.getAllProductByType(type)?.let { ingredientMapper.toIngredientList(it, appContext) }
     }
 
     fun updateIngredientFavoriteByType(type: String, favorite: Boolean) = runBlocking{
@@ -83,6 +60,6 @@ class IngredientRepository(context: Context) {
     }
 
     fun getAllFavoriteProducts(): List<Ingredient>? = runBlocking{
-        ingredientDao.getAllFavoriteProducts()?.let { ingredientMapper.toIngredientList(it) }
+        ingredientDao.getAllFavoriteProducts()?.let { ingredientMapper.toIngredientList(it, appContext) }
     }
 }
