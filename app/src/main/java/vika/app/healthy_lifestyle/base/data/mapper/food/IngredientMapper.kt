@@ -4,6 +4,7 @@ import android.content.Context
 import vika.app.healthy_lifestyle.base.data.entity.food.IngredientEntity
 import vika.app.healthy_lifestyle.base.data.repository.main.TypeRepository
 import vika.app.healthy_lifestyle.bean.food.Ingredient
+import vika.app.healthy_lifestyle.bean.main.Type
 
 interface IngredientMapper {
     fun toIngredientEntity(ingredient: Ingredient): IngredientEntity
@@ -28,6 +29,14 @@ class DefaultIngredientMapper : IngredientMapper {
     }
 
     override fun toIngredient(ingredientEntity: IngredientEntity, context: Context): Ingredient {
+        var type = TypeRepository(context).getByName(ingredientEntity.type)
+        if (type == null){
+            type = Type(
+                type = ingredientEntity.type,
+                isProduct = true
+            )
+            TypeRepository(context).insert(type)
+        }
         return Ingredient(
             id = ingredientEntity.id,
             name = ingredientEntity.name,
@@ -37,7 +46,7 @@ class DefaultIngredientMapper : IngredientMapper {
             carbohydrates = ingredientEntity.carbohydrates,
             favorite = ingredientEntity.favorite,
             exception = ingredientEntity.exception,
-            type = TypeRepository(context).getByName(ingredientEntity.type),
+            type = type,
             isDish = ingredientEntity.isDish
         )
     }

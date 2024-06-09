@@ -3,6 +3,7 @@ package vika.app.healthy_lifestyle.base.data.mapper.sport
 import android.content.Context
 import vika.app.healthy_lifestyle.base.data.entity.sport.PhysicalExerciseEntity
 import vika.app.healthy_lifestyle.base.data.repository.main.TypeRepository
+import vika.app.healthy_lifestyle.bean.main.Type
 import vika.app.healthy_lifestyle.bean.sport.PhysicalExercise
 
 interface PhysicalExerciseMapper {
@@ -13,11 +14,19 @@ interface PhysicalExerciseMapper {
 
 class DefaultPhysicalExerciseMapper: PhysicalExerciseMapper {
     override fun toPhysicalExercise(physicalExerciseEntity: PhysicalExerciseEntity, context: Context): PhysicalExercise {
+        var type = TypeRepository(context).getByName(physicalExerciseEntity.type)
+        if (type == null){
+            type = Type(
+                type = physicalExerciseEntity.type,
+                isProduct = false
+            )
+            TypeRepository(context).insert(type)
+        }
        return PhysicalExercise(
            physicalExerciseEntity.id,
            physicalExerciseEntity.name,
            physicalExerciseEntity.met,
-           TypeRepository(context).getByName(physicalExerciseEntity.type),
+           type,
            physicalExerciseEntity.training
        )
     }

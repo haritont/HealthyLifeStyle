@@ -17,5 +17,5 @@ interface TypeDao {
     @Query("SELECT type FROM Type WHERE isProduct = 0")
     suspend fun getAllTypeByPhys(): List<String>?
     @Query("SELECT * FROM Type WHERE type = :type")
-    suspend fun getAllByName(type: String):TypeEntity
+    suspend fun getAllByName(type: String):TypeEntity?
 }

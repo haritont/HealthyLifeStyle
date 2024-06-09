@@ -30,7 +30,7 @@ class TypeRepository(context: Context) {
         typeDao.getAllTypeByPhys()
     }
 
-    fun getByName(type: String): Type = runBlocking{
-        typeMapper.toType(typeDao.getAllByName(type))
+    fun getByName(type: String): Type? = runBlocking{
+        typeDao.getAllByName(type)?.let { typeMapper.toType(it) }
     }
 }
