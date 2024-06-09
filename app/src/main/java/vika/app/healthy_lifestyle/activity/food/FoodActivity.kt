@@ -16,11 +16,13 @@ import vika.app.healthy_lifestyle.bean.ItemText
 import vika.app.healthy_lifestyle.bean.food.Ingredient
 import vika.app.healthy_lifestyle.bean.food.Nutrition
 import vika.app.healthy_lifestyle.bean.food.Recipe
+import vika.app.healthy_lifestyle.bean.main.Record
 import vika.app.healthy_lifestyle.bean.main.Type
 import vika.app.healthy_lifestyle.bean.mood.HabitRecord
 import vika.app.healthy_lifestyle.calculations.CreateAdvice
 import vika.app.healthy_lifestyle.calculations.DateToday
 import vika.app.healthy_lifestyle.calculations.MealCalc
+import vika.app.healthy_lifestyle.calculations.PersonalTarget
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.navigation.Navigation
 
@@ -215,13 +217,29 @@ class FoodActivity : ComponentActivity() {
         fatsState: String, carbohydratesState: String, date: String
     ) {
         val record = RecordRepository(context).getRecordByDate(date)
-        RecordRepository(context).updateProgressFoodRecord(
-            date,
-            kilocaloriesState.toDouble() + record!!.progressKilocalories,
-            proteinsState.toDouble() + record.progressProteins,
-            fatsState.toDouble() + record.progressFats,
-            carbohydratesState.toDouble() + record.progressCarbohydrates
-        )
+        if (record != null) {
+            RecordRepository(context).updateProgressFoodRecord(
+                date,
+                kilocaloriesState.toDouble() + record!!.progressKilocalories,
+                proteinsState.toDouble() + record.progressProteins,
+                fatsState.toDouble() + record.progressFats,
+                carbohydratesState.toDouble() + record.progressCarbohydrates
+            )
+        } else {
+            val target = PersonalTarget()
+            target.count(PersonalDataRepository(this).getPersonalData()!!, context)
+            RecordRepository(context).insertRecord(
+                Record(
+                    date = date, targetKilocalories = target.kilocalories,
+                    targetProteins = target.proteins, targetFats = target.fats,
+                    targetCarbohydrates = target.carbohydrates, targetWater = target.water,
+                    progressKilocalories = kilocaloriesState.toDouble(),
+                    progressProteins = proteinsState.toDouble(),
+                    progressCarbohydrates = carbohydratesState.toDouble(),
+                    progressFats = fatsState.toDouble()
+                )
+            )
+        }
     }
 
     fun getLastNutrition(context: Context): List<Nutrition> {
