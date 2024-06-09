@@ -54,12 +54,12 @@ class StepCounterService : Service(), SensorEventListener {
         var stepValue = SportActivity().getProgressSteps(this)
         var lastStep = sharedPreferences.getString("lastStep", "0")
 
-        if (stepValue == 0){
+        if (stepValue == 0) {
             lastStep = event.values[0].toInt().toString()
             editor.putString("lastStep", lastStep)
             editor.apply()
         }
-        stepValue = event.values[0].toInt() - lastStep.toString().toInt() + 1
+        stepValue = event.values[0].toInt() - lastStep!!.toInt() + 1
 
         SportActivity().saveProgressSteps(this, stepValue)
     }
@@ -85,3 +85,4 @@ class StepCounterService : Service(), SensorEventListener {
         return builder.build()
     }
 }
+
