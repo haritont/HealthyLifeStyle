@@ -78,8 +78,12 @@ class LoadingActivity : ComponentActivity() {
                             isLoading = false
                         },
                         onSuccess = {
-                            startActivity(Intent(this@LoadingActivity, MainActivity::class.java))
-                            finish()
+                            if (PersonalDataRepository(this@LoadingActivity).getPersonalData() == null){
+                                startActivity(Intent(this@LoadingActivity, RegistrationActivity::class.java))
+                            }
+                            else {
+                                startActivity(Intent(this@LoadingActivity, MainActivity::class.java))
+                            }
                         }
                     )
                 }
@@ -188,11 +192,11 @@ class LoadingActivity : ComponentActivity() {
     private fun setRecordTarget() {
         val today = DateToday().getToday()
 
-        //if (getTodayRecord(today) == null) {
+        if (getTodayRecord(today) == null) {
             val target = PersonalTarget()
             target.count(getPersonalData(), this@LoadingActivity)
             saveTodayRecordTarget(today, target)
-        //}
+        }
     }
 
     private fun saveTodayRecordTarget(today: String, target: PersonalTarget) {
