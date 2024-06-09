@@ -39,12 +39,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.sport.SportActivity
+import vika.app.healthy_lifestyle.base.data.repository.main.TypeRepository
 import vika.app.healthy_lifestyle.bean.Item
 import vika.app.healthy_lifestyle.bean.ItemText
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.RedLight
 import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
+import vika.app.healthy_lifestyle.ui.theme.general.defaultOptionPhys
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListDelete
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListText
 import vika.app.healthy_lifestyle.ui.theme.general.list.Search
@@ -97,17 +99,10 @@ fun AddTraining(
         val nameState = remember { mutableStateOf("") }
         val metState = remember { mutableStateOf(0.0) }
 
-        val options = listOf(
-            "Без типа",
-            "Виды спорта",
-            "Бег",
-            "Езда на велосипеде",
-            "Кондиционирующее упражнение",
-            "Ходьба",
-            "Бездействие",
-            "Домашняя активность",
-            "Садоводство"
-        )
+        var options = TypeRepository(context).getAllByPhys()
+        if (options == null){
+            options = defaultOptionPhys
+        }
         val typeState = remember { mutableStateOf(options[0]) }
 
         fun addItemToSelectList(title: String, value: Double) {

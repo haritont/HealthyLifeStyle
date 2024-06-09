@@ -33,10 +33,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.food.FoodActivity
+import vika.app.healthy_lifestyle.base.data.repository.main.TypeRepository
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.RedLight
 import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
+import vika.app.healthy_lifestyle.ui.theme.general.defaultOptionProduct
 
 @Composable
 fun AddIngredient(
@@ -54,33 +56,11 @@ fun AddIngredient(
     val fatsState = remember { mutableStateOf("") }
     val carbohydratesState = remember { mutableStateOf("") }
 
-    val options = listOf(
-        "Без типа",
-        "Напиток",
-        "Фрукт",
-        "Сладкое",
-        "Приправа",
-        "Алкоголь",
-        "Дичь",
-        "Рыба",
-        "Орех",
-        "Ягода",
-        "Вода",
-        "Овощ",
-        "Мучное",
-        "Зелень",
-        "Соус",
-        "Уксус",
-        "Мясо",
-        "Субпродукт",
-        "Сыр",
-        "Боб",
-        "Крупа",
-        "Гриб",
-        "Молочное",
-        "Масло",
-        "Яйцо"
-    )
+    var options = TypeRepository(context).getAllByProduct()
+    if (options == null){
+        options = defaultOptionProduct
+    }
+
     val typeState = remember { mutableStateOf(options[0]) }
 
     if (isOpen != openDialog) {

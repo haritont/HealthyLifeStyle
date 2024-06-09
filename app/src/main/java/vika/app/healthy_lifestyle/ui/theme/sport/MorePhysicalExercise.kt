@@ -35,10 +35,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.sport.SportActivity
+import vika.app.healthy_lifestyle.base.data.repository.main.TypeRepository
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.RedLight
 import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
+import vika.app.healthy_lifestyle.ui.theme.general.defaultOptionPhys
 
 @Composable
 fun MorePhysicalExercise(
@@ -65,17 +67,10 @@ fun MorePhysicalExercise(
         val nameState = remember { mutableStateOf(title) }
         val metState = remember { mutableStateOf(physicalExercise.met.toString()) }
 
-        val options = listOf(
-            "Без типа",
-            "Виды спорта",
-            "Бег",
-            "Езда на велосипеде",
-            "Кондиционирующее упражнение",
-            "Ходьба",
-            "Бездействие",
-            "Домашняя активность",
-            "Садоводство"
-        )
+        var options = TypeRepository(context).getAllByPhys()
+        if (options == null){
+            options = defaultOptionPhys
+        }
         val typeState = remember { mutableStateOf(physicalExercise.type) }
 
         var favoriteState by remember { mutableStateOf(physicalExercise.favorite) }
