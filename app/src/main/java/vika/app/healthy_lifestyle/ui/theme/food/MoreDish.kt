@@ -82,7 +82,7 @@ fun MoreDish(
                 itemListIngredient.add(
                     Item(
                         ingredient.name,
-                        ingredient.type,
+                        ingredient.type.type,
                         ingredient.favorite,
                         ingredient.exception,
                         if (ingredient.isDish) 1 else 0
@@ -114,7 +114,7 @@ fun MoreDish(
         if (options == null){
             options = defaultOptionProduct
         }
-        val typeState = remember { mutableStateOf(dish.type) }
+        val typeState = remember { mutableStateOf(dish.type.type) }
 
         var favoriteState by remember { mutableStateOf(dish.favorite) }
         var exceptionState by remember { mutableStateOf(dish.exception) }
@@ -171,7 +171,7 @@ fun MoreDish(
 
                         Dropdown(
                             options,
-                            dish.type
+                            dish.type.type
                         ) { currentOption ->
                             typeState.value = currentOption
                         }

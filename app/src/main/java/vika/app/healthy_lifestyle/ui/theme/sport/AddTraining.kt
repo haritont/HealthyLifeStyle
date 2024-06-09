@@ -85,7 +85,7 @@ fun AddTraining(
             itemListPhysicalExercise.add(
                 Item(
                     physicalExercise.name,
-                    physicalExercise.type,
+                    physicalExercise.type.type,
                     physicalExercise.favorite,
                     physicalExercise.exception,
                     if (physicalExercise.training) 3 else 2

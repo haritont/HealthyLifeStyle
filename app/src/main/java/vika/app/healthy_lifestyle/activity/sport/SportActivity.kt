@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
+import vika.app.healthy_lifestyle.base.data.repository.main.TypeRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.WeightRepository
 import vika.app.healthy_lifestyle.base.data.repository.sport.ActivismRepository
 import vika.app.healthy_lifestyle.base.data.repository.sport.PhysicalExerciseRepository
@@ -97,7 +98,7 @@ class SportActivity : ComponentActivity() {
                 id = id,
                 name = name,
                 met = met,
-                type = type,
+                type = TypeRepository(context).getByName(type),
                 favorite = favorite,
                 exception = exception
             )
@@ -124,7 +125,7 @@ class SportActivity : ComponentActivity() {
                 id = id,
                 name = name,
                 met = met,
-                type = type,
+                type = TypeRepository(context).getByName(type),
                 favorite = favorite,
                 exception = exception,
                 training = true
@@ -150,7 +151,7 @@ class SportActivity : ComponentActivity() {
                 PhysicalExercise(
                     name = name,
                     met = met,
-                    type = type
+                    type = TypeRepository(context).getByName(type)
                 )
             )
         }
@@ -163,7 +164,7 @@ class SportActivity : ComponentActivity() {
                 PhysicalExercise(
                     name = name,
                     met = met,
-                    type = type,
+                    type = TypeRepository(context).getByName(type),
                     training = true
                 )
             )

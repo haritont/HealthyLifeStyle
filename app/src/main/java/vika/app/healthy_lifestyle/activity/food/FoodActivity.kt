@@ -9,6 +9,7 @@ import vika.app.healthy_lifestyle.base.data.repository.food.NutritionRepository
 import vika.app.healthy_lifestyle.base.data.repository.food.RecipeRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
+import vika.app.healthy_lifestyle.base.data.repository.main.TypeRepository
 import vika.app.healthy_lifestyle.base.data.repository.mood.HabitRecordRepository
 import vika.app.healthy_lifestyle.base.data.repository.mood.HabitRepository
 import vika.app.healthy_lifestyle.bean.ItemText
@@ -63,7 +64,7 @@ class FoodActivity : ComponentActivity() {
                     proteins = proteins,
                     fats = fats,
                     carbohydrates = carbohydrates,
-                    type = type,
+                    type = TypeRepository(context).getByName(type),
                     isDish = true
                 )
             )
@@ -96,7 +97,7 @@ class FoodActivity : ComponentActivity() {
                 proteins = proteins,
                 fats = fats,
                 carbohydrates = carbohydrates,
-                type = type,
+                type = TypeRepository(context).getByName(type),
                 favorite = favorite,
                 exception = exception
             )
@@ -124,7 +125,7 @@ class FoodActivity : ComponentActivity() {
                     proteins = proteins,
                     fats = fats,
                     carbohydrates = carbohydrates,
-                    type = type
+                    type = TypeRepository(context).getByName(type)
                 )
             )
         }
@@ -151,7 +152,7 @@ class FoodActivity : ComponentActivity() {
             date
         )
 
-        val habit = HabitRepository(context).getByProduct(ingredient.type)
+        val habit = HabitRepository(context).getByProduct(ingredient.type.type)
         if (habit != null && !habit.isPositive) {
             val record = HabitRecordRepository(context).getRecordByIdHabit(habit.id, true)
             if (record != null) {
@@ -244,7 +245,7 @@ class FoodActivity : ComponentActivity() {
                 proteins = proteins,
                 fats = fats,
                 carbohydrates = carbohydrates,
-                type = type,
+                type = TypeRepository(context).getByName(type),
                 favorite = favorite,
                 exception = exception,
                 isDish = true

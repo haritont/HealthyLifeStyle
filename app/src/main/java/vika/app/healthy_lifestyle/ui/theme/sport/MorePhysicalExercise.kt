@@ -71,7 +71,7 @@ fun MorePhysicalExercise(
         if (options == null){
             options = defaultOptionPhys
         }
-        val typeState = remember { mutableStateOf(physicalExercise.type) }
+        val typeState = remember { mutableStateOf(physicalExercise.type.type) }
 
         var favoriteState by remember { mutableStateOf(physicalExercise.favorite) }
         var exceptionState by remember { mutableStateOf(physicalExercise.exception) }
@@ -113,7 +113,7 @@ fun MorePhysicalExercise(
                     ) {
                         Dropdown(
                             options,
-                            physicalExercise.type
+                            physicalExercise.type.type
                         ) { currentOption ->
                             typeState.value = currentOption
                         }

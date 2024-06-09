@@ -80,7 +80,7 @@ fun MoreTraining(
             itemListPhysicalExercise.add(
                 Item(
                     physicalExercise.name,
-                    physicalExercise.type,
+                    physicalExercise.type.type,
                     physicalExercise.favorite,
                     physicalExercise.exception,
                     if (physicalExercise.training) 3 else 2
@@ -113,7 +113,7 @@ fun MoreTraining(
         if (options == null){
             options = defaultOptionPhys
         }
-        val typeState = remember { mutableStateOf(training.type) }
+        val typeState = remember { mutableStateOf(training.type.type) }
 
         var favoriteState by remember { mutableStateOf(training.favorite) }
         var exceptionState by remember { mutableStateOf(training.exception) }
@@ -156,7 +156,7 @@ fun MoreTraining(
                     ) {
                         Dropdown(
                             options,
-                            training.type
+                            training.type.type
                         ) { currentOption ->
                             typeState.value = currentOption
                         }

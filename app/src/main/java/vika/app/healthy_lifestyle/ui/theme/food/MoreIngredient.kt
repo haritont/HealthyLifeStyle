@@ -75,7 +75,7 @@ fun MoreIngredient(
         if (options == null){
             options = defaultOptionProduct
         }
-        val typeState = remember { mutableStateOf(ingredient.type) }
+        val typeState = remember { mutableStateOf(ingredient.type.type) }
 
         var favoriteState by remember { mutableStateOf(ingredient.favorite) }
         var exceptionState by remember { mutableStateOf(ingredient.exception) }
@@ -127,7 +127,7 @@ fun MoreIngredient(
                     ) {
                         Dropdown(
                             options,
-                            ingredient.type
+                            ingredient.type.type
                         ) { currentOption ->
                             typeState.value = currentOption
                         }
