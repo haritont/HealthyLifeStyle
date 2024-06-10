@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.mood.MoodActivity
+import vika.app.healthy_lifestyle.base.data.repository.main.TypeRepository
 import vika.app.healthy_lifestyle.bean.mood.Habit
 import vika.app.healthy_lifestyle.bean.mood.HabitRecord
 import vika.app.healthy_lifestyle.calculations.DateToday
@@ -84,33 +85,7 @@ fun Habits(
 
     if (openDialogAddHabit) {
         val nameState = remember { mutableStateOf("") }
-        val options = listOf(
-            "Без типа",
-            "Напиток",
-            "Фрукт",
-            "Сладкое",
-            "Приправа",
-            "Алкоголь",
-            "Дичь",
-            "Рыба",
-            "Орех",
-            "Ягода",
-            "Вода",
-            "Овощ",
-            "Мучное",
-            "Зелень",
-            "Соус",
-            "Уксус",
-            "Мясо",
-            "Субпродукт",
-            "Сыр",
-            "Боб",
-            "Крупа",
-            "Гриб",
-            "Молочное",
-            "Масло",
-            "Яйцо"
-        )
+        val options = TypeRepository(context).getAllByProduct()!!
         val typeState = remember { mutableStateOf(options[0]) }
         var checked by remember { mutableStateOf(false) }
 
