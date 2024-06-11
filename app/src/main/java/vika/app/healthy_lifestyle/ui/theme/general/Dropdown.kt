@@ -1,15 +1,14 @@
 package vika.app.healthy_lifestyle.ui.theme.general
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -22,9 +21,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.BlueUltraLight
 import vika.app.healthy_lifestyle.ui.theme.app.White
@@ -52,13 +51,25 @@ fun Dropdown(
                 color = White
             )
     ) {
-        Text(
-            selectedOption,
-            color = Black,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start,
             modifier = Modifier
-                .clickable { expanded = true }
+                .clickable { expanded = !expanded }
                 .padding(8.dp)
-        )
+        ) {
+            Text(
+                selectedOption,
+                color = Black
+            )
+            Image(
+                modifier = Modifier
+                    .size(35.dp)
+                    .padding(8.dp),
+                painter = painterResource(R.drawable.bottom),
+                contentDescription = null
+            )
+        }
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
@@ -75,9 +86,15 @@ fun Dropdown(
                         selectedOption = option
                         expanded = false
                         getCurrentOption(option)
-                    }
+                    },
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .background(
+                            color = White
+                        )
                 )
             }
         }
     }
 }
+
