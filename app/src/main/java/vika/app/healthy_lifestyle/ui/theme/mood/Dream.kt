@@ -201,7 +201,7 @@ fun Dream (
                             }
                         }
 
-                        ButtonBlue(text = "Расчитать") {
+                        ButtonBlue(text = "Рассчитать") {
                             val sleep = calculateSleepDuration(
                                 hourStartState.value.toInt(),
                                 minuteStartState.value.toInt(),
