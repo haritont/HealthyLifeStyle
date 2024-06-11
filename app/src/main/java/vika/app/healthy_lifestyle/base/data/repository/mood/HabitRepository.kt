@@ -32,4 +32,8 @@ class HabitRepository (context: Context){
     fun getById(idHabit: Long): Habit = runBlocking{
         habitMapper.toHabit(habitDao.getById(idHabit))
     }
+
+    fun delete(habit: Habit) = runBlocking{
+        habitDao.delete(habitMapper.toHabitEntity(habit))
+    }
 }

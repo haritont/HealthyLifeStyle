@@ -3,6 +3,10 @@ package vika.app.healthy_lifestyle.ui.theme.navigation.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import vika.app.healthy_lifestyle.activity.mood.MoodActivity
@@ -25,8 +29,22 @@ fun MoodScreen (){
 
         Advice(value = MoodActivity().getAdvice())
 
-        val habitList = MoodActivity().getHabitList(context)
-        Habits(habitList)
+        var habitList by remember { mutableStateOf(MoodActivity().getHabitList(context)) }
+
+
+        Habits(
+            habitList,
+            { habit ->
+                habitList = habitList!!.toMutableList().apply { remove(habit) }
+                MoodActivity().deleteHabit(habit, context)
+            },{ habit ->
+                habitList = habitList!!.toMutableList().apply { add(habit) }
+                MoodActivity().insertHabit(
+                    context,
+                    habit
+                )
+            }
+        )
 
         val emotionList = EmotionRepository(context).getAllEmotions()
         Emotions(emotionList)

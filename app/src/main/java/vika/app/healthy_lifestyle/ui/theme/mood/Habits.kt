@@ -5,9 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -51,15 +48,17 @@ import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
 
 @Composable
 fun Habits(
-    habitList: List<Habit>?
+    habitList: List<Habit>?,
+    onDeleteHabit: (Habit) -> Unit,
+    addHabit: (Habit) -> Unit
 ) {
     var openDialogAddHabit by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    Row (
+    Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
-    ){
+    ) {
         Text(
             text = "Пищевые привычки",
             modifier = Modifier.padding(8.dp),
@@ -78,7 +77,7 @@ fun Habits(
             items(habitList) { item ->
                 HabitCard(
                     item
-                )
+                ) { onDeleteHabit(item) }
             }
         }
     }
@@ -133,8 +132,7 @@ fun Habits(
                     Dropdown(
                         options,
                         options[0]
-                    ) {
-                        currentOption ->
+                    ) { currentOption ->
                         typeState.value = currentOption
                     }
 
@@ -159,12 +157,12 @@ fun Habits(
                     TextButton(
                         onClick = {
                             openDialogAddHabit = false
-                            MoodActivity().insertHabit(
-                                context,
-                                nameState.value,
-                                typeState.value,
-                                checked
-                            )
+                            addHabit(
+                                Habit(
+                                name = nameState.value,
+                                product = typeState.value,
+                                isPositive = checked
+                            ))
                         },
                         modifier = Modifier.padding(8.dp),
                     ) {
@@ -186,7 +184,8 @@ fun Habits(
 
 @Composable
 fun HabitCard(
-    habit: Habit
+    habit: Habit,
+    delete: (Habit) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -210,50 +209,63 @@ fun HabitCard(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = habit.name,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold
-            )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = habit.name,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Image(
+                    painterResource(
+                        if (!isTrack) R.drawable.start
+                        else R.drawable.stop
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(25.dp)
+                        .clickable {
+                            if (isTrack) {
+                                MoodActivity().insertHabitRecord(
+                                    context,
+                                    HabitRecord(
+                                        idHabit = habit.id,
+                                        tracking = false,
+                                        dateStart = habitRecord?.dateStart ?: DateToday().getToday(),
+                                        dateEnd = DateToday().getToday()
+                                    )
+                                )
+                            } else {
+                                MoodActivity().insertHabitRecord(
+                                    context,
+                                    HabitRecord(
+                                        idHabit = habit.id,
+                                        tracking = true,
+                                        dateStart = DateToday().getToday()
+                                    )
+                                )
+                            }
+                            isTrack = !isTrack
+                        }
+                )
+
+                ImageButton(icon = R.drawable.delete) {
+                    delete(habit)
+                }
+            }
 
             Text(
                 text = if (isTrack) trackingDays else "",
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 color = Color.DarkGray
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Image(
-                painterResource(
-                    if (!isTrack) R.drawable.start
-                    else R.drawable.stop
-                ),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(25.dp)
-                    .clickable {
-                        if (isTrack) {
-                            habitRecord!!.dateEnd = DateToday().getToday()
-                            MoodActivity().insertHabitRecord(context, habitRecord)
-                        } else {
-                            MoodActivity().insertHabitRecord(
-                                context,
-                                HabitRecord(
-                                    idHabit = habit.id,
-                                    tracking = true,
-                                    dateStart = DateToday().getToday()
-                                )
-                            )
-                        }
-                        isTrack = !isTrack
-                    }
             )
         }
     }

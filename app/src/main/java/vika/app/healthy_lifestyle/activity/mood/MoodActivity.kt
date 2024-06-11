@@ -76,13 +76,9 @@ class MoodActivity : ComponentActivity() {
         }
     }
 
-    fun insertHabit(context: Context, name: String, type: String, isPositive: Boolean) {
+    fun insertHabit(context: Context, habit:Habit) {
         HabitRepository(context).insertHabit(
-            Habit(
-                name = name,
-                product = type,
-                isPositive = isPositive
-            )
+            habit
         )
     }
 
@@ -93,5 +89,18 @@ class MoodActivity : ComponentActivity() {
                 isPositive = checked
             )
         )
+    }
+
+    fun deleteHabit(habit: Habit, context :Context) {
+        HabitRepository(context).delete(habit)
+
+        val habitRecord = HabitRecordRepository(context).getRecordByIdHabit(habit.id, true)
+
+        if (habitRecord != null) {
+            habitRecord.dateEnd = DateToday().getToday()
+            HabitRecordRepository(context).insertHabitRecord(habitRecord)
+            IngredientRepository(context).updateIngredientFavoriteByType(habit.product, false)
+            IngredientRepository(context).updateIngredientExceptionByType(habit.product, false)
+        }
     }
 }

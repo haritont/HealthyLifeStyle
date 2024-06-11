@@ -1,6 +1,7 @@
 package vika.app.healthy_lifestyle.base.data.dao.mood
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -16,4 +17,6 @@ interface HabitDao {
     suspend fun getByProduct(product: String): HabitEntity?
     @Query("SELECT * fROM Habit WHERE id =:idHabit")
     suspend fun getById(idHabit: Long):HabitEntity
+    @Delete
+    suspend fun delete(habitEntity: HabitEntity)
 }
