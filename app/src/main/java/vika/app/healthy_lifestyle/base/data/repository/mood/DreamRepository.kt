@@ -34,4 +34,8 @@ class DreamRepository (context: Context){
     fun getMinute(today: String): Int = runBlocking{
         getDream(today)?.minute ?: 0
     }
+
+    fun getByDate(date: String): Dream? = runBlocking{
+        dreamDao.getLatestDream(date)?.let { dreamMapper.toDream(it) }
+    }
 }

@@ -80,6 +80,13 @@ fun Dropdown(
                     expanded = false
                 }
             )
+            DropdownMenuItem(
+                text = { Text("Сон") },
+                onClick = {
+                    onOptionSelected("Сон")
+                    expanded = false
+                }
+            )
         }
     }
 

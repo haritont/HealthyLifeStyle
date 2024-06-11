@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.WeightRepository
+import vika.app.healthy_lifestyle.base.data.repository.mood.DreamRepository
 import vika.app.healthy_lifestyle.bean.main.Record
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.navigation.Navigation
@@ -114,5 +115,18 @@ class StatisticsActivity : ComponentActivity() {
             }
         }
         return records
+    }
+
+    fun getDreams(dates: List<String>): MutableList<Float> {
+        val dreams = mutableListOf<Float>()
+        for (date in dates) {
+            val dream = DreamRepository(this).getByDate(date)
+            if (dream != null) {
+                dreams.add((dream.hour + dream.minute / 60.0).toFloat())
+            } else {
+                dreams.add(0.toFloat())
+            }
+        }
+        return dreams
     }
 }
