@@ -95,6 +95,13 @@ fun AddPhysicalExercise(
                     modifier = Modifier.padding(8.dp)
                 )
                 {
+                    Text(
+                        text = "Добавить упражнение",
+                        modifier = Modifier.padding(8.dp),
+                        fontWeight = FontWeight.Bold,
+                        color = Black
+                    )
+
                     Row(
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
@@ -106,13 +113,6 @@ fun AddPhysicalExercise(
                                 currentOption ->
                             typeState.value = currentOption
                         }
-
-                        Text(
-                            text = "Добавить упражнение",
-                            modifier = Modifier.padding(8.dp),
-                            fontWeight = FontWeight.Bold,
-                            color = Black
-                        )
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
