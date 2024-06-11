@@ -15,7 +15,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import vika.app.healthy_lifestyle.calculations.DateToday
 
 @Composable
-fun BarChartMPA(values: List<Float>, dates: List<String>) {
+fun BarChartMPA(values: List<Float>, dates: List<String>, unit: String) {
     Box(modifier = Modifier.fillMaxSize()) {
         AndroidView(
             factory = { context ->
@@ -45,7 +45,7 @@ fun BarChartMPA(values: List<Float>, dates: List<String>) {
                         valueTextSize = 15f
                         valueFormatter = object : ValueFormatter() {
                             override fun getBarLabel(entry: BarEntry?): String {
-                                return entry?.y?.let { String.format("%.1f", it) } ?: ""
+                                return entry?.y?.let { String.format("%.1f", it).plus(unit) } ?: ""
                             }
                         }
                     }

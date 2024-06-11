@@ -21,6 +21,7 @@ import vika.app.healthy_lifestyle.ui.theme.statistics.Dropdown
 fun StatisticsScreen() {
     var selectedOption by remember { mutableStateOf("Ккал") }
     val labels = DateToday().getMonth()
+    var unit by remember { mutableStateOf("ккал") }
 
     var data by remember { mutableStateOf(StatisticsActivity().getKilocalories(labels)) }
 
@@ -34,14 +35,48 @@ fun StatisticsScreen() {
             onOptionSelected = { option ->
                 selectedOption = option
                 data = when (option) {
-                    "Ккал" -> StatisticsActivity().getKilocalories(labels)
-                    "Вода" -> StatisticsActivity().getWaters(labels)
-                    "Белки" -> StatisticsActivity().getProteins(labels)
-                    "Жиры" -> StatisticsActivity().getFats(labels)
-                    "Углеводы" -> StatisticsActivity().getCarbohydrates(labels)
-                    "Спорт" -> StatisticsActivity().getActivism(labels)
-                    "Вес" ->  StatisticsActivity().getWeights(labels)
+                    "Ккал" -> {
+                        unit = "ккал"
+                        StatisticsActivity().getKilocalories(labels)
+                    }
+
+                    "Вода" -> {
+                        unit = "мл"
+                        StatisticsActivity().getWaters(labels)
+                    }
+
+                    "Белки" -> {
+                        unit = "г"
+                        StatisticsActivity().getProteins(labels)
+                    }
+
+                    "Жиры" -> {
+                        unit = "г"
+                        StatisticsActivity().getFats(labels)
+                    }
+
+                    "Углеводы" -> {
+                        unit = "г"
+                        StatisticsActivity().getCarbohydrates(labels)
+                    }
+
+                    "Спорт" -> {
+                        unit = "ккал"
+                        StatisticsActivity().getActivism(labels)
+                    }
+
+                    "Вес" -> {
+                        unit = "кг"
+                        StatisticsActivity().getWeights(labels)
+                    }
+
+                    "Сон" -> {
+                        unit = "ч"
+                        StatisticsActivity().getDreams(labels)
+                    }
+
                     else -> {
+                        unit = ""
                         mutableListOf()
                     }
                 }
@@ -49,7 +84,7 @@ fun StatisticsScreen() {
         )
 
         key(data.joinToString(",")) {
-            BarChartMPA(values = data, dates = labels)
+            BarChartMPA(values = data, dates = labels, unit = unit)
         }
     }
 }
