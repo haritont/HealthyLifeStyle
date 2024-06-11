@@ -132,8 +132,7 @@ fun ItemList(
         ) {
             Card(
                 modifier = Modifier
-                    .size(300.dp)
-                    .padding(16.dp),
+                    .padding(8.dp),
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Column(

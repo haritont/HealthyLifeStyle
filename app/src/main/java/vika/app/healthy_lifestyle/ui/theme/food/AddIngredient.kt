@@ -38,7 +38,6 @@ import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.RedLight
 import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
-import vika.app.healthy_lifestyle.ui.theme.general.defaultOptionProduct
 
 @Composable
 fun AddIngredient(
@@ -98,7 +97,6 @@ fun AddIngredient(
         ) {
             Card(
                 modifier = Modifier
-                    .size(500.dp)
                     .padding(16.dp),
                 shape = RoundedCornerShape(16.dp),
             ) {
