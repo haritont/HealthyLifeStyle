@@ -21,7 +21,7 @@ fun BarChartMPA(values: List<Float>, dates: List<String>, unit: String) {
             factory = { context ->
                 BarChart(context).apply {
                     xAxis.position = XAxis.XAxisPosition.BOTTOM
-                    xAxis.granularity = 0f
+                    xAxis.granularity = 1f
                     xAxis.setDrawGridLines(false)
                     xAxis.valueFormatter = object : ValueFormatter() {
                         override fun getFormattedValue(value: Float): String {
@@ -50,7 +50,10 @@ fun BarChartMPA(values: List<Float>, dates: List<String>, unit: String) {
                         }
                     }
 
-                    data = BarData(dataSet)
+                    val barData = BarData(dataSet)
+                    barData.barWidth = 0.9f
+
+                    data = barData
                     description.isEnabled = false
                     legend.isEnabled = false
 

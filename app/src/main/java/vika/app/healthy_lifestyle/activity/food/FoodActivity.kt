@@ -220,7 +220,7 @@ class FoodActivity : ComponentActivity() {
         if (record != null) {
             RecordRepository(context).updateProgressFoodRecord(
                 date,
-                kilocaloriesState.toDouble() + record!!.progressKilocalories,
+                kilocaloriesState.toDouble() + record.progressKilocalories,
                 proteinsState.toDouble() + record.progressProteins,
                 fatsState.toDouble() + record.progressFats,
                 carbohydratesState.toDouble() + record.progressCarbohydrates

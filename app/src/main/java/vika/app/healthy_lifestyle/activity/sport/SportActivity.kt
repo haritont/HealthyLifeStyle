@@ -12,12 +12,14 @@ import vika.app.healthy_lifestyle.base.data.repository.sport.ActivismRepository
 import vika.app.healthy_lifestyle.base.data.repository.sport.PhysicalExerciseRepository
 import vika.app.healthy_lifestyle.base.data.repository.sport.TrainingRepository
 import vika.app.healthy_lifestyle.bean.ItemText
+import vika.app.healthy_lifestyle.bean.main.Record
 import vika.app.healthy_lifestyle.bean.main.Type
 import vika.app.healthy_lifestyle.bean.sport.Activism
 import vika.app.healthy_lifestyle.bean.sport.PhysicalExercise
 import vika.app.healthy_lifestyle.bean.sport.Training
 import vika.app.healthy_lifestyle.calculations.CreateAdvice
 import vika.app.healthy_lifestyle.calculations.DateToday
+import vika.app.healthy_lifestyle.calculations.PersonalTarget
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.navigation.Navigation
 
@@ -44,10 +46,24 @@ class SportActivity : ComponentActivity() {
         val record = RecordRepository(context).getRecordByDate(date)
         val physicalExercise = PhysicalExerciseRepository(context).getPhysicalExerciseByName(name)
 
-        RecordRepository(context).updateBurnedKilocalories(
-            date,
-            record!!.burnedKilocalories + (weight * (value / 60.0) * physicalExercise.met)
-        )
+        if (record != null) {
+            RecordRepository(context).updateBurnedKilocalories(
+                date,
+                record.burnedKilocalories + (weight * (value / 60.0) * physicalExercise.met)
+            )
+        }
+        else{
+            val target = PersonalTarget()
+            target.count(PersonalDataRepository(this).getPersonalData()!!, context)
+            RecordRepository(context).insertRecord(
+                Record(
+                    date = date, targetKilocalories = target.kilocalories,
+                    targetProteins = target.proteins, targetFats = target.fats,
+                    targetCarbohydrates = target.carbohydrates, targetWater = target.water,
+                   burnedKilocalories = (weight * (value / 60.0) * physicalExercise.met)
+                )
+            )
+        }
     }
 
     fun getAll(context: Context): List<PhysicalExercise>? {
