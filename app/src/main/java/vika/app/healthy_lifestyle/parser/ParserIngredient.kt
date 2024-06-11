@@ -2,17 +2,17 @@ package vika.app.healthy_lifestyle.parser
 
 import android.content.Context
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.base.data.repository.main.TypeRepository
 import vika.app.healthy_lifestyle.bean.food.Ingredient
 import vika.app.healthy_lifestyle.bean.main.Type
-import java.io.FileInputStream
 import java.io.IOException
 
 class ParserIngredient {
     fun fromExcel(context: Context): List<Ingredient> {
         val ingredients = mutableListOf<Ingredient>()
         try {
-            val file = FileInputStream("raw/ingredient.xlsx")
+            val file = context.resources.openRawResource(R.raw.ingredient)
             val workbook = XSSFWorkbook(file)
             val sheet = workbook.getSheetAt(0)
             var isFirstRow = true
