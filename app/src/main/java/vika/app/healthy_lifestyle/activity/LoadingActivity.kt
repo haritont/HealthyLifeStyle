@@ -1,5 +1,6 @@
 package vika.app.healthy_lifestyle.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -45,6 +46,10 @@ import vika.app.healthy_lifestyle.calculation.DateToday
 import vika.app.healthy_lifestyle.calculation.PersonalTarget
 import vika.app.healthy_lifestyle.notification.createNotificationChannel
 import vika.app.healthy_lifestyle.notification.scheduleNotification
+import vika.app.healthy_lifestyle.parser.ParserEmotion
+import vika.app.healthy_lifestyle.parser.ParserHabit
+import vika.app.healthy_lifestyle.parser.ParserIngredient
+import vika.app.healthy_lifestyle.parser.ParserPhysicalExercise
 import vika.app.healthy_lifestyle.server.api.DefaultApiServiceRepository
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.general.defaultOptionPhys
@@ -168,6 +173,7 @@ class LoadingActivity : ComponentActivity() {
                         }
                     }
                 } catch (e: Exception) {
+                    parseData(this@LoadingActivity)
                     e.printStackTrace()
                     withContext(Dispatchers.Main) {
                         onError("Сервер недоступен")
@@ -178,6 +184,37 @@ class LoadingActivity : ComponentActivity() {
                 withContext(Dispatchers.Main) {
                     onSuccess()
                 }
+            }
+        }
+    }
+
+    private fun parseData(context:Context){
+        if (IngredientRepository(context).getAllProduct() == null){
+            val ingredients = ParserIngredient().fromExcel(context)
+            for (ingredient in ingredients) {
+                IngredientRepository(this@LoadingActivity).insertIngredient(ingredient)
+            }
+        }
+
+        if (PhysicalExerciseRepository(this@LoadingActivity).getAll() == null) {
+            val physicalExercises = ParserPhysicalExercise().fromExcel(context)
+            for (physicalExercise in physicalExercises) {
+                PhysicalExerciseRepository(this@LoadingActivity).insertPhysicalExercise(physicalExercise)
+                TypeRepository(this@LoadingActivity).insert(physicalExercise.type)
+            }
+        }
+
+        if (HabitRepository(this@LoadingActivity).getAllHabits() == null) {
+            val habits = ParserHabit().fromExcel(context)
+            for (habit in habits) {
+                HabitRepository(this@LoadingActivity).insertHabit(habit)
+            }
+        }
+
+        if (EmotionRepository(this@LoadingActivity).getAllEmotions() == null) {
+            val emotions = ParserEmotion().fromExcel(context)
+            for (emotion in emotions) {
+                EmotionRepository(this@LoadingActivity).insertEmotion(emotion)
             }
         }
     }
