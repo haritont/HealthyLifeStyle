@@ -228,7 +228,7 @@ fun ItemList(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = emojiMap.getValue(emoji)
+                    text = if (emojiMap[emoji] != null) emojiMap.getValue(emoji) else ""
                 )
                 Spacer(modifier = Modifier.width(3.dp))
                 Text(
