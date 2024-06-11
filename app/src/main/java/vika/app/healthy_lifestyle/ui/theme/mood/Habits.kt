@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,6 +35,7 @@ import androidx.compose.ui.window.Dialog
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.mood.MoodActivity
 import vika.app.healthy_lifestyle.base.data.repository.main.TypeRepository
+import vika.app.healthy_lifestyle.base.data.repository.mood.HabitRepository
 import vika.app.healthy_lifestyle.bean.mood.Habit
 import vika.app.healthy_lifestyle.bean.mood.HabitRecord
 import vika.app.healthy_lifestyle.calculations.DateToday
@@ -157,12 +157,16 @@ fun Habits(
                     TextButton(
                         onClick = {
                             openDialogAddHabit = false
-                            addHabit(
+                            HabitRepository(context).insertHabit(
                                 Habit(
-                                name = nameState.value,
-                                product = typeState.value,
-                                isPositive = checked
-                            ))
+                                    name = nameState.value,
+                                    product = typeState.value,
+                                    isPositive = checked
+                                )
+                            )
+                            addHabit(
+                                HabitRepository(context).getByProduct(typeState.value)!!
+                            )
                         },
                         modifier = Modifier.padding(8.dp),
                     ) {
@@ -189,7 +193,7 @@ fun HabitCard(
 ) {
     val context = LocalContext.current
 
-    val habitRecord = MoodActivity().getHabitRecord(context, habit.id, true)
+    val habitRecord = MoodActivity().getLastHabitRecord(context, habit.id)
     var isTrack by remember { mutableStateOf(false) }
     var trackingDays by remember { mutableStateOf("Количество дней: 1") }
     if (habitRecord != null) {
@@ -205,7 +209,6 @@ fun HabitCard(
         modifier = Modifier
             .padding(5.dp)
             .shadow(1.dp, RoundedCornerShape(10.dp))
-            .width(200.dp)
     ) {
         Column(
             modifier = Modifier

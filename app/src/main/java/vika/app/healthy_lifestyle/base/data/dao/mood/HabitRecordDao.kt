@@ -13,4 +13,6 @@ interface HabitRecordDao {
 
     @Query("SELECT * FROM HabitRecord WHERE idHabit =:idHabit AND tracking =:tracking")
     suspend fun getRecordByIdHabit(idHabit: Long, tracking: Boolean): HabitRecordEntity?
+    @Query("SELECT * FROM HabitRecord WHERE idHabit =:idHabit")
+    suspend fun getLastHabitRecord(idHabit: Long): HabitRecordEntity?
 }

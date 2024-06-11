@@ -103,4 +103,8 @@ class MoodActivity : ComponentActivity() {
             IngredientRepository(context).updateIngredientExceptionByType(habit.product, false)
         }
     }
+
+    fun getLastHabitRecord(context: Context, id: Long): HabitRecord? {
+        return HabitRecordRepository(context).getLastHabitRecord(id)
+    }
 }

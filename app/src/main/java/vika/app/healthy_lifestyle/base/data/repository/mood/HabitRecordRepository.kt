@@ -25,4 +25,9 @@ class HabitRecordRepository (context: Context){
     fun insertHabitRecord(habitRecord: HabitRecord) = runBlocking{
         habitRecordDao.insert(habitRecordMapper.toHabitRecordEntity(habitRecord))
     }
+
+    fun getLastHabitRecord(idHabit: Long): HabitRecord?  = runBlocking{
+        habitRecordDao.getLastHabitRecord(idHabit)
+            ?.let { habitRecordMapper.toHabitRecord(it) }
+    }
 }
