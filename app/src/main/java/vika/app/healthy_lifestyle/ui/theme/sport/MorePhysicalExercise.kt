@@ -40,7 +40,6 @@ import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.RedLight
 import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
-import vika.app.healthy_lifestyle.ui.theme.general.defaultOptionPhys
 
 @Composable
 fun MorePhysicalExercise(
@@ -97,23 +96,17 @@ fun MorePhysicalExercise(
                     modifier = Modifier.padding(8.dp)
                 )
                 {
-                    Text(
-                        text = title,
-                        modifier = Modifier.padding(8.dp),
-                        fontWeight = FontWeight.Bold,
-                        color = Black
-                    )
 
                     Row(
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Dropdown(
-                            options,
-                            physicalExercise.type.type
-                        ) { currentOption ->
-                            typeState.value = currentOption
-                        }
+                        Text(
+                            text = title,
+                            modifier = Modifier.padding(8.dp),
+                            fontWeight = FontWeight.Bold,
+                            color = Black
+                        )
 
                         Image(
                             modifier = Modifier
@@ -138,6 +131,12 @@ fun MorePhysicalExercise(
                             painter = painterResource(if (!favoriteState) R.drawable.like_false else R.drawable.like_true),
                             contentDescription = null
                         )
+                    }
+                    Dropdown(
+                        options,
+                        physicalExercise.type.type
+                    ) { currentOption ->
+                        typeState.value = currentOption
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
