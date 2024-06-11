@@ -3,7 +3,6 @@ package vika.app.healthy_lifestyle.activity.statistics
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.WeightRepository
 import vika.app.healthy_lifestyle.bean.main.Record
@@ -88,14 +87,12 @@ class StatisticsActivity : ComponentActivity() {
 
     fun getWeights(dates: List<String>): MutableList<Float> {
         val weights = mutableListOf<Float>()
-        var lastWeight = PersonalDataRepository(this).getWeight()
         for (date in dates) {
             val weight = WeightRepository(this).getByDate(date)
             if (weight != null) {
                 weights.add(weight.value.toFloat())
-                lastWeight = weight.value
             } else {
-                weights.add(lastWeight.toFloat())
+                weights.add(0.toFloat())
             }
         }
         return weights
