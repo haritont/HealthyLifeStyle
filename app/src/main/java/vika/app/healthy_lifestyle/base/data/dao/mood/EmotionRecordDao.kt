@@ -10,6 +10,11 @@ import vika.app.healthy_lifestyle.base.data.entity.mood.EmotionRecordEntity
 interface EmotionRecordDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(emotionRecordEntity: EmotionRecordEntity)
-    @Query("SELECT * fROM EmotionRecord WHERE idEmotion =:idEmotion AND date =:date")
+    @Query("SELECT * FROM EmotionRecord WHERE idEmotion =:idEmotion AND date =:date")
     suspend fun getByIdAndDate(idEmotion: Long, date: String): EmotionRecordEntity?
+
+    @Query("SELECT * FROM EmotionRecord WHERE date =:date")
+    suspend fun getAllByDate(date: String): List<EmotionRecordEntity>?
+    @Query("DELETE FROM EmotionRecord WHERE date =:date AND idEmotion=:id")
+    suspend fun delete(date: String, id: Long)
 }

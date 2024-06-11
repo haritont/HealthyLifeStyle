@@ -3,20 +3,19 @@ package vika.app.healthy_lifestyle.ui.theme.mood
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Card
-import androidx.compose.material3.Checkbox
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,10 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.base.data.repository.mood.EmotionRecordRepository
 import vika.app.healthy_lifestyle.base.data.repository.mood.EmotionRepository
 import vika.app.healthy_lifestyle.bean.mood.Emotion
@@ -38,18 +34,34 @@ import vika.app.healthy_lifestyle.calculation.DateToday
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.Green
 import vika.app.healthy_lifestyle.ui.theme.app.Red
-import vika.app.healthy_lifestyle.ui.theme.general.ImageButton
-import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
 import vika.app.healthy_lifestyle.ui.theme.general.emojiMap
 
 @Composable
 fun Emotions (
-    emotionList: List<Emotion>?,
-    addEmotion: (Emotion) -> Unit
+    emotionList: List<Emotion>?
 ) {
     val context = LocalContext.current
 
-    var openDialogAddEmotion by remember { mutableStateOf(false) }
+
+    val emotionRecordList = EmotionRecordRepository(context).getAllByDate(DateToday().getToday())
+    var positive by remember { mutableStateOf(0) }
+    var negative by remember { mutableStateOf(0) }
+    if (!emotionRecordList.isNullOrEmpty()){
+        for (emotionRecord in emotionRecordList){
+            if (EmotionRepository(context).getById(emotionRecord.idEmotion).isPositive){
+                positive++
+            }
+            else{
+                negative++
+            }
+        }
+    }
+
+    DisposableEffect(positive, negative) {
+        println("Positive count: $positive, Negative count: $negative")
+        onDispose {}
+    }
+
     Row (
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
@@ -60,93 +72,24 @@ fun Emotions (
             fontWeight = FontWeight.Bold,
             color = Black
         )
-        ImageButton(
-            icon = R.drawable.add
-        ) {
-            openDialogAddEmotion = true
-        }
-    }
 
-    if (openDialogAddEmotion) {
-        var checked by remember { mutableStateOf(false) }
-        var emotion by remember { mutableStateOf("") }
-
-        Dialog(
-            onDismissRequest = {
-                openDialogAddEmotion = !openDialogAddEmotion
-            }
-        ) {
-            Card(
-                modifier = Modifier.padding(16.dp),
-                shape = RoundedCornerShape(16.dp),
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(8.dp)
-                ) {
-                    TextFieldBlue(
-                        value = emotion,
-                        label = {
-                            Text(
-                                "Emoji",
-                                style = MaterialTheme.typography.bodySmall
-                            )
-                        },
-                        onValueChange = { newLogin -> emotion = newLogin },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-                    )
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Checkbox(
-                            checked = checked,
-                            onCheckedChange = { checked = it }
-                        )
-                        Text(
-                            text = "Это позитивная эмоция",
-                            modifier = Modifier.padding(8.dp)
-                        )
-                    }
-
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TextButton(
-                            onClick = {
-                                openDialogAddEmotion = false
-                                EmotionRepository(context).insertEmotion(
-                                    Emotion(
-                                        name = emotion,
-                                        isPositive = checked
-                                    )
-                                )
-                                addEmotion(
-                                    EmotionRepository(context).getByName(emotion)
-                                )
-                            },
-                            modifier = Modifier.padding(8.dp),
-                        ) {
-                            Text("Ок")
-                        }
-                        TextButton(
-                            onClick = {
-                                openDialogAddEmotion = false
-                            },
-                            modifier = Modifier.padding(8.dp),
-                        ) {
-                            Text("Отмена")
-                        }
-                    }
-                }
-            }
+        if (positive + negative != 0) {
+            LinearProgressIndicator(
+                progress = positive.toFloat() / (positive + negative).toFloat(),
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .height(16.dp),
+                color = Green,
+                trackColor = Red
+            )
         }
     }
 
     if (emotionList != null) {
-        LazyRow(
-            verticalAlignment = Alignment.CenterVertically
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(7),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(emotionList) { item ->
                 var isChose by remember {
@@ -175,14 +118,34 @@ fun Emotions (
                             modifier = Modifier.clickable
                             {
                                 isChose = !isChose
-                                EmotionRecordRepository(context).insertEmotionRecord(
-                                    EmotionRecord(
-                                        date = DateToday().getToday(),
-                                        idEmotion = item.id
-                                    )
-                                )
-                            }
+                                if (isChose) {
+                                    if (item.isPositive) {
+                                        positive++
+                                    } else {
+                                        negative++
+                                    }
 
+                                    EmotionRecordRepository(context).insertEmotionRecord(
+                                        EmotionRecord(
+                                            date = DateToday().getToday(),
+                                            idEmotion = item.id
+                                        )
+                                    )
+                                } else {
+                                    if (item.isPositive) {
+                                        positive--
+                                    } else {
+                                        negative--
+                                    }
+
+                                    EmotionRecordRepository(context).deleteEmotionRecord(
+                                        EmotionRecord(
+                                            date = DateToday().getToday(),
+                                            idEmotion = item.id
+                                        )
+                                    )
+                                }
+                            }
                         )
                     }
                 }

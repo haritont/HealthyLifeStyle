@@ -28,4 +28,8 @@ class EmotionRepository (context: Context){
     fun getByName(name: String): Emotion = runBlocking{
         emotionMapper.toEmotion(emotionDao.getByName(name))
     }
+
+    fun getById(id: Long): Emotion = runBlocking{
+        emotionMapper.toEmotion(emotionDao.getById(id))
+    }
 }

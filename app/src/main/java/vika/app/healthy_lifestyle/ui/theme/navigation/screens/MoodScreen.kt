@@ -45,11 +45,9 @@ fun MoodScreen (){
             }
         )
 
-        var emotionList by remember { mutableStateOf( EmotionRepository(context).getAllEmotions())}
+        val emotionList by remember { mutableStateOf( EmotionRepository(context).getAllEmotions())}
         Emotions(
             emotionList
-        ) { emotion ->
-            emotionList = emotionList!!.toMutableList().apply { add(emotion) }
-        }
+        )
     }
 }

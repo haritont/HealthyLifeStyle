@@ -26,4 +26,12 @@ class EmotionRecordRepository (context: Context){
         emotionRecordDao.getByIdAndDate(idEmotion, date)
             ?.let { emotionRecordMapper.toEmotionRecord(it) }
     }
+
+    fun getAllByDate(date:String): List<EmotionRecord>? = runBlocking {
+        emotionRecordDao.getAllByDate(date)?.let { emotionRecordMapper.toEmotionRecordList(it) }
+    }
+
+    fun deleteEmotionRecord(emotionRecord: EmotionRecord) = runBlocking{
+        emotionRecordDao.delete(emotionRecord.date, emotionRecord.id)
+    }
 }

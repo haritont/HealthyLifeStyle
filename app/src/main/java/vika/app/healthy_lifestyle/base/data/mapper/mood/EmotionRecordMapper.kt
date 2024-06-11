@@ -6,6 +6,8 @@ import vika.app.healthy_lifestyle.bean.mood.EmotionRecord
 interface EmotionRecordMapper {
     fun toEmotionRecord(emotionRecordEntity: EmotionRecordEntity): EmotionRecord
     fun toEmotionRecordEntity(emotionRecord: EmotionRecord): EmotionRecordEntity
+
+    fun toEmotionRecordList(emotionRecordEntities:List<EmotionRecordEntity>): List<EmotionRecord>
 }
 class DefaultEmotionRecordMapper:EmotionRecordMapper{
     override fun toEmotionRecord(emotionRecordEntity: EmotionRecordEntity): EmotionRecord {
@@ -22,6 +24,14 @@ class DefaultEmotionRecordMapper:EmotionRecordMapper{
             emotionRecord.date,
             emotionRecord.idEmotion
         )
+    }
+
+    override fun toEmotionRecordList(emotionRecordEntities: List<EmotionRecordEntity>): List<EmotionRecord> {
+        val emotionRecords = mutableListOf<EmotionRecord>()
+        for (emotionRecordEntity in emotionRecordEntities){
+            emotionRecords.add(toEmotionRecord(emotionRecordEntity))
+        }
+        return emotionRecords
     }
 
 }
