@@ -15,7 +15,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -62,8 +61,8 @@ class LoadingActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Healthy_LifestyleTheme {
-                var isLoading by remember { mutableStateOf(true) }
-                var errorMessage by remember { mutableStateOf<String?>(null) }
+                val isLoading by remember { mutableStateOf(true) }
+                val errorMessage by remember { mutableStateOf<String?>(null) }
 
                 Column(
                     modifier = Modifier.fillMaxSize(),
