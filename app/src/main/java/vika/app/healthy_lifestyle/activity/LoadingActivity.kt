@@ -82,12 +82,6 @@ class LoadingActivity : ComponentActivity() {
 
                 LaunchedEffect(Unit) {
                     loadData(
-                        onError = { message ->
-                            errorMessage = message
-                            isLoading = false
-                            startActivity(Intent(this@LoadingActivity, MainActivity::class.java))
-                            finish()
-                        },
                         onSuccess = {
                             startActivity(Intent(this@LoadingActivity, MainActivity::class.java))
                             finish()
@@ -98,7 +92,7 @@ class LoadingActivity : ComponentActivity() {
         }
     }
 
-    private fun loadData(onError: (String) -> Unit, onSuccess: () -> Unit) {
+    private fun loadData(onSuccess: () -> Unit) {
         scope.launch {
             withContext(Dispatchers.IO) {
                 if (WeightRepository(this@LoadingActivity).getToday() == null) {
@@ -118,9 +112,9 @@ class LoadingActivity : ComponentActivity() {
                 setRecordTarget()
 
                 var options = TypeRepository(this@LoadingActivity).getAllByProduct()
-                if (options!!.isEmpty()){
+                if (options!!.isEmpty()) {
                     options = defaultOptionProduct
-                    for (option in options){
+                    for (option in options) {
                         TypeRepository(this@LoadingActivity).insert(
                             Type(
                                 type = option,
@@ -130,7 +124,7 @@ class LoadingActivity : ComponentActivity() {
                     }
 
                     options = defaultOptionPhys
-                    for (option in options){
+                    for (option in options) {
                         TypeRepository(this@LoadingActivity).insert(
                             Type(
                                 type = option,
@@ -140,46 +134,41 @@ class LoadingActivity : ComponentActivity() {
                     }
                 }
 
-                try {
-                    val service = DefaultApiServiceRepository()
+                val service = DefaultApiServiceRepository()
 
-                    if (IngredientRepository(this@LoadingActivity).getAllProduct() == null) {
-                        val ingredients = service.getAllIngredients()
-                        for (ingredient in ingredients) {
-                            IngredientRepository(this@LoadingActivity).insertIngredient(ingredient)
-                            TypeRepository(this@LoadingActivity).insert(ingredient.type)
-                        }
+                if (IngredientRepository(this@LoadingActivity).getAllProduct()!!.isEmpty()) {
+                    val ingredients = service.getAllIngredients()
+                    for (ingredient in ingredients) {
+                        IngredientRepository(this@LoadingActivity).insertIngredient(ingredient)
+                        TypeRepository(this@LoadingActivity).insert(ingredient.type)
                     }
-
-                    if (PhysicalExerciseRepository(this@LoadingActivity).getAll() == null) {
-                        val physicalExercises = service.getAllPhysicalExercise()
-                        for (physicalExercise in physicalExercises) {
-                            PhysicalExerciseRepository(this@LoadingActivity).insertPhysicalExercise(physicalExercise)
-                            TypeRepository(this@LoadingActivity).insert(physicalExercise.type)
-                        }
-                    }
-
-                    if (HabitRepository(this@LoadingActivity).getAllHabits() == null) {
-                        val habits = service.getAllHabits()
-                        for (habit in habits) {
-                            HabitRepository(this@LoadingActivity).insertHabit(habit)
-                        }
-                    }
-
-                    if (EmotionRepository(this@LoadingActivity).getAllEmotions() == null) {
-                        val emotions = service.getAllEmotions()
-                        for (emotion in emotions) {
-                            EmotionRepository(this@LoadingActivity).insertEmotion(emotion)
-                        }
-                    }
-                } catch (e: Exception) {
-                    parseData(this@LoadingActivity)
-                    e.printStackTrace()
-                    withContext(Dispatchers.Main) {
-                        onError("Сервер недоступен")
-                    }
-                    return@withContext
                 }
+
+                if (PhysicalExerciseRepository(this@LoadingActivity).getAll()!!.isEmpty()) {
+                    val physicalExercises = service.getAllPhysicalExercise()
+                    for (physicalExercise in physicalExercises) {
+                        PhysicalExerciseRepository(this@LoadingActivity).insertPhysicalExercise(
+                            physicalExercise
+                        )
+                        TypeRepository(this@LoadingActivity).insert(physicalExercise.type)
+                    }
+                }
+
+                if (HabitRepository(this@LoadingActivity).getAllHabits()!!.isEmpty()) {
+                    val habits = service.getAllHabits()
+                    for (habit in habits) {
+                        HabitRepository(this@LoadingActivity).insertHabit(habit)
+                    }
+                }
+
+                if (EmotionRepository(this@LoadingActivity).getAllEmotions()!!.isEmpty()) {
+                    val emotions = service.getAllEmotions()
+                    for (emotion in emotions) {
+                        EmotionRepository(this@LoadingActivity).insertEmotion(emotion)
+                    }
+                }
+
+                parseData(this@LoadingActivity)
 
                 withContext(Dispatchers.Main) {
                     onSuccess()
@@ -189,14 +178,14 @@ class LoadingActivity : ComponentActivity() {
     }
 
     private fun parseData(context:Context){
-        if (IngredientRepository(context).getAllProduct() == null){
+        if (IngredientRepository(context).getAllProduct()!!.isEmpty()){
             val ingredients = ParserIngredient().fromExcel(context)
             for (ingredient in ingredients) {
                 IngredientRepository(this@LoadingActivity).insertIngredient(ingredient)
             }
         }
 
-        if (PhysicalExerciseRepository(this@LoadingActivity).getAll() == null) {
+        if (PhysicalExerciseRepository(this@LoadingActivity).getAll()!!.isEmpty()) {
             val physicalExercises = ParserPhysicalExercise().fromExcel(context)
             for (physicalExercise in physicalExercises) {
                 PhysicalExerciseRepository(this@LoadingActivity).insertPhysicalExercise(physicalExercise)
@@ -204,14 +193,14 @@ class LoadingActivity : ComponentActivity() {
             }
         }
 
-        if (HabitRepository(this@LoadingActivity).getAllHabits() == null) {
+        if (HabitRepository(this@LoadingActivity).getAllHabits()!!.isEmpty()) {
             val habits = ParserHabit().fromExcel(context)
             for (habit in habits) {
                 HabitRepository(this@LoadingActivity).insertHabit(habit)
             }
         }
 
-        if (EmotionRepository(this@LoadingActivity).getAllEmotions() == null) {
+        if (EmotionRepository(this@LoadingActivity).getAllEmotions()!!.isEmpty()) {
             val emotions = ParserEmotion().fromExcel(context)
             for (emotion in emotions) {
                 EmotionRepository(this@LoadingActivity).insertEmotion(emotion)
