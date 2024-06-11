@@ -18,7 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import vika.app.healthy_lifestyle.R
-import vika.app.healthy_lifestyle.calculations.DateToday
+import vika.app.healthy_lifestyle.calculation.DateToday
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import java.text.SimpleDateFormat
 import java.util.Date

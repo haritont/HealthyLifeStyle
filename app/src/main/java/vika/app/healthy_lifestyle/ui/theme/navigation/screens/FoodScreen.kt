@@ -26,8 +26,8 @@ import kotlinx.coroutines.launch
 import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.bean.Item
 import vika.app.healthy_lifestyle.bean.ItemText
-import vika.app.healthy_lifestyle.calculations.DateToday
-import vika.app.healthy_lifestyle.calculations.MealCalc
+import vika.app.healthy_lifestyle.calculation.DateToday
+import vika.app.healthy_lifestyle.calculation.MealCalc
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.food.AddDish
 import vika.app.healthy_lifestyle.ui.theme.food.FastKPFC

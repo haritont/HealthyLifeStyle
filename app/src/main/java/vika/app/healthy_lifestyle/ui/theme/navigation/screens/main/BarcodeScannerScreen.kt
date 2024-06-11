@@ -30,8 +30,8 @@ import vika.app.healthy_lifestyle.base.data.repository.main.BarcodeRepository
 import vika.app.healthy_lifestyle.bean.Item
 import vika.app.healthy_lifestyle.bean.food.Nutrition
 import vika.app.healthy_lifestyle.bean.main.Barcode
-import vika.app.healthy_lifestyle.calculations.DateToday
-import vika.app.healthy_lifestyle.calculations.MealCalc
+import vika.app.healthy_lifestyle.calculation.DateToday
+import vika.app.healthy_lifestyle.calculation.MealCalc
 import vika.app.healthy_lifestyle.ui.theme.food.AddIngredient
 import vika.app.healthy_lifestyle.ui.theme.general.ImageButton
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListText

@@ -1,4 +1,4 @@
-package vika.app.healthy_lifestyle.calculations
+package vika.app.healthy_lifestyle.calculation
 
 import java.time.LocalTime
 

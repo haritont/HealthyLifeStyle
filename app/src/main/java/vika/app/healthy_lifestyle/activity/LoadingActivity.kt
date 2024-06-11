@@ -41,8 +41,8 @@ import vika.app.healthy_lifestyle.bean.main.Record
 import vika.app.healthy_lifestyle.bean.main.Type
 import vika.app.healthy_lifestyle.bean.main.Weight
 import vika.app.healthy_lifestyle.bean.mood.Dream
-import vika.app.healthy_lifestyle.calculations.DateToday
-import vika.app.healthy_lifestyle.calculations.PersonalTarget
+import vika.app.healthy_lifestyle.calculation.DateToday
+import vika.app.healthy_lifestyle.calculation.PersonalTarget
 import vika.app.healthy_lifestyle.notification.createNotificationChannel
 import vika.app.healthy_lifestyle.notification.scheduleNotification
 import vika.app.healthy_lifestyle.server.api.DefaultApiServiceRepository

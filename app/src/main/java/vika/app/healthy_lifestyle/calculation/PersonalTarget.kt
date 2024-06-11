@@ -1,4 +1,4 @@
-package vika.app.healthy_lifestyle.calculations
+package vika.app.healthy_lifestyle.calculation
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -12,7 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import vika.app.healthy_lifestyle.activity.statistics.StatisticsActivity
-import vika.app.healthy_lifestyle.calculations.DateToday
+import vika.app.healthy_lifestyle.calculation.DateToday
 import vika.app.healthy_lifestyle.ui.theme.statistics.BarChartMPA
 import vika.app.healthy_lifestyle.ui.theme.statistics.Dropdown
 

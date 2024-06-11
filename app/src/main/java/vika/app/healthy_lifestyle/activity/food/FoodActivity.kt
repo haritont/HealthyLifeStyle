@@ -19,10 +19,10 @@ import vika.app.healthy_lifestyle.bean.food.Recipe
 import vika.app.healthy_lifestyle.bean.main.Record
 import vika.app.healthy_lifestyle.bean.main.Type
 import vika.app.healthy_lifestyle.bean.mood.HabitRecord
-import vika.app.healthy_lifestyle.calculations.CreateAdvice
-import vika.app.healthy_lifestyle.calculations.DateToday
-import vika.app.healthy_lifestyle.calculations.MealCalc
-import vika.app.healthy_lifestyle.calculations.PersonalTarget
+import vika.app.healthy_lifestyle.calculation.CreateAdvice
+import vika.app.healthy_lifestyle.calculation.DateToday
+import vika.app.healthy_lifestyle.calculation.MealCalc
+import vika.app.healthy_lifestyle.calculation.PersonalTarget
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.navigation.Navigation
 

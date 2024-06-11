@@ -12,7 +12,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import vika.app.healthy_lifestyle.calculations.DateToday
+import vika.app.healthy_lifestyle.calculation.DateToday
 
 @Composable
 fun BarChartMPA(values: List<Float>, dates: List<String>, unit: String) {

@@ -3,7 +3,7 @@ package vika.app.healthy_lifestyle.recommend
 import android.content.Context
 import android.content.SharedPreferences
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
-import vika.app.healthy_lifestyle.calculations.DateToday
+import vika.app.healthy_lifestyle.calculation.DateToday
 
 class MealPlanManager {
     private val sportPlan: List<SportPlan> = listOf(

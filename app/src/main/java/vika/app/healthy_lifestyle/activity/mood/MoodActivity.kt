@@ -13,8 +13,8 @@ import vika.app.healthy_lifestyle.bean.mood.Dream
 import vika.app.healthy_lifestyle.bean.mood.Emotion
 import vika.app.healthy_lifestyle.bean.mood.Habit
 import vika.app.healthy_lifestyle.bean.mood.HabitRecord
-import vika.app.healthy_lifestyle.calculations.CreateAdvice
-import vika.app.healthy_lifestyle.calculations.DateToday
+import vika.app.healthy_lifestyle.calculation.CreateAdvice
+import vika.app.healthy_lifestyle.calculation.DateToday
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.navigation.Navigation
 

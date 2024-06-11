@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.base.data.repository.main.NotificationsRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
-import vika.app.healthy_lifestyle.calculations.DateToday
+import vika.app.healthy_lifestyle.calculation.DateToday
 import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
 import vika.app.healthy_lifestyle.ui.theme.main.Notification

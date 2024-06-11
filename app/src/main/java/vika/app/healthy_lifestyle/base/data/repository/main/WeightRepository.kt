@@ -7,7 +7,7 @@ import vika.app.healthy_lifestyle.base.data.database.main.WeightDatabase
 import vika.app.healthy_lifestyle.base.data.mapper.main.DefaultWeightMapper
 import vika.app.healthy_lifestyle.base.data.mapper.main.WeightMapper
 import vika.app.healthy_lifestyle.bean.main.Weight
-import vika.app.healthy_lifestyle.calculations.DateToday
+import vika.app.healthy_lifestyle.calculation.DateToday
 
 class WeightRepository (context: Context){
     private val weightDao: WeightDao
