@@ -22,7 +22,7 @@ class ParserEmotion {
                         val emotion = Emotion(
                             id = 0L,
                             name = row.getCell(0).toString(),
-                            isPositive = row.getCell(1).toString() != "0"
+                            isPositive = row.getCell(1).toString() == "1.0"
                         )
                         emotions.add(emotion)
                     }

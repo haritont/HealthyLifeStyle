@@ -23,7 +23,7 @@ class ParserHabit {
                             id = 0L,
                             name = row.getCell(0).toString(),
                             product = row.getCell(1).toString(),
-                            isPositive = row.getCell(2).toString() != "0"
+                            isPositive = row.getCell(2).toString() == "1.0"
                         )
                         habits.add(habit)
                     }
