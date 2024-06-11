@@ -6,11 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import vika.app.healthy_lifestyle.base.data.repository.food.IngredientRepository
 import vika.app.healthy_lifestyle.base.data.repository.mood.DreamRepository
-import vika.app.healthy_lifestyle.base.data.repository.mood.EmotionRepository
 import vika.app.healthy_lifestyle.base.data.repository.mood.HabitRecordRepository
 import vika.app.healthy_lifestyle.base.data.repository.mood.HabitRepository
 import vika.app.healthy_lifestyle.bean.mood.Dream
-import vika.app.healthy_lifestyle.bean.mood.Emotion
 import vika.app.healthy_lifestyle.bean.mood.Habit
 import vika.app.healthy_lifestyle.bean.mood.HabitRecord
 import vika.app.healthy_lifestyle.calculation.CreateAdvice
@@ -79,15 +77,6 @@ class MoodActivity : ComponentActivity() {
     fun insertHabit(context: Context, habit:Habit) {
         HabitRepository(context).insertHabit(
             habit
-        )
-    }
-
-    fun insertEmotion(context: Context, emotion: String, checked: Boolean) {
-        EmotionRepository(context).insertEmotion(
-            Emotion(
-                name = emotion,
-                isPositive = checked
-            )
         )
     }
 

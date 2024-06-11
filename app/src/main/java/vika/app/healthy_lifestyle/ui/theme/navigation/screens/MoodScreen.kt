@@ -31,7 +31,6 @@ fun MoodScreen (){
 
         var habitList by remember { mutableStateOf(MoodActivity().getHabitList(context)) }
 
-
         Habits(
             habitList,
             { habit ->
@@ -46,7 +45,11 @@ fun MoodScreen (){
             }
         )
 
-        val emotionList = EmotionRepository(context).getAllEmotions()
-        Emotions(emotionList)
+        var emotionList by remember { mutableStateOf( EmotionRepository(context).getAllEmotions())}
+        Emotions(
+            emotionList
+        ) { emotion ->
+            emotionList = emotionList!!.toMutableList().apply { add(emotion) }
+        }
     }
 }

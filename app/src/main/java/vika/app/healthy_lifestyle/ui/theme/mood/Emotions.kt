@@ -30,8 +30,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import vika.app.healthy_lifestyle.R
-import vika.app.healthy_lifestyle.activity.mood.MoodActivity
 import vika.app.healthy_lifestyle.base.data.repository.mood.EmotionRecordRepository
+import vika.app.healthy_lifestyle.base.data.repository.mood.EmotionRepository
 import vika.app.healthy_lifestyle.bean.mood.Emotion
 import vika.app.healthy_lifestyle.bean.mood.EmotionRecord
 import vika.app.healthy_lifestyle.calculation.DateToday
@@ -44,7 +44,8 @@ import vika.app.healthy_lifestyle.ui.theme.general.emojiMap
 
 @Composable
 fun Emotions (
-    emotionList: List<Emotion>?
+    emotionList: List<Emotion>?,
+    addEmotion: (Emotion) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -115,10 +116,14 @@ fun Emotions (
                         TextButton(
                             onClick = {
                                 openDialogAddEmotion = false
-                                MoodActivity().insertEmotion(
-                                    context,
-                                    emotion,
-                                    checked
+                                EmotionRepository(context).insertEmotion(
+                                    Emotion(
+                                        name = emotion,
+                                        isPositive = checked
+                                    )
+                                )
+                                addEmotion(
+                                    EmotionRepository(context).getByName(emotion)
                                 )
                             },
                             modifier = Modifier.padding(8.dp),
