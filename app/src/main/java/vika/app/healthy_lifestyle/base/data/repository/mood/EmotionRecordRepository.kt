@@ -32,6 +32,6 @@ class EmotionRecordRepository (context: Context){
     }
 
     fun deleteEmotionRecord(emotionRecord: EmotionRecord) = runBlocking{
-        emotionRecordDao.delete(emotionRecord)
+        emotionRecordDao.delete(emotionRecordMapper.toEmotionRecordEntity(emotionRecord))
     }
 }

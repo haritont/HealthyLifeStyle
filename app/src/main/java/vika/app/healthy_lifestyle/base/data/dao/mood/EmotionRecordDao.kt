@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import vika.app.healthy_lifestyle.base.data.entity.mood.EmotionRecordEntity
-import vika.app.healthy_lifestyle.bean.mood.EmotionRecord
 
 @Dao
 interface EmotionRecordDao {
@@ -18,5 +17,5 @@ interface EmotionRecordDao {
     @Query("SELECT * FROM EmotionRecord WHERE date =:date")
     suspend fun getAllByDate(date: String): List<EmotionRecordEntity>?
     @Delete
-    suspend fun delete(emotionRecord: EmotionRecord)
+    suspend fun delete(emotionRecord: EmotionRecordEntity)
 }
