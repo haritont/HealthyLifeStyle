@@ -2,6 +2,7 @@ package vika.app.healthy_lifestyle.recommend
 
 import android.content.Context
 import vika.app.healthy_lifestyle.base.data.repository.food.IngredientRepository
+import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
 import vika.app.healthy_lifestyle.base.data.repository.sport.PhysicalExerciseRepository
 import vika.app.healthy_lifestyle.bean.food.Ingredient
@@ -25,6 +26,19 @@ class RecommendSystem(
     var targetCarb = ""
 
     val record = RecordRepository(context).getRecordByDate(DateToday().getToday())!!
+
+    fun getPhysicalExercise(ingredient: Ingredient): Pair<PhysicalExercise?, Double>{
+        val kilo = ingredient.kilocalories - record.burnedKilocalories
+
+        if (kilo > 0){
+            val value = listOf(30.0, 45.0, 60.0).random()
+            val weight = PersonalDataRepository(context).getWeight()
+            val physicalExercises = PhysicalExerciseRepository(context).getPhysicalExerciseByTarget(value, kilo, weight)
+
+            return Pair(physicalExercises?.shuffled()?.take(1)!![0], value)
+        }
+        return Pair(null, 0.0)
+    }
 
     fun getProducts(count: Int): List<Ingredient>? {
         return getListProduct()?.shuffled()?.take(count)
@@ -53,6 +67,15 @@ class RecommendSystem(
             }
         }
         return products
+    }
+
+    fun getMarkTopKilo(ingredient: Ingredient): Double {
+        val kilocalories = ingredient.kilocalories
+
+        if (kilocalories > meal.kiloTarget) {
+            return 1.0
+        }
+        return 0.0
     }
 
     fun getMarkKilo(ingredient: Ingredient): Double {

@@ -50,4 +50,9 @@ class PhysicalExerciseRepository(context: Context) {
     fun getAll(): List<PhysicalExercise>? = runBlocking{
         physicalExerciseDao.getAll()?.let { physicalExerciseMapper.toPhysicalExerciseList(it, appContext) }
     }
+
+    fun getPhysicalExerciseByTarget(value: Double, kilo: Double, weight: Double):  List<PhysicalExercise>? = runBlocking {
+        physicalExerciseDao.getPhysicalExerciseByTarget(value, kilo, weight)
+            ?.let { physicalExerciseMapper.toPhysicalExerciseList(it, appContext) }
+    }
 }

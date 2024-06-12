@@ -29,6 +29,7 @@ import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.bean.food.Ingredient
 import vika.app.healthy_lifestyle.bean.food.Nutrition
 import vika.app.healthy_lifestyle.bean.main.Type
+import vika.app.healthy_lifestyle.bean.sport.PhysicalExercise
 import vika.app.healthy_lifestyle.recommend.RecommendSystem
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.Blue
@@ -46,6 +47,8 @@ fun RecommendPage(
     mealList: List<Nutrition>
 ) {
     val context = LocalContext.current
+    var recommendPhysicalExercise: PhysicalExercise? = null
+    var recommendValue = 0.0
     Text(
         text = text,
         modifier = Modifier.padding(8.dp),
@@ -102,6 +105,11 @@ fun RecommendPage(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val markKilo = recommend.getMarkKilo(meal)
+                if (recommend.getMarkTopKilo(meal) == 1.0){
+                    val rec  = recommend.getPhysicalExercise(meal)
+                    recommendPhysicalExercise = rec.first
+                    recommendValue = rec.second
+                }
                 val markProtein = recommend.getMarkProtein(meal)
                 val markFat = recommend.getMarkFat(meal)
                 val markCarb = recommend.getMarkCarb(meal)
@@ -189,6 +197,16 @@ fun RecommendPage(
             }
         }
         var openDialog by remember { mutableStateOf(false) }
+
+        if (recommendPhysicalExercise != null){
+            Column {
+                Text(text = "Рекомендованное упражнение")
+                ItemListValue(
+                    title = recommendPhysicalExercise!!.name,
+                    value = recommendValue
+                )
+            }
+        }
         Button(onClick = { openDialog = true }) {
             Text(text = "Рекомендации")
         }
