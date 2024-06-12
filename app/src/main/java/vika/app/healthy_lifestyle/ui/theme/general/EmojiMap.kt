@@ -38,15 +38,24 @@ val emojiMap = mapOf(
     "Домашняя активность" to "\uD83E\uDDF9",
     "Садоводство" to "\uD83E\uDEB4",
 
-    "Страх" to "\uD83D\uDE30",
+    "Страх" to "\uD83D\uDE28",
     "Восхищение" to "\uD83D\uDE32",
     "Грусть" to "\uD83D\uDE2D",
-    "Злость" to "\uD83D\uDE21",
+    "Злость" to "\uD83D\uDE20",
     "Радость" to "\uD83D\uDE00",
     "Любовь" to "\uD83E\uDD70",
     "Отвращение" to "\uD83E\uDD22",
     "Интерес" to "\uD83E\uDDD0",
-    "Стыд" to "\uD83D\uDE16"
+    "Стыд" to "\uD83D\uDE16",
+    "Удовлетворение" to "\uD83D\uDE0B",
+    "Развлечение" to "\uD83D\uDE02",
+    "Счастье" to "\uD83D\uDE04",
+    "Умиротворение" to "\uD83D\uDE0C",
+    "Трепет" to "\uD83D\uDE32",
+    "Ярость" to "\uD83D\uDE21",
+    "Одиночество" to "\uD83D\uDE1E",
+    "Меланхолия" to "\uD83D\uDE13",
+    "Раздражение" to "\uD83D\uDE16"
 )
 
 val defaultOptionProduct = listOf(
