@@ -46,17 +46,17 @@ fun StatisticsScreen() {
                     }
 
                     "Белки" -> {
-                        unit = "г"
+                        unit = "гр"
                         StatisticsActivity().getProteins(labels)
                     }
 
                     "Жиры" -> {
-                        unit = "г"
+                        unit = "гр"
                         StatisticsActivity().getFats(labels)
                     }
 
                     "Углеводы" -> {
-                        unit = "г"
+                        unit = "гр"
                         StatisticsActivity().getCarbohydrates(labels)
                     }
 

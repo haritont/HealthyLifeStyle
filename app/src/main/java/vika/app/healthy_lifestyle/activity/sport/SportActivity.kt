@@ -60,7 +60,7 @@ class SportActivity : ComponentActivity() {
                     date = date, targetKilocalories = target.kilocalories,
                     targetProteins = target.proteins, targetFats = target.fats,
                     targetCarbohydrates = target.carbohydrates, targetWater = target.water,
-                   burnedKilocalories = (weight * (value / 60.0) * physicalExercise.met)
+                    burnedKilocalories = (weight * (value / 60.0) * physicalExercise.met)
                 )
             )
         }
