@@ -3,6 +3,7 @@ package vika.app.healthy_lifestyle.ui.theme.navigation.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,35 +44,36 @@ fun MoodScreen () {
                 isOpen = isShowingTips,
                 onOpenChange = { isOpen -> isShowingTips = isOpen })
         }
-        Column(
+        LazyColumn(
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            item {
+                Dream(MoodActivity().getHour(), MoodActivity().getMinute())
 
-            Dream(MoodActivity().getHour(), MoodActivity().getMinute())
+                Advice(value = MoodActivity().getAdvice())
 
-            Advice(value = MoodActivity().getAdvice())
+                var habitList by remember { mutableStateOf(MoodActivity().getHabitList(context)) }
 
-            var habitList by remember { mutableStateOf(MoodActivity().getHabitList(context)) }
+                Habits(
+                    habitList,
+                    { habit ->
+                        habitList = habitList!!.toMutableList().apply { remove(habit) }
+                        MoodActivity().deleteHabit(habit, context)
+                    }, { habit ->
+                        habitList = habitList!!.toMutableList().apply { add(habit) }
+                        MoodActivity().insertHabit(
+                            context,
+                            habit
+                        )
+                    }
+                )
 
-            Habits(
-                habitList,
-                { habit ->
-                    habitList = habitList!!.toMutableList().apply { remove(habit) }
-                    MoodActivity().deleteHabit(habit, context)
-                }, { habit ->
-                    habitList = habitList!!.toMutableList().apply { add(habit) }
-                    MoodActivity().insertHabit(
-                        context,
-                        habit
-                    )
-                }
-            )
-
-            val emotionList by remember { mutableStateOf(EmotionRepository(context).getAllEmotions()) }
-            Emotions(
-                emotionList
-            )
+                val emotionList by remember { mutableStateOf(EmotionRepository(context).getAllEmotions()) }
+                Emotions(
+                    emotionList
+                )
+            }
         }
     }
 }
