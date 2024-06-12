@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import vika.app.healthy_lifestyle.R
@@ -48,7 +51,8 @@ fun ProfileScreen() {
 
     LazyColumn(
         modifier = Modifier.padding(8.dp),
-        verticalArrangement = Arrangement.SpaceAround
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.Start
     ) {
         item {
             TextFieldBlue(
@@ -71,6 +75,7 @@ fun ProfileScreen() {
                 }
             )
 
+            Spacer(modifier = Modifier.height(10.dp))
             Text(text = context.getString(R.string.birth_date))
             DatePickerWithDialog(
                 currentDate = birthDate,
@@ -79,6 +84,7 @@ fun ProfileScreen() {
                     birthDate = currentTime
                 }
             )
+            Spacer(modifier = Modifier.height(10.dp))
 
             Row(
                 horizontalArrangement = Arrangement.SpaceAround,
@@ -144,23 +150,27 @@ fun ProfileScreen() {
                     imt < 40.0 -> "2 степень ожирения"
                     else -> "3 степень ожирения"
                 }
-                Text(text = "Ваш ИМТ = %.2f (%s)".format(imt, explanation))
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Ваш ИМТ = %.2f (%s)".format(imt, explanation),
+                    fontWeight = FontWeight.Bold
+                )
             }
 
             val targets = listOf("Набрать вес", "Поддержать вес", "Снизить вес")
-            val (selectedTarget, onTargetSelected) = remember { mutableStateOf(targets[targetState.value - 1]) }
+            val selectedTarget = remember { mutableStateOf(targets[targetState.value]) }
+
             Column {
-                Text(text = context.getString(R.string.target))
+                Text(text = "Цель")
                 Column(Modifier.selectableGroup()) {
                     targets.forEach { text ->
                         Row(
                             verticalAlignment = Alignment.CenterVertically
-                        )
-                        {
+                        ) {
                             RadioButton(
-                                selected = (text == selectedTarget),
+                                selected = (text == selectedTarget.value),
                                 onClick = {
-                                    onTargetSelected(text)
+                                    selectedTarget.value = text
                                     targetState.value = targets.indexOf(text)
                                 }
                             )
@@ -174,7 +184,7 @@ fun ProfileScreen() {
             val (selectedGender, onGenderSelected) = remember { mutableStateOf(genders[genderState.value - 1]) }
             Column {
                 Text(text = context.getString(R.string.gender))
-                Column(Modifier.selectableGroup()) {
+                Row(Modifier.selectableGroup()) {
                     genders.forEach { text ->
                         Row(
                             verticalAlignment = Alignment.CenterVertically
@@ -184,7 +194,7 @@ fun ProfileScreen() {
                                 selected = (text == selectedGender),
                                 onClick = {
                                     onGenderSelected(text)
-                                    genderState.value = genders.indexOf(text)
+                                    genderState.value = genders.indexOf(text) + 1
                                 }
                             )
                             Text(text = text)
@@ -198,30 +208,24 @@ fun ProfileScreen() {
                 1.3 to "Средняя активность",
                 1.5 to "Высокая активность"
             )
-            val (selectedActivity, onActivitySelected) = remember {
-                mutableStateOf(
-                    activities.getValue(
-                        activityRateState.value
-                    )
-                )
-            }
+
+            val selectedActivity = remember { mutableStateOf(activities[activityRateState.value]) }
+
             Column {
-                Text(text = context.getString(R.string.activity))
+                Text(text = "Активность")
                 Column(Modifier.selectableGroup()) {
-                    activities.values.forEach { text ->
+                    activities.forEach { (key, value) ->
                         Row(
                             verticalAlignment = Alignment.CenterVertically
-                        )
-                        {
+                        ) {
                             RadioButton(
-                                selected = (text == selectedActivity),
+                                selected = (value == selectedActivity.value),
                                 onClick = {
-                                    onActivitySelected(text)
-                                    activityRateState.value =
-                                        activities.entries.find { it.value == text }!!.key
+                                    selectedActivity.value = value
+                                    activityRateState.value = key
                                 }
                             )
-                            Text(text = text)
+                            Text(text = value)
                         }
                     }
                 }
