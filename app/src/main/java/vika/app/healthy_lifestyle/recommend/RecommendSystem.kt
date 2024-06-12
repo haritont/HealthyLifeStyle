@@ -33,7 +33,7 @@ class RecommendSystem(
         if (kilo > 0){
             val value = listOf(30.0, 45.0, 60.0).random()
             val weight = PersonalDataRepository(context).getWeight()
-            val physicalExercises = PhysicalExerciseRepository(context).getPhysicalExerciseByTarget(value, kilo, weight)
+            val physicalExercises = PhysicalExerciseRepository(context).getPhysicalExerciseByTarget(value / 60.0, kilo, weight)
 
             if (!physicalExercises.isNullOrEmpty()) {
                 return Pair(physicalExercises.shuffled().take(1)[0], value)
