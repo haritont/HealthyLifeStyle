@@ -82,7 +82,8 @@ fun Emotions (
         LazyVerticalGrid(
             columns = GridCells.Fixed(6),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.height(300.dp)
         ) {
             items(emotionList) { item ->
                 var record = EmotionRecordRepository(context).getByIdAndDate(item.id, DateToday().getToday())
