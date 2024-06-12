@@ -15,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,7 +41,6 @@ fun Emotions (
 ) {
     val context = LocalContext.current
 
-
     val emotionRecordList = EmotionRecordRepository(context).getAllByDate(DateToday().getToday())
     var positive by remember { mutableStateOf(0) }
     var negative by remember { mutableStateOf(0) }
@@ -55,11 +53,6 @@ fun Emotions (
                 negative++
             }
         }
-    }
-
-    DisposableEffect(positive, negative) {
-        println("Positive count: $positive, Negative count: $negative")
-        onDispose {}
     }
 
     Row (
@@ -92,14 +85,13 @@ fun Emotions (
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(emotionList) { item ->
+                var record = EmotionRecordRepository(context).getByIdAndDate(item.id, DateToday().getToday())
                 var isChose by remember {
                     mutableStateOf(
-                        EmotionRecordRepository(context).getByIdAndDate(
-                            item.id,
-                            DateToday().getToday()
-                        ) != null
+                        record != null
                     )
                 }
+
                 Surface(
                     modifier = Modifier
                         .padding(10.dp)
@@ -131,6 +123,7 @@ fun Emotions (
                                             idEmotion = item.id
                                         )
                                     )
+                                    record = EmotionRecordRepository(context).getByIdAndDate(item.id, DateToday().getToday())
                                 } else {
                                     if (item.isPositive) {
                                         positive--
@@ -139,10 +132,7 @@ fun Emotions (
                                     }
 
                                     EmotionRecordRepository(context).deleteEmotionRecord(
-                                        EmotionRecord(
-                                            date = DateToday().getToday(),
-                                            idEmotion = item.id
-                                        )
+                                        record!!
                                     )
                                 }
                             }
