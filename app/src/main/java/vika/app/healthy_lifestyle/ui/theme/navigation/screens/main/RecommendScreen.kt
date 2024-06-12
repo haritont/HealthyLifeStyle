@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.bean.food.Ingredient
@@ -31,6 +33,8 @@ import vika.app.healthy_lifestyle.recommend.RecommendSystem
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.Blue
 import vika.app.healthy_lifestyle.ui.theme.app.White
+import vika.app.healthy_lifestyle.ui.theme.general.ImageButton
+import vika.app.healthy_lifestyle.ui.theme.instruction.InstructionRecommend
 import vika.app.healthy_lifestyle.ui.theme.main.RecommendPage
 
 @Composable
@@ -101,7 +105,8 @@ fun RecommendScreen() {
         }
     }
 
-    val breakfastRecommend = RecommendSystem(context, type, MealPlanManager().getMealPlan(0, context))
+    val breakfastRecommend =
+        RecommendSystem(context, type, MealPlanManager().getMealPlan(0, context))
     val lunchRecommend = RecommendSystem(context, type, MealPlanManager().getMealPlan(1, context))
     val dinnerRecommend = RecommendSystem(context, type, MealPlanManager().getMealPlan(2, context))
     val snackRecommend = RecommendSystem(context, type, MealPlanManager().getMealPlan(3, context))
@@ -116,184 +121,204 @@ fun RecommendScreen() {
     var dinnerColor by remember { mutableStateOf(White) }
     var snackColor by remember { mutableStateOf(White) }
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        item {
-            Row {
-                Box(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .background(
-                            color = breakfastColor,
-                            shape = RoundedCornerShape(5.dp)
-                        )
-                        .clickable {
-                            breakfastColor = Blue
-                            lunchColor = White
-                            dinnerColor = White
-                            snackColor = White
+    var isShowingTips by remember { mutableStateOf(false) }
 
-                            breakfastCheck = true
-                            lunchCheck = false
-                            dinnerCheck = false
-                            snackCheck = false
-                        }
-                ) {
-                    Text(
-                        text = "Завтрак",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Black,
-                        fontWeight = FontWeight.Bold,
+    Column {
+        Row(
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.End
+        ) {
+            ImageButton(
+                icon = R.drawable.question
+            ) {
+                isShowingTips = !isShowingTips
+            }
+        }
+
+        if (isShowingTips) {
+            InstructionRecommend(
+                isOpen = isShowingTips,
+                onOpenChange = { isOpen -> isShowingTips = isOpen })
+        }
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            item {
+                Row {
+                    Box(
                         modifier = Modifier
-                            .padding(10.dp)
+                            .padding(8.dp)
+                            .background(
+                                color = breakfastColor,
+                                shape = RoundedCornerShape(5.dp)
+                            )
+                            .clickable {
+                                breakfastColor = Blue
+                                lunchColor = White
+                                dinnerColor = White
+                                snackColor = White
+
+                                breakfastCheck = true
+                                lunchCheck = false
+                                dinnerCheck = false
+                                snackCheck = false
+                            }
+                    ) {
+                        Text(
+                            text = "Завтрак",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Black,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .padding(10.dp)
+                        )
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .background(
+                                color = lunchColor,
+                                shape = RoundedCornerShape(5.dp)
+                            )
+                            .clickable {
+                                breakfastColor = White
+                                lunchColor = Blue
+                                dinnerColor = White
+                                snackColor = White
+
+                                breakfastCheck = false
+                                lunchCheck = true
+                                dinnerCheck = false
+                                snackCheck = false
+                            }
+                    ) {
+                        Text(
+                            text = "Обед",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Black,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .padding(10.dp)
+                        )
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .background(
+                                color = dinnerColor,
+                                shape = RoundedCornerShape(5.dp)
+                            )
+                            .clickable {
+                                breakfastColor = White
+                                lunchColor = White
+                                dinnerColor = Blue
+                                snackColor = White
+
+                                breakfastCheck = false
+                                lunchCheck = false
+                                dinnerCheck = true
+                                snackCheck = false
+                            }
+                    ) {
+                        Text(
+                            text = "Ужин",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Black,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .padding(10.dp)
+                        )
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .background(
+                                color = snackColor,
+                                shape = RoundedCornerShape(5.dp)
+                            )
+                            .clickable {
+                                breakfastColor = White
+                                lunchColor = White
+                                dinnerColor = White
+                                snackColor = Blue
+
+                                breakfastCheck = false
+                                lunchCheck = false
+                                dinnerCheck = false
+                                snackCheck = true
+                            }
+                    ) {
+                        Text(
+                            text = "Перекус",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Black,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .padding(10.dp)
+                        )
+                    }
+                }
+
+                if (breakfastCheck) {
+                    val text = if (breakfastList.isEmpty()) {
+                        "Нет информации о завтраке"
+                    } else {
+                        "Завтрак"
+                    }
+                    RecommendPage(
+                        text = text,
+                        recommend = breakfastRecommend,
+                        meal = breakfast,
+                        mealList = breakfastList
                     )
                 }
 
-                Box(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .background(
-                            color = lunchColor,
-                            shape = RoundedCornerShape(5.dp)
-                        )
-                        .clickable {
-                            breakfastColor = White
-                            lunchColor = Blue
-                            dinnerColor = White
-                            snackColor = White
-
-                            breakfastCheck = false
-                            lunchCheck = true
-                            dinnerCheck = false
-                            snackCheck = false
-                        }
-                ) {
-                    Text(
-                        text = "Обед",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Black,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .padding(10.dp)
+                if (lunchCheck) {
+                    val text = if (lunchList.isEmpty()) {
+                        "Нет информации об обеде"
+                    } else {
+                        "Обед"
+                    }
+                    RecommendPage(
+                        text = text,
+                        recommend = lunchRecommend,
+                        meal = lunch,
+                        mealList = lunchList
                     )
                 }
 
-                Box(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .background(
-                            color = dinnerColor,
-                            shape = RoundedCornerShape(5.dp)
-                        )
-                        .clickable {
-                            breakfastColor = White
-                            lunchColor = White
-                            dinnerColor = Blue
-                            snackColor = White
-
-                            breakfastCheck = false
-                            lunchCheck = false
-                            dinnerCheck = true
-                            snackCheck = false
-                        }
-                ) {
-                    Text(
-                        text = "Ужин",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Black,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .padding(10.dp)
+                if (dinnerCheck) {
+                    val text = if (dinnerList.isEmpty()) {
+                        "Нет информации об ужине"
+                    } else {
+                        "Ужин"
+                    }
+                    RecommendPage(
+                        text = text,
+                        recommend = dinnerRecommend,
+                        meal = dinner,
+                        mealList = dinnerList
                     )
                 }
 
-                Box(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .background(
-                            color = snackColor,
-                            shape = RoundedCornerShape(5.dp)
-                        )
-                        .clickable {
-                            breakfastColor = White
-                            lunchColor = White
-                            dinnerColor = White
-                            snackColor = Blue
-
-                            breakfastCheck = false
-                            lunchCheck = false
-                            dinnerCheck = false
-                            snackCheck = true
-                        }
-                ) {
-                    Text(
-                        text = "Перекус",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Black,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .padding(10.dp)
+                if (snackCheck) {
+                    val text = if (snackList.isEmpty()) {
+                        "Нет информации о перекусе"
+                    } else {
+                        "Перекус"
+                    }
+                    RecommendPage(
+                        text = text,
+                        recommend = snackRecommend,
+                        meal = snack,
+                        mealList = snackList
                     )
                 }
-            }
-
-            if (breakfastCheck) {
-                val text = if (breakfastList.isEmpty()) {
-                    "Нет информации о завтраке"
-                } else {
-                    "Завтрак"
-                }
-                RecommendPage(
-                    text = text,
-                    recommend = breakfastRecommend,
-                    meal = breakfast,
-                    mealList = breakfastList
-                )
-            }
-
-            if (lunchCheck) {
-                val text = if (lunchList.isEmpty()) {
-                    "Нет информации об обеде"
-                } else {
-                    "Обед"
-                }
-                RecommendPage(
-                    text = text,
-                    recommend = lunchRecommend,
-                    meal = lunch,
-                    mealList = lunchList
-                )
-            }
-
-            if (dinnerCheck) {
-                val text = if (dinnerList.isEmpty()) {
-                    "Нет информации об ужине"
-                } else {
-                    "Ужин"
-                }
-                RecommendPage(
-                    text = text,
-                    recommend = dinnerRecommend,
-                    meal = dinner,
-                    mealList = dinnerList
-                )
-            }
-
-            if (snackCheck) {
-                val text = if (snackList.isEmpty()) {
-                    "Нет информации о перекусе"
-                } else {
-                    "Перекус"
-                }
-                RecommendPage(
-                    text = text,
-                    recommend = snackRecommend,
-                    meal = snack,
-                    mealList = snackList
-                )
             }
         }
     }
