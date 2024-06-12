@@ -198,15 +198,6 @@ fun RecommendPage(
         }
         var openDialog by remember { mutableStateOf(false) }
 
-        if (recommendPhysicalExercise != null){
-            Column {
-                Text(text = "Рекомендованное упражнение")
-                ItemListValue(
-                    title = recommendPhysicalExercise!!.name,
-                    value = recommendValue
-                )
-            }
-        }
         Button(onClick = { openDialog = true }) {
             Text(text = "Рекомендации")
         }
@@ -335,9 +326,26 @@ fun RecommendPage(
                                 key(item.name) {
                                     ItemListValue(
                                         title = if (item.replacement == "") item.name else item.replacement,
-                                        value = item.value
+                                        value = item.value,
+                                        text = "гр"
                                     )
                                 }
+                            }
+                        }
+                        if (recommendPhysicalExercise != null){
+                            Column {
+                                Text(
+                                    text = "Рекомендованное упражнение",
+                                    modifier = Modifier.padding(8.dp),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Black
+                                )
+                                ItemListValue(
+                                    title = recommendPhysicalExercise!!.name,
+                                    value = recommendValue,
+                                    text = "мин"
+                                )
                             }
                         }
                     }

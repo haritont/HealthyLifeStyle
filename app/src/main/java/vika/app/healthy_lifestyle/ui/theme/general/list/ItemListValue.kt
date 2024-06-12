@@ -26,6 +26,7 @@ import vika.app.healthy_lifestyle.ui.theme.app.White
 fun ItemListValue(
     title: String,
     value: Double,
+    text: String
 ) {
     Card(
         modifier = Modifier
@@ -58,7 +59,7 @@ fun ItemListValue(
                     maxLines = 3
                 )
                 Text(
-                    text = value.toString().plus(" гр."),
+                    text = value.toString().plus(text),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                     color = Color.Gray,
