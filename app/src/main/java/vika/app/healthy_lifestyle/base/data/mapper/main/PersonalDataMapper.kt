@@ -17,7 +17,8 @@ class DefaultPersonalDataMapper : PersonalDataMapper {
             weight = personalData.weight,
             birthDate = personalData.birthDate,
             activityRate = personalData.activityRate,
-            name = personalData.name
+            name = personalData.name,
+            target = personalData.target
         )
     }
 
