@@ -138,7 +138,7 @@ fun InstructionMood (
                         )
 
                         Text(
-                            text = "Как эмоциями?",
+                            text = "Как пользоваться эмоциями?",
                             modifier = Modifier.padding(8.dp),
                             fontWeight = FontWeight.Bold,
                             color = Black
