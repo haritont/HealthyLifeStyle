@@ -51,7 +51,10 @@ fun MainScreen () {
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            WaterTracker(currentValue = MainActivity().getCurrentValueWater(context))
+            WaterTracker(
+                currentValue = MainActivity().getCurrentValueWater(context),
+                targetValue = MainActivity().getTargetValueWater(context)
+                )
         }
     }
 }

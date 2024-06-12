@@ -91,4 +91,8 @@ class MainActivity : ComponentActivity() {
     fun getBurnedKilocalories(context: Context): Double {
         return RecordRepository(context).burnedKilocalories(DateToday().getToday())
     }
+
+    fun getTargetValueWater(context: Context): Int {
+        return RecordRepository(context).getRecordByDate(DateToday().getToday())!!.targetWater.toInt()
+    }
 }

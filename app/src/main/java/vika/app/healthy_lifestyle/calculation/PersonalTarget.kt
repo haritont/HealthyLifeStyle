@@ -70,7 +70,17 @@ class PersonalTarget(
         }
         kilocalories = round(kilocalories)
 
-        water = (30 * weight) / 1000
+        water = when {
+            age in 1..3 -> 1300.0
+            age in 4..8 -> 1700.0
+            personalData.genderId == 2 && age in 9..13 -> 2400.0
+            personalData.genderId == 2 && age in 14..18 -> 3300.0
+            personalData.genderId == 2 && age >= 19 -> 3700.0
+            personalData.genderId == 1 && age in 9..13 -> 2100.0
+            personalData.genderId == 1 && age in 14..18 -> 2300.0
+            personalData.genderId == 1 && age >= 19 -> 2700.0
+            else -> 0.0
+        }
     }
 
     private fun calculateAge(birthDate: String?): Int {

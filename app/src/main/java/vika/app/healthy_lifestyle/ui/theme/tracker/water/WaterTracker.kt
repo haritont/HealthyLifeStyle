@@ -31,7 +31,8 @@ import vika.app.healthy_lifestyle.ui.theme.app.BlueLight
 
 @Composable
 fun WaterTracker(
-    currentValue: Int
+    currentValue: Int,
+    targetValue: Int
 ) {
     var currentValueState by remember { mutableIntStateOf(currentValue) }
     val waters = remember { mutableStateListOf<Water>() }
@@ -77,9 +78,8 @@ fun WaterTracker(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = LocalContext.current.getString(R.string.water_today)
-                    .plus(currentValueState.toString())
-                    .plus(LocalContext.current.getString(R.string.milliliter_abbreviation))
+                text = currentValueState.toString()
+                    .plus(LocalContext.current.getString(R.string.milliliter_abbreviation)).plus(" из ").plus(targetValue.toString()).plus(LocalContext.current.getString(R.string.milliliter_abbreviation))
             )
         }
         
