@@ -3,7 +3,7 @@ package vika.app.healthy_lifestyle.ui.theme.mood
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -55,9 +55,9 @@ fun Emotions (
         }
     }
 
-    Row (
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+    Column (
+        horizontalAlignment= Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ){
         Text(
             text = "Эмоции",
@@ -80,7 +80,7 @@ fun Emotions (
 
     if (emotionList != null) {
         LazyVerticalGrid(
-            columns = GridCells.Fixed(7),
+            columns = GridCells.Fixed(6),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -100,7 +100,7 @@ fun Emotions (
                             color = if (isChose) {
                                 if (item.isPositive) Green else Red
                             } else Color.Transparent,
-                            shape = RoundedCornerShape(10.dp)
+                            shape = RoundedCornerShape(15.dp)
                         )
                 ) {
                     (if (emojiMap[item.name] != null) emojiMap[item.name] else item.name)?.let {
