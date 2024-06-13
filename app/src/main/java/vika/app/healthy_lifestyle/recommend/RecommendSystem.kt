@@ -48,100 +48,63 @@ class RecommendSystem(
     }
 
     fun getSports(count: Int): List<PhysicalExercise>? {
-        val recommendSports = mutableListOf<PhysicalExercise>()
-        val physicalExercises = PhysicalExerciseRepository(context).getAllPhysicalExercises()
-        val plan = MealPlanManager().getSportPlan(target)
+        val recommendSports = PhysicalExerciseRepository(context)
+            .getAllPhysicalExercises()
+            .filter { it.type.type in MealPlanManager().getSportPlan(target)!!.types }
+            .toMutableList()
 
-        for (physicalExercise in physicalExercises) {
-            if (physicalExercise.type.type in plan!!.types) {
-                recommendSports.add(physicalExercise)
-            }
-        }
         return recommendSports?.shuffled()?.take(count)
     }
 
     private fun getListProduct(): List<Ingredient>? {
         val types = listOf("Фрукт", "Рыба", "Крупа", "Овощ", "Мясо", "Молочное", "Яйцо")
-        val products = mutableListOf<Ingredient>()
-        for (type in types) {
-            val productList = IngredientRepository(context).getAllProductByType(type)
-            if (productList != null) {
-                products.addAll(productList)
-            }
+        return types.flatMap { type ->
+            IngredientRepository(context).getAllProductByType(type) ?: emptyList()
         }
-        return products
     }
 
     fun getMarkTopKilo(ingredient: Ingredient): Double {
-        val kilocalories = ingredient.kilocalories
+        return if (ingredient.kilocalories > meal.kiloTarget) 1.0 else 0.0
+    }
 
-        if (kilocalories > meal.kiloTarget) {
-            return 1.0
+    private fun calculateMark(value: Double, target: Double): Double {
+        val deviation = value / target
+        return when {
+            deviation in 0.95..1.05 -> 1.0
+            deviation in 0.9..1.1 -> 0.5
+            else -> -1.0
         }
-        return 0.0
     }
 
     fun getMarkKilo(ingredient: Ingredient): Double {
         val kilocalories = ingredient.kilocalories
-
-        progressKilo = "%.1f".format(kilocalories).plus(" ккал")
-        if (kilocalories >= meal.kiloTarget * 0.95 && kilocalories <=  meal.kiloTarget * 1.05) {
-            return 1.0
-        } else if (kilocalories >= meal.kiloTarget * 0.9 && kilocalories <= meal.kiloTarget * 1.1) {
-            return 0.5
-        }else if (kilocalories < meal.kiloTarget * 0.90){
-            return -1.0
-        }
-        return 0.0
+        progressKilo = "%.1f ккал".format(kilocalories)
+        return calculateMark(kilocalories, meal.kiloTarget)
     }
 
     fun getMarkProtein(ingredient: Ingredient): Double {
         val protein = ingredient.proteins
-
-        progressProtein = "%.1f".format(protein).plus(" б")
-        if (protein >= meal.proteinTarget * 0.95 && protein <= meal.proteinTarget * 1.05) {
-            return 1.0
-        } else if (protein >= meal.proteinTarget * 0.90 && protein <= meal.proteinTarget * 1.1) {
-            return 0.5
-        }else if (protein < meal.proteinTarget * 0.90){
-            return -1.0
-        }
-        return 0.0
+        progressProtein = "%.1f б".format(protein)
+        return calculateMark(protein, meal.proteinTarget)
     }
 
     fun getMarkFat(ingredient: Ingredient): Double {
         val fats = ingredient.fats
-
-        progressFat = "%.1f".format(fats).plus(" ж")
-        if (fats >= meal.fatTarget * 0.95 && fats <= meal.fatTarget * 1.05) {
-            return 1.0
-        } else if (fats >= meal.fatTarget * 0.90 && fats <= meal.fatTarget * 1.1) {
-            return 0.5
-        }else if (fats < meal.fatTarget * 0.90){
-            return -1.0
-        }
-        return 0.0
+        progressFat = "%.1f ж".format(fats)
+        return calculateMark(fats, meal.fatTarget)
     }
 
     fun getMarkCarb(ingredient: Ingredient): Double {
         val carb = ingredient.carbohydrates
-
-        progressCarb = "%.1f".format(carb).plus(" у")
-        if (carb >= meal.carbTarget * 0.95 && carb <= meal.carbTarget * 1.05) {
-            return 1.0
-        } else if (carb >= meal.carbTarget * 0.90 && carb <= meal.carbTarget * 1.1) {
-            return 0.5
-        } else if (carb < meal.carbTarget * 0.90){
-            return -1.0
-        }
-        return 0.0
+        progressCarb = "%.1f у".format(carb)
+        return calculateMark(carb, meal.carbTarget)
     }
 
     fun getTarget() {
-        targetKilo = "ккал: ".plus("%.1f".format(meal.kiloTarget))
-        targetProtein = "белки: ".plus("%.1f".format(meal.proteinTarget))
-        targetFat = "жиры: ".plus("%.1f".format(meal.fatTarget))
-        targetCarb = "углеводы: ".plus("%.1f".format(meal.carbTarget))
+        targetKilo = "ккал: %.1f".format(meal.kiloTarget)
+        targetProtein = "белки: %.1f".format(meal.proteinTarget)
+        targetFat = "жиры: %.1f".format(meal.fatTarget)
+        targetCarb = "углеводы: %.1f".format(meal.carbTarget)
     }
 
     fun getMarkProduct(product: Ingredient, value: Double): Int {
@@ -150,19 +113,13 @@ class RecommendSystem(
         val fats = product.fats * value / 100
         val carb = product.carbohydrates * value / 100
 
-        if (kilocalories > meal.kiloTarget) {
-            return -1
+        return when {
+            kilocalories > meal.kiloTarget -> -1
+            protein > meal.proteinTarget -> -1
+            fats > meal.fatTarget -> -1
+            carb > meal.carbTarget -> -1
+            else -> 0
         }
-        if (protein > meal.proteinTarget) {
-            return -1
-        }
-        if (fats > meal.fatTarget) {
-            return -1
-        }
-        if (carb > meal.carbTarget) {
-            return -1
-        }
-        return 0
     }
 
     fun getReplaceProduct(currentProduct: List<ProductMark>): List<ProductMark> {
@@ -176,31 +133,22 @@ class RecommendSystem(
         val replacedProduct = mutableListOf<ProductMark>()
 
         for (product in currentProduct) {
-            if (product.mark == 0) {
+            if (product.mark == 0 && product.favorite) {
                 if (kilocalories + product.kilocalories * product.value / 100.0 < meal.kiloTarget &&
                     protein + product.proteins * product.value / 100.0 < meal.proteinTarget &&
-                    fats + product.fats * product.value / 100.0  < meal.fatTarget &&
-                    carb + product.carbohydrates * product.value / 100.0 < meal.carbTarget) {
+                    fats + product.fats * product.value / 100.0 < meal.fatTarget &&
+                    carb + product.carbohydrates * product.value / 100.0 < meal.carbTarget
+                ) {
                     products.add(product)
                     kilocalories += product.kilocalories * product.value / 100.0
                     protein += product.proteins * product.value / 100.0
                     fats += product.fats * product.value / 100.0
                     carb += product.carbohydrates * product.value / 100.0
-                }
-                else {
-                    var value = product.value - 10
-                    while (kilocalories + product.kilocalories * value / 100.0  > meal.kiloTarget) {
-                        value -= 10
-                    }
-                    while (protein + product.proteins * value / 100.0 > meal.proteinTarget) {
-                        value -= 10
-                    }
-                    while (fats + product.fats * value / 100.0 > meal.fatTarget) {
-                        value -= 10
-                    }
-                    while (carb + product.carbohydrates * value / 100.0 > meal.carbTarget) {
-                        value -= 10
-                    }
+                } else {
+                    val value = getNewValue(
+                        kilocalories, protein, fats, carb,
+                        product, product.value - 10
+                    )
 
                     products.add(
                         ProductMark(
@@ -221,41 +169,7 @@ class RecommendSystem(
                     carb += product.carbohydrates * value / 100.0
                 }
             } else {
-                if (product.favorite) {
-                    var value = product.value - 10
-                    while (kilocalories + product.kilocalories * value / 100.0  > meal.kiloTarget) {
-                        value -= 10
-                    }
-                    while (protein + product.proteins * value / 100.0 > meal.proteinTarget) {
-                        value -= 10
-                    }
-                    while (fats + product.fats * value / 100.0 > meal.fatTarget) {
-                        value -= 10
-                    }
-                    while (carb + product.carbohydrates * value / 100.0 > meal.carbTarget) {
-                        value -= 10
-                    }
-
-                    products.add(
-                        ProductMark(
-                            name = product.name,
-                            kilocalories = product.kilocalories,
-                            proteins = product.proteins,
-                            fats = product.fats,
-                            carbohydrates = product.carbohydrates,
-                            value = value,
-                            exception = product.exception,
-                            favorite = true,
-                            mark = product.mark
-                        )
-                    )
-                    kilocalories += product.kilocalories * value / 100.0
-                    protein += product.proteins * value / 100.0
-                    fats += product.fats * value / 100.0
-                    carb += product.carbohydrates * value / 100.0
-                } else {
-                    replacedProduct.add(product)
-                }
+                replacedProduct.add(product)
             }
         }
 
@@ -322,10 +236,26 @@ class RecommendSystem(
                 )
             }
         }
-
         return products
     }
 
+    private fun getNewValue(kilocalories: Double, protein: Double, fats: Double, carb: Double,
+                            product: ProductMark, currentValue: Double):Double{
+        var value = currentValue
+        while (kilocalories + product.kilocalories * value / 100.0  > meal.kiloTarget) {
+            value -= 10
+        }
+        while (protein + product.proteins * value / 100.0 > meal.proteinTarget) {
+            value -= 10
+        }
+        while (fats + product.fats * value / 100.0 > meal.fatTarget) {
+            value -= 10
+        }
+        while (carb + product.carbohydrates * value / 100.0 > meal.carbTarget) {
+            value -= 10
+        }
+        return value
+    }
     private fun getReplacedProducts(
         value: Double,
         targetKilo: Double,
