@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +22,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.mood.MoodActivity
 import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
@@ -64,161 +61,16 @@ fun Dream (
         var minuteState by remember { mutableStateOf(minute.toString()) }
 
         if (openDialogCalculateDream) {
-            val hourStartState = remember { mutableStateOf("") }
-            val minuteStartState = remember { mutableStateOf("") }
-
-            val hourEndState = remember { mutableStateOf("") }
-            val minuteEndState = remember { mutableStateOf("") }
-            Dialog(
-                onDismissRequest = {
-                    openDialogCalculateDream = !openDialogCalculateDream
+            CalculateDreamDialog(
+                onDismiss = { openDialogCalculateDream = false },
+                onCalculate = { hourStart, minuteStart, hourEnd, minuteEnd ->
+                    val sleep = calculateSleepDuration(hourStart, minuteStart, hourEnd, minuteEnd)
+                    hourState = sleep.first.toString()
+                    minuteState = sleep.second.toString()
+                    MoodActivity().addDream(hourState.toInt(), minuteState.toInt())
+                    openDialogCalculateDream = false
                 }
-            ) {
-                Card(
-                    modifier = Modifier.padding(16.dp),
-                    shape = RoundedCornerShape(16.dp),
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(8.dp)
-                    ) {
-                        Text(
-                            text = "Время начала сна",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(5.dp)
-                            ) {
-                                TextFieldBlue(
-                                    value = hourStartState.value,
-                                    label = {
-                                        Text(
-                                            LocalContext.current.getString(R.string.hour),
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
-                                    },
-                                    onValueChange = { newLogin -> hourStartState.value = newLogin },
-                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                    leadingIcon = {
-                                        Image(
-                                            painterResource(R.drawable.hour),
-                                            contentDescription = null,
-                                            modifier = Modifier
-                                                .size(25.dp)
-                                        )
-                                    }
-                                )
-                            }
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(5.dp)
-                            ) {
-                                TextFieldBlue(
-                                    value = minuteStartState.value,
-                                    label = {
-                                        Text(
-                                            LocalContext.current.getString(R.string.minute),
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
-                                    },
-                                    onValueChange = { newLogin -> minuteStartState.value = newLogin },
-                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                    leadingIcon = {
-                                        Image(
-                                            painterResource(R.drawable.minute),
-                                            contentDescription = null,
-                                            modifier = Modifier
-                                                .size(25.dp)
-                                        )
-                                    }
-                                )
-                            }
-                        }
-
-                        Text(
-                            text = "Время конца сна",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(5.dp)
-                            ) {
-                                TextFieldBlue(
-                                    value = hourEndState.value,
-                                    label = {
-                                        Text(
-                                            LocalContext.current.getString(R.string.hour),
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
-                                    },
-                                    onValueChange = { newLogin -> hourEndState.value = newLogin },
-                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                    leadingIcon = {
-                                        Image(
-                                            painterResource(R.drawable.hour),
-                                            contentDescription = null,
-                                            modifier = Modifier
-                                                .size(25.dp)
-                                        )
-                                    }
-                                )
-                            }
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(5.dp)
-                            ) {
-                                TextFieldBlue(
-                                    value = minuteEndState.value,
-                                    label = {
-                                        Text(
-                                            LocalContext.current.getString(R.string.minute),
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
-                                    },
-                                    onValueChange = { newLogin -> minuteEndState.value = newLogin },
-                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                    leadingIcon = {
-                                        Image(
-                                            painterResource(R.drawable.minute),
-                                            contentDescription = null,
-                                            modifier = Modifier
-                                                .size(25.dp)
-                                        )
-                                    }
-                                )
-                            }
-                        }
-
-                        ButtonBlue(text = "Рассчитать") {
-                            val sleep = calculateSleepDuration(
-                                hourStartState.value.toInt(),
-                                minuteStartState.value.toInt(),
-                                hourEndState.value.toInt(),
-                                minuteEndState.value.toInt()
-                                )
-                            hourState = sleep.first.toString()
-                            minuteState = sleep.second.toString()
-                            MoodActivity().addDream(
-                                    hourState.toInt(),
-                                    minuteState.toInt()
-                            )
-                            openDialogCalculateDream = false
-                        }
-                    }
-                }
-            }
+            )
         }
 
 
