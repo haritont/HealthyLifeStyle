@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Здоровый образ жизни</string>
+    <string name="entrance">Вход</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="login_to_account">Войти</string>
+
+    <string name="welcome">Добро пожаловать!</string>
+    <string name="kilocalories">Ккал</string>
+    <string name="proteins">Белки</string>
+    <string name="fats">Жиры</string>
+    <string name="carbohydrates">Углеводы</string>
+    <string name="default_advice">Совет скоро появится</string>
+    <string name="milliliter_abbreviation"> мл</string>
+    <string name="water_today">"Сегодня выпито: "</string>
+    <string name="fast_kpfc">Быстрое добавление КБЖУ</string>
+    <string name="get_question_kpfc">Введите примерное количество употребленного вами КБЖУ\nСоветы по еде могут не обновиться!</string>
+    <string name="add">Добавить</string>
+    <string name="search">Поиск</string>
+    <string name="dream">Сон</string>
+    <string name="hour">Часы</string>
+    <string name="minute">Минуты</string>
+    <string name="weight">Текущий вес</string>
+    <string name="input_name">Введите название</string>
+    <string name="input_height">Введите рост</string>
+    <string name="input_weight">Введите вес</string>
+    <string name="name">Имя</string>
+    <string name="height">Текущий рост</string>
+    <string name="birth_date">Дата рождения</string>
+    <string name="target">Цель</string>
+    <string name="gender">Пол</string>
+    <string name="activity">Активность</string>
+    <string name="met">Метаболический эквивалент</string>
+    <string name="last_add">Последние добавленные</string>
+    <string name="create_recipe">Создать рецепт</string>
+    <string name="input_add_product">Введите объем съеденного продукта в гр.(мл.)</string>
+    <string name="create_traning">Создать тренировку</string>
+    <string name="input_add_phys">Сколько вы выполняли это упражнение? (мин)</string>
+    <string name="calc">Рассчитать</string>
+    <string name="end_dream">Время конца сна</string>
+    <string name="start_dream">Время начала сна</string>
+    <string name="emotion">Эмоции</string>
+
+    <string-array name="meal_types">
+        <item>Завтрак</item>
+        <item>Обед</item>
+        <item>Ужин</item>
+        <item>Перекус</item>
+    </string-array>
+
+</resources>
