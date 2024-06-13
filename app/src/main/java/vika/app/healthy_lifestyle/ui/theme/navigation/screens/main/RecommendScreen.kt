@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.bean.food.Ingredient
@@ -31,7 +30,7 @@ import vika.app.healthy_lifestyle.recommend.RecommendSystem
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.Blue
 import vika.app.healthy_lifestyle.ui.theme.app.White
-import vika.app.healthy_lifestyle.ui.theme.general.ImageButton
+import vika.app.healthy_lifestyle.ui.theme.food.Header
 import vika.app.healthy_lifestyle.ui.theme.instruction.InstructionRecommend
 import vika.app.healthy_lifestyle.ui.theme.main.RecommendPage
 
@@ -63,65 +62,62 @@ fun RecommendScreen() {
 
     var isShowingTips by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
-        Row(
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.End
+    Column {
+        Header(isShowingTips) { isShowingTips = !isShowingTips }
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
         ) {
-            ImageButton(
-                icon = R.drawable.question,
-                onClick = { isShowingTips = !isShowingTips }
-            )
-        }
-
-        if (isShowingTips) {
-            InstructionRecommend(
-                isOpen = true,
-                onOpenChange = { isOpen -> isShowingTips = isOpen }
-            )
-        }
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            meals.forEachIndexed { index, meal ->
-                val isSelected = index == selectedMealIndex
-                Text(
-                    text = meal,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = Black,
-                    modifier = Modifier
-                        .background(if (isSelected) Blue else White, RoundedCornerShape(5.dp))
-                        .padding(8.dp)
-                        .clickable {
-                            selectedMealIndex = index
-                        }
+            if (isShowingTips) {
+                InstructionRecommend(
+                    isOpen = true,
+                    onOpenChange = { isOpen -> isShowingTips = isOpen }
                 )
             }
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                meals.forEachIndexed { index, meal ->
+                    val isSelected = index == selectedMealIndex
+                    Text(
+                        text = meal,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = Black,
+                        modifier = Modifier
+                            .background(if (isSelected) Blue else White, RoundedCornerShape(5.dp))
+                            .padding(8.dp)
+                            .clickable {
+                                selectedMealIndex = index
+                            }
+                    )
+                }
+            }
+
+            val selectedMeal = meals[selectedMealIndex]
+            val nutritionList = when (selectedMeal) {
+                "Завтрак" -> nutritionToday.filter { it.meal == "Завтрак" }
+                "Обед" -> nutritionToday.filter { it.meal == "Обед" }
+                "Ужин" -> nutritionToday.filter { it.meal == "Ужин" }
+                "Перекус" -> nutritionToday.filter { it.meal == "Перекус" }
+                else -> emptyList()
+            }
+
+            val recommendationSystem = RecommendSystem(
+                context,
+                PersonalDataRepository(context).getPersonalData()?.target ?: 0,
+                MealPlanManager().getMealPlan(selectedMealIndex, context)
+            )
+
+            RecommendPage(
+                text = if (nutritionList.isEmpty()) "Нет информации" else selectedMeal,
+                recommend = recommendationSystem,
+                meal = nutritionMap[selectedMeal]!!,
+                mealList = nutritionList
+            )
         }
-
-        val selectedMeal = meals[selectedMealIndex]
-        val nutritionList = when (selectedMeal) {
-            "Завтрак" -> nutritionToday.filter { it.meal == "Завтрак" }
-            "Обед" -> nutritionToday.filter { it.meal == "Обед" }
-            "Ужин" -> nutritionToday.filter { it.meal == "Ужин" }
-            "Перекус" -> nutritionToday.filter { it.meal == "Перекус" }
-            else -> emptyList()
-        }
-
-        val recommendationSystem = RecommendSystem(context, PersonalDataRepository(context).getPersonalData()?.target ?: 0, MealPlanManager().getMealPlan(selectedMealIndex, context))
-
-        RecommendPage(
-            text = if (nutritionList.isEmpty()) "Нет информации" else selectedMeal,
-            recommend = recommendationSystem,
-            meal = nutritionMap[selectedMeal]!!,
-            mealList = nutritionList
-        )
     }
 }
