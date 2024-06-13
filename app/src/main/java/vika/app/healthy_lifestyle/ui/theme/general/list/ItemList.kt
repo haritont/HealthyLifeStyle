@@ -77,20 +77,20 @@ fun ItemList(
     var openDialogMorePhysicalExercise by remember { mutableStateOf(false) }
     var openDialogMoreTraining by remember { mutableStateOf(false) }
 
-    if (openDialogMore){
+    if (openDialogMore) {
         MoreIngredient(
             isOpen = openDialogMoreIngredient,
             onOpenChange = {
                 openDialogMore = it
-                           },
+            },
             title = title
         )
 
         MoreDish(
             isOpen = openDialogMoreDish,
             onOpenChange = {
-            openDialogMore = it
-        },
+                openDialogMore = it
+            },
             title = title
         )
 
@@ -114,12 +114,15 @@ fun ItemList(
             0 -> {
                 openDialogMoreIngredient = true
             }
+
             1 -> {
                 openDialogMoreDish = true
             }
+
             2 -> {
                 openDialogMorePhysicalExercise = true
             }
+
             3 -> {
                 openDialogMoreTraining = true
             }
@@ -160,8 +163,8 @@ fun ItemList(
                         }
                         DatePickerWithDialog(
                             currentDate = currentDate,
-                            getCurrentTime = {
-                                currentTime -> currentDate = currentTime
+                            getCurrentTime = { currentTime ->
+                                currentDate = currentTime
                             }
                         )
                     }
@@ -175,14 +178,20 @@ fun ItemList(
                     ) {
                         TextButton(
                             onClick = {
-                                add(
-                                    title,
-                                    valueState.replace(",", ".").toDouble(),
-                                    currentDate,
-                                    currentOptionSelect
-                                )
-                                openDialogAdd = !openDialogAdd
-                                Toast.makeText(context, "Добавлено: ".plus(title), Toast.LENGTH_SHORT).show()
+                                if (valueState != "") {
+                                    add(
+                                        title,
+                                        valueState.replace(",", ".").toDouble(),
+                                        currentDate,
+                                        currentOptionSelect
+                                    )
+                                    openDialogAdd = !openDialogAdd
+                                    Toast.makeText(
+                                        context,
+                                        "Добавлено: ".plus(title),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             },
                             modifier = Modifier.padding(8.dp),
                         ) {

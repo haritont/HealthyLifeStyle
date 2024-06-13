@@ -91,7 +91,12 @@ fun FoodScreen() {
                 if (selectListProduct.size != 0) {
                     LastAdded(selectListProduct) { item, title ->
                         selectListProduct.remove(selectListProduct.find { it.title == title })
-                        FoodActivity().deleteNutrition(context, item.title, item.value, DateToday().getToday())
+                        FoodActivity().deleteNutrition(
+                            context,
+                            item.title,
+                            item.value,
+                            DateToday().getToday()
+                        )
                     }
                 }
 

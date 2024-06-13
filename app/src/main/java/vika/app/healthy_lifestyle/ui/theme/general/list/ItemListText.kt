@@ -27,7 +27,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import vika.app.healthy_lifestyle.bean.Item
 import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.BlueUltraLight
 import vika.app.healthy_lifestyle.ui.theme.app.White
@@ -73,11 +72,13 @@ fun ItemListText(
                     Row {
                         TextButton(
                             onClick = {
-                                add(
-                                    title,
-                                    valueState.replace(",", ".").toDouble()
-                                )
-                                openDialog = false
+                                if (valueState != "") {
+                                    add(
+                                        title,
+                                        valueState.replace(",", ".").toDouble()
+                                    )
+                                    openDialog = false
+                                }
                             },
                             modifier = Modifier.padding(8.dp),
                         ) {

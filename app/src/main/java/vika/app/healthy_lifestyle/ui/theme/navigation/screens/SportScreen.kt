@@ -94,7 +94,8 @@ fun SportScreen () {
                     LastAdded(selectListSports) { item, title ->
                         selectListSports.remove(selectListSports.find { it.title == title })
                         SportActivity().deleteActivism(
-                            context, item.title, item.value, DateToday().getToday())
+                            context, item.title, item.value, DateToday().getToday()
+                        )
                     }
                 }
 
@@ -118,7 +119,7 @@ fun SportScreen () {
                     }
                 )
 
-                ButtonBlue(text =  LocalContext.current.getString(R.string.create_traning)) {
+                ButtonBlue(text = LocalContext.current.getString(R.string.create_traning)) {
                     openDialogAddTraining = true
                 }
 
@@ -127,7 +128,7 @@ fun SportScreen () {
                         .padding(8.dp)
                         .height(450.dp)
                 ) {
-                   ListElement(
+                    ListElement(
                         itemList = filteredListPhysicalExercises,
                         add = { name, value, date, _ ->
                             SportActivity().add(

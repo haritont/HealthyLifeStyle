@@ -26,7 +26,7 @@ fun LastAdded(selectListProduct: MutableList<ItemText>, onDelete: (ItemText, Str
     )
     LazyColumn(
         modifier = Modifier
-            .height(150.dp)
+            .height(100.dp)
             .padding(8.dp)
     ) {
         items(selectListProduct) { item ->
