@@ -3,12 +3,11 @@ package vika.app.healthy_lifestyle.ui.theme.navigation.screens.main
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,7 +25,6 @@ import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.food.FoodActivity
 import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.bean.food.Ingredient
-import vika.app.healthy_lifestyle.bean.food.Nutrition
 import vika.app.healthy_lifestyle.bean.main.Type
 import vika.app.healthy_lifestyle.recommend.MealPlanManager
 import vika.app.healthy_lifestyle.recommend.RecommendSystem
@@ -40,286 +38,90 @@ import vika.app.healthy_lifestyle.ui.theme.main.RecommendPage
 @Composable
 fun RecommendScreen() {
     val context = LocalContext.current
-
+    val meals = listOf("Завтрак", "Обед", "Ужин", "Перекус")
+    var selectedMealIndex by remember { mutableStateOf(0) }
     val nutritionToday = FoodActivity().getLastNutrition(context)
-    val type = PersonalDataRepository(context).getPersonalData()!!.target
+    val nutritionMap = mutableMapOf<String, Ingredient>()
 
-    val breakfast = Ingredient(
-        name = "Завтрак", kilocalories = 0.0, proteins = 0.0,
-        fats = 0.0, carbohydrates = 0.0, type = Type()
-    )
-    val lunch = Ingredient(
-        name = "Обед", kilocalories = 0.0, proteins = 0.0,
-        fats = 0.0, carbohydrates = 0.0, type = Type()
-    )
-    val dinner = Ingredient(
-        name = "Ужин", kilocalories = 0.0, proteins = 0.0,
-        fats = 0.0, carbohydrates = 0.0, type = Type()
-    )
-    val snack = Ingredient(
-        name = "Перекус", kilocalories = 0.0, proteins = 0.0,
-        fats = 0.0, carbohydrates = 0.0, type = Type()
-    )
+    meals.forEach {
+        nutritionMap[it] = Ingredient(name = it, kilocalories = 0.0, proteins = 0.0, fats = 0.0, carbohydrates = 0.0, type = Type())
+    }
 
-    val breakfastList = mutableListOf<Nutrition>()
-    val lunchList = mutableListOf<Nutrition>()
-    val dinnerList = mutableListOf<Nutrition>()
-    val snackList = mutableListOf<Nutrition>()
-
-    for (nutrition in nutritionToday) {
+    nutritionToday.forEach { nutrition ->
         val product = FoodActivity().getIngredient(context, nutrition.name)
-        if (nutrition.meal == "Завтрак") {
-            breakfastList.add(nutrition)
+        val meal = nutrition.meal
 
-            breakfast.kilocalories += nutrition.value * product.kilocalories / 100
-            breakfast.proteins += nutrition.value * product.proteins / 100
-            breakfast.carbohydrates += nutrition.value * product.carbohydrates / 100
-            breakfast.fats += nutrition.value * product.fats / 100
-        }
-
-        if (nutrition.meal == "Обед") {
-            lunchList.add(nutrition)
-
-            lunch.kilocalories += nutrition.value * product.kilocalories / 100
-            lunch.proteins += nutrition.value * product.proteins / 100
-            lunch.carbohydrates += nutrition.value * product.carbohydrates / 100
-            lunch.fats += nutrition.value * product.fats / 100
-        }
-
-        if (nutrition.meal == "Ужин") {
-            dinnerList.add(nutrition)
-
-            dinner.kilocalories += nutrition.value * product.kilocalories / 100
-            dinner.proteins += nutrition.value * product.proteins / 100
-            dinner.carbohydrates += nutrition.value * product.carbohydrates / 100
-            dinner.fats += nutrition.value * product.fats / 100
-        }
-
-        if (nutrition.meal == "Перекус") {
-            snackList.add(nutrition)
-
-            snack.kilocalories += nutrition.value * product.kilocalories / 100
-            snack.proteins += nutrition.value * product.proteins / 100
-            snack.carbohydrates += nutrition.value * product.carbohydrates / 100
-            snack.fats += nutrition.value * product.fats / 100
+        if (meal in meals) {
+            nutritionMap[meal]?.apply {
+                kilocalories += nutrition.value * product.kilocalories / 100
+                proteins += nutrition.value * product.proteins / 100
+                fats += nutrition.value * product.fats / 100
+                carbohydrates += nutrition.value * product.carbohydrates / 100
+            }
         }
     }
 
-    val breakfastRecommend =
-        RecommendSystem(context, type, MealPlanManager().getMealPlan(0, context))
-    val lunchRecommend = RecommendSystem(context, type, MealPlanManager().getMealPlan(1, context))
-    val dinnerRecommend = RecommendSystem(context, type, MealPlanManager().getMealPlan(2, context))
-    val snackRecommend = RecommendSystem(context, type, MealPlanManager().getMealPlan(3, context))
-
-    var breakfastCheck by remember { mutableStateOf(true) }
-    var lunchCheck by remember { mutableStateOf(false) }
-    var dinnerCheck by remember { mutableStateOf(false) }
-    var snackCheck by remember { mutableStateOf(false) }
-
-    var breakfastColor by remember { mutableStateOf(Blue) }
-    var lunchColor by remember { mutableStateOf(White) }
-    var dinnerColor by remember { mutableStateOf(White) }
-    var snackColor by remember { mutableStateOf(White) }
-
     var isShowingTips by remember { mutableStateOf(false) }
 
-    Column {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
         Row(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.End
         ) {
             ImageButton(
-                icon = R.drawable.question
-            ) {
-                isShowingTips = !isShowingTips
-            }
+                icon = R.drawable.question,
+                onClick = { isShowingTips = !isShowingTips }
+            )
         }
 
         if (isShowingTips) {
             InstructionRecommend(
-                isOpen = isShowingTips,
-                onOpenChange = { isOpen -> isShowingTips = isOpen })
+                isOpen = true,
+                onOpenChange = { isOpen -> isShowingTips = isOpen }
+            )
         }
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally,
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            item {
-                Row {
-                    Box(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .background(
-                                color = breakfastColor,
-                                shape = RoundedCornerShape(5.dp)
-                            )
-                            .clickable {
-                                breakfastColor = Blue
-                                lunchColor = White
-                                dinnerColor = White
-                                snackColor = White
-
-                                breakfastCheck = true
-                                lunchCheck = false
-                                dinnerCheck = false
-                                snackCheck = false
-                            }
-                    ) {
-                        Text(
-                            text = "Завтрак",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Black,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .padding(10.dp)
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .background(
-                                color = lunchColor,
-                                shape = RoundedCornerShape(5.dp)
-                            )
-                            .clickable {
-                                breakfastColor = White
-                                lunchColor = Blue
-                                dinnerColor = White
-                                snackColor = White
-
-                                breakfastCheck = false
-                                lunchCheck = true
-                                dinnerCheck = false
-                                snackCheck = false
-                            }
-                    ) {
-                        Text(
-                            text = "Обед",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Black,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .padding(10.dp)
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .background(
-                                color = dinnerColor,
-                                shape = RoundedCornerShape(5.dp)
-                            )
-                            .clickable {
-                                breakfastColor = White
-                                lunchColor = White
-                                dinnerColor = Blue
-                                snackColor = White
-
-                                breakfastCheck = false
-                                lunchCheck = false
-                                dinnerCheck = true
-                                snackCheck = false
-                            }
-                    ) {
-                        Text(
-                            text = "Ужин",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Black,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .padding(10.dp)
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .background(
-                                color = snackColor,
-                                shape = RoundedCornerShape(5.dp)
-                            )
-                            .clickable {
-                                breakfastColor = White
-                                lunchColor = White
-                                dinnerColor = White
-                                snackColor = Blue
-
-                                breakfastCheck = false
-                                lunchCheck = false
-                                dinnerCheck = false
-                                snackCheck = true
-                            }
-                    ) {
-                        Text(
-                            text = "Перекус",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Black,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .padding(10.dp)
-                        )
-                    }
-                }
-
-                if (breakfastCheck) {
-                    val text = if (breakfastList.isEmpty()) {
-                        "Нет информации о завтраке"
-                    } else {
-                        "Завтрак"
-                    }
-                    RecommendPage(
-                        text = text,
-                        recommend = breakfastRecommend,
-                        meal = breakfast,
-                        mealList = breakfastList
-                    )
-                }
-
-                if (lunchCheck) {
-                    val text = if (lunchList.isEmpty()) {
-                        "Нет информации об обеде"
-                    } else {
-                        "Обед"
-                    }
-                    RecommendPage(
-                        text = text,
-                        recommend = lunchRecommend,
-                        meal = lunch,
-                        mealList = lunchList
-                    )
-                }
-
-                if (dinnerCheck) {
-                    val text = if (dinnerList.isEmpty()) {
-                        "Нет информации об ужине"
-                    } else {
-                        "Ужин"
-                    }
-                    RecommendPage(
-                        text = text,
-                        recommend = dinnerRecommend,
-                        meal = dinner,
-                        mealList = dinnerList
-                    )
-                }
-
-                if (snackCheck) {
-                    val text = if (snackList.isEmpty()) {
-                        "Нет информации о перекусе"
-                    } else {
-                        "Перекус"
-                    }
-                    RecommendPage(
-                        text = text,
-                        recommend = snackRecommend,
-                        meal = snack,
-                        mealList = snackList
-                    )
-                }
+            meals.forEachIndexed { index, meal ->
+                val isSelected = index == selectedMealIndex
+                Text(
+                    text = meal,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = Black,
+                    modifier = Modifier
+                        .background(if (isSelected) Blue else White, RoundedCornerShape(5.dp))
+                        .padding(8.dp)
+                        .clickable {
+                            selectedMealIndex = index
+                        }
+                )
             }
         }
+
+        val selectedMeal = meals[selectedMealIndex]
+        val nutritionList = when (selectedMeal) {
+            "Завтрак" -> nutritionToday.filter { it.meal == "Завтрак" }
+            "Обед" -> nutritionToday.filter { it.meal == "Обед" }
+            "Ужин" -> nutritionToday.filter { it.meal == "Ужин" }
+            "Перекус" -> nutritionToday.filter { it.meal == "Перекус" }
+            else -> emptyList()
+        }
+
+        val recommendationSystem = RecommendSystem(context, PersonalDataRepository(context).getPersonalData()?.target ?: 0, MealPlanManager().getMealPlan(selectedMealIndex, context))
+
+        RecommendPage(
+            text = if (nutritionList.isEmpty()) "Нет информации" else selectedMeal,
+            recommend = recommendationSystem,
+            meal = nutritionMap[selectedMeal]!!,
+            mealList = nutritionList
+        )
     }
 }
