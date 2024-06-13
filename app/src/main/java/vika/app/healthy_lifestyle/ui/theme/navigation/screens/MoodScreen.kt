@@ -14,7 +14,6 @@ import androidx.compose.ui.platform.LocalContext
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.mood.MoodActivity
 import vika.app.healthy_lifestyle.base.data.repository.mood.EmotionRepository
-import vika.app.healthy_lifestyle.ui.theme.general.Advice
 import vika.app.healthy_lifestyle.ui.theme.general.ImageButton
 import vika.app.healthy_lifestyle.ui.theme.instruction.InstructionMood
 import vika.app.healthy_lifestyle.ui.theme.mood.Dream
@@ -51,10 +50,7 @@ fun MoodScreen () {
             item {
                 Dream(MoodActivity().getHour(), MoodActivity().getMinute())
 
-                Advice(value = MoodActivity().getAdvice())
-
                 var habitList by remember { mutableStateOf(MoodActivity().getHabitList(context)) }
-
                 Habits(
                     habitList,
                     { habit ->
