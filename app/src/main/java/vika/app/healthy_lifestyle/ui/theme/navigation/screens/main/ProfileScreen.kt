@@ -93,7 +93,7 @@ fun ProfileScreen() {
                     modifier = Modifier.weight(1f)
                 ) {
                     TextFieldBlue(
-                        value = heightState.value,
+                        value = if (heightState.value.length > 4) heightState.value.take(4) else heightState.value,
                         label = {
                             Text(
                                 LocalContext.current.getString(R.string.height),
@@ -117,14 +117,15 @@ fun ProfileScreen() {
                     modifier = Modifier.weight(1f)
                 ) {
                     TextFieldBlue(
-                        value = weightState.value,
+                        value = if (weightState.value.length > 4) weightState.value.take(4) else weightState.value,
                         label = {
                             Text(
                                 LocalContext.current.getString(R.string.weight),
                                 style = MaterialTheme.typography.bodySmall
                             )
                         },
-                        onValueChange = { weightName -> weightState.value = weightName },
+                        onValueChange = { newWeight ->
+                            weightState.value = newWeight },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                         leadingIcon = {
                             Image(
