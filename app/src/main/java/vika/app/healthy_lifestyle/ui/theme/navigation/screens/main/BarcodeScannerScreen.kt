@@ -1,7 +1,6 @@
 package vika.app.healthy_lifestyle.ui.theme.navigation.screens.main
 
 import android.Manifest
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import vika.app.healthy_lifestyle.R
@@ -39,14 +40,11 @@ import vika.app.healthy_lifestyle.ui.theme.general.list.Search
 
 @Composable
 fun RequestCameraPermission(onPermissionGranted: () -> Unit) {
-    val context = LocalContext.current
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
             onPermissionGranted()
-        } else {
-            Toast.makeText(context, "Camera permission is required", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -61,15 +59,66 @@ fun BarcodeScannerScreen() {
 
     var name by remember { mutableStateOf("") }
     var checkBarcode by remember { mutableStateOf(false) }
+    var checkBarcodeNull by remember { mutableStateOf(false) }
+    var code by remember { mutableStateOf("") }
+
+    var hasCameraPermission by remember { mutableStateOf(false) }
+
+    RequestCameraPermission {
+        hasCameraPermission = true
+    }
+
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        hasCameraPermission = isGranted
+    }
+
+    LaunchedEffect(Unit) {
+        cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+    }
+
+    val barcodeLauncher = rememberLauncherForActivityResult(
+        contract = ScanContract()
+    ) { result ->
+        if (result.contents != null) {
+            val scannedContent = result.contents
+            val barcode = BarcodeRepository(context).getByCode(scannedContent)
+
+            if (barcode != null){
+                val ingredient = IngredientRepository(context).getIngredientById(barcode.idIngredient)
+                name = ingredient.name
+                checkBarcode = true
+                code = scannedContent
+            }
+            else{
+                checkBarcodeNull = true
+                code = scannedContent
+            }
+        }
+    }
+
+    if (hasCameraPermission) {
+        LaunchedEffect(Unit) {
+            barcodeLauncher.launch(ScanOptions())
+        }
+    }
 
     if (checkBarcode) {
         Column (
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                text = "Штрих-код: $code",
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Найденный продукт",
+            )
             ItemListText(
                 title = name,
-                textInDialog = "Введите вес в гр/мл.",
+                textInDialog = LocalContext.current.getString(R.string.input_add_product),
                 add = { title, value ->
                     NutritionRepository(context).insertNutrition(
                         Nutrition(
@@ -83,9 +132,6 @@ fun BarcodeScannerScreen() {
             )
         }
     }
-
-    var checkBarcodeNull by remember { mutableStateOf(false) }
-    var code by remember { mutableStateOf("") }
 
     val itemListIngredient = mutableListOf<Item>()
     val ingredients = FoodActivity().getAllProducts(context)
@@ -125,6 +171,13 @@ fun BarcodeScannerScreen() {
                     )
                 }
             )
+            Text(
+                text = "Штрих-код: $code",
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Продукт не найден\nДобавьте этот штрих-код к продукту из списка"
+            )
             Row (
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
@@ -148,7 +201,7 @@ fun BarcodeScannerScreen() {
                     key(item.title) {
                         ItemListText(
                             title = item.title,
-                            textInDialog = "Введите вес в гр/мл.",
+                            textInDialog = LocalContext.current.getString(R.string.input_add_product),
                             add = { title, value ->
                                 NutritionRepository(context).insertNutrition(
                                     Nutrition(
@@ -171,47 +224,6 @@ fun BarcodeScannerScreen() {
                     }
                 }
             }
-        }
-    }
-
-    var hasCameraPermission by remember { mutableStateOf(false) }
-
-    RequestCameraPermission {
-        hasCameraPermission = true
-    }
-
-    val cameraPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        hasCameraPermission = isGranted
-    }
-
-    LaunchedEffect(Unit) {
-        cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-    }
-
-    val barcodeLauncher = rememberLauncherForActivityResult(
-        contract = ScanContract()
-    ) { result ->
-        if (result.contents != null) {
-            val scannedContent = result.contents
-            val barcode = BarcodeRepository(context).getByCode(scannedContent)
-
-            if (barcode != null){
-                val ingredient = IngredientRepository(context).getIngredientById(barcode.idIngredient)
-                name = ingredient.name
-                checkBarcode = true
-            }
-            else{
-                checkBarcodeNull = true
-                code = scannedContent
-            }
-        }
-    }
-
-    if (hasCameraPermission) {
-        LaunchedEffect(Unit) {
-            barcodeLauncher.launch(ScanOptions())
         }
     }
 }
