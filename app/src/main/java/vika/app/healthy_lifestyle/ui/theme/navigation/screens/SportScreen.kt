@@ -1,19 +1,17 @@
 package vika.app.healthy_lifestyle.ui.theme.navigation.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import vika.app.healthy_lifestyle.R
@@ -30,17 +27,16 @@ import vika.app.healthy_lifestyle.activity.sport.SportActivity
 import vika.app.healthy_lifestyle.bean.Item
 import vika.app.healthy_lifestyle.bean.ItemText
 import vika.app.healthy_lifestyle.calculation.DateToday
-import vika.app.healthy_lifestyle.ui.theme.app.Black
+import vika.app.healthy_lifestyle.ui.theme.food.Header
+import vika.app.healthy_lifestyle.ui.theme.food.LastAdded
 import vika.app.healthy_lifestyle.ui.theme.general.Advice
 import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
-import vika.app.healthy_lifestyle.ui.theme.general.ImageButton
-import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListDelete
-import vika.app.healthy_lifestyle.ui.theme.instruction.InstructionFood
 import vika.app.healthy_lifestyle.ui.theme.instruction.InstructionSport
 import vika.app.healthy_lifestyle.ui.theme.sport.AddTraining
 import vika.app.healthy_lifestyle.ui.theme.tracker.step.StepTracker
 
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun SportScreen () {
     val context = LocalContext.current
@@ -61,12 +57,9 @@ fun SportScreen () {
         }
     }
     val filteredListPhysicalExercises by remember { mutableStateOf(itemListPhysicalExercises) }
-
     val selectListSports = remember { mutableStateListOf<ItemText>() }
-
     var lastListSports = SportActivity().getLastActivism(context)
     lastListSports = lastListSports.reversed()
-
     remember {
         lastListSports.forEach { activism ->
             if (selectListSports.none { it.title == activism.name }) {
@@ -81,21 +74,13 @@ fun SportScreen () {
     var isShowingTips by remember { mutableStateOf(false) }
 
     Column {
-        Row(
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.End
-        ) {
-            ImageButton(
-                icon = R.drawable.question
-            ) {
-                isShowingTips = !isShowingTips
-            }
-        }
+        Header(isShowingTips) { isShowingTips = !isShowingTips }
 
         if (isShowingTips) {
             InstructionSport(
-                isOpen = isShowingTips,
-                onOpenChange = { isOpen -> isShowingTips = isOpen })
+                isOpen = true,
+                onOpenChange = { isOpen -> isShowingTips = isOpen }
+            )
         }
         LazyColumn(
             state = listState,
@@ -105,36 +90,10 @@ fun SportScreen () {
         ) {
             item {
                 if (selectListSports.size != 0) {
-                    Text(
-                        text = "Последние добавленные",
-                        modifier = Modifier.padding(8.dp),
-                        fontWeight = FontWeight.Bold,
-                        color = Black
-                    )
-                    LazyColumn(
-                        modifier = Modifier
-                            .height(150.dp)
-                            .padding(8.dp)
-                    ) {
-                        items(selectListSports) { item ->
-                            key(item) {
-                                ItemListDelete(
-                                    title = item.title,
-                                    value = item.value,
-                                    delete = { title ->
-                                        selectListSports.remove(
-                                            selectListSports.find { it.title == title }
-                                        )
-                                        SportActivity().deleteActivism(
-                                            context,
-                                            item.title,
-                                            item.value,
-                                            DateToday().getToday()
-                                        )
-                                    }
-                                )
-                            }
-                        }
+                    LastAdded(selectListSports) { item, title ->
+                        selectListSports.remove(selectListSports.find { it.title == title })
+                        SportActivity().deleteActivism(
+                            context, item.title, item.value, DateToday().getToday())
                     }
                 }
 
@@ -158,7 +117,7 @@ fun SportScreen () {
                     }
                 )
 
-                ButtonBlue(text = "Создать тренировку") {
+                ButtonBlue(text =  LocalContext.current.getString(R.string.create_traning)) {
                     openDialogAddTraining = true
                 }
 
@@ -167,7 +126,7 @@ fun SportScreen () {
                         .padding(8.dp)
                         .height(450.dp)
                 ) {
-                    vika.app.healthy_lifestyle.ui.theme.general.list.List(
+                    vika.app.healthy_lifestyle.ui.theme.general.list.ListElement(
                         itemList = filteredListPhysicalExercises,
                         add = { name, value, date, _ ->
                             SportActivity().add(
@@ -201,7 +160,7 @@ fun SportScreen () {
                                 favorite
                             )
                         },
-                        textInDialog = "Сколько вы выполняли это упражнение? (мин)",
+                        textInDialog = LocalContext.current.getString(R.string.input_add_phys),
                         listOf(),
                         "",
                         1,
