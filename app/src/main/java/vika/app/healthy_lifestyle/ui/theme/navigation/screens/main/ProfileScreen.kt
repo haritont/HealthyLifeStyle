@@ -29,7 +29,6 @@ import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.main.ProfileActivity
 import vika.app.healthy_lifestyle.base.data.repository.main.WeightRepository
 import vika.app.healthy_lifestyle.bean.main.PersonalData
-import vika.app.healthy_lifestyle.bean.main.Weight
 import vika.app.healthy_lifestyle.calculation.DateToday
 import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
 import vika.app.healthy_lifestyle.ui.theme.general.DatePickerWithDialog
@@ -245,11 +244,9 @@ fun ProfileScreen() {
                         target = targetState.value
                     )
                 )
-                WeightRepository(context).insertWeight(
-                    Weight(
-                        date = DateToday().getToday(),
-                        value = weightState.value.toDouble()
-                    )
+                WeightRepository(context).updateWeightByDate(
+                    date = DateToday().getToday(),
+                    value = weightState.value.toDouble()
                 )
             }
         }
