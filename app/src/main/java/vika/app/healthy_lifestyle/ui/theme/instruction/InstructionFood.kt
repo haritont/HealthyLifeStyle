@@ -53,7 +53,7 @@ fun InstructionFood(
                 ) {
                     item {
                         Text(
-                            text = "Как добавить продукт?",
+                            text = "Как внести данные о съеденном продукте?",
                             modifier = Modifier.padding(8.dp),
                             fontWeight = FontWeight.Bold,
                             color = Black
@@ -79,13 +79,35 @@ fun InstructionFood(
                             modifier = Modifier.padding(16.dp)
                         )
                         Text(
+                            text = "Введите объем съеденного",
+                            modifier = Modifier.padding(8.dp),
+                            color = Black
+                        )
+                        Image(
+                            painter = painterResource(id = R.drawable.input_product),
+                            contentDescription = null,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                        Text(
+                            text = "Выберете нужный прием пищи",
+                            modifier = Modifier.padding(8.dp),
+                            color = Black
+                        )
+                        Image(
+                            painter = painterResource(id = R.drawable.select_meal),
+                            contentDescription = null,
+                            modifier = Modifier.padding(16.dp)
+                        )
+
+
+                        Text(
                             text = "Если продукта не оказалось в списке, нажмите на кнопку рядом " +
                                     "со строкой поиска.",
                             modifier = Modifier.padding(8.dp),
                             color = Black
                         )
                         Image(
-                            painter = painterResource(id = R.drawable.instr_search),
+                            painter = painterResource(id = R.drawable.instr_search_add),
                             contentDescription = null,
                             modifier = Modifier.padding(16.dp)
                         )
