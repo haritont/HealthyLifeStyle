@@ -1,6 +1,6 @@
 package vika.app.healthy_lifestyle.ui.theme.mood
 
-import androidx.compose.foundation.border
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -34,6 +33,7 @@ import vika.app.healthy_lifestyle.bean.mood.Emotion
 import vika.app.healthy_lifestyle.bean.mood.EmotionRecord
 import vika.app.healthy_lifestyle.calculation.DateToday
 import vika.app.healthy_lifestyle.ui.theme.app.Black
+import vika.app.healthy_lifestyle.ui.theme.app.BlueLight
 import vika.app.healthy_lifestyle.ui.theme.app.Green
 import vika.app.healthy_lifestyle.ui.theme.app.Red
 import vika.app.healthy_lifestyle.ui.theme.general.emojiMap
@@ -105,21 +105,17 @@ fun Emotions(
                 }
 
                 Surface(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .border(
-                            width = if (isChose) 3.dp else 0.dp,
-                            color = if (isChose) {
-                                if (item.isPositive) Green else Red
-                            } else Color.Transparent,
-                            shape = RoundedCornerShape(15.dp)
-                        )
+                    modifier = Modifier.padding(10.dp)
                 ) {
                     (emojiMap[item.name] ?: item.name).let {
                         Text(
                             text = it,
                             style = MaterialTheme.typography.titleLarge,
-                            modifier = Modifier.clickable {
+                            modifier = Modifier
+                                .background(
+                                    color = if (isChose) { BlueLight } else Color.Transparent
+                                )
+                                .clickable {
                                 isChose = !isChose
                                 if (isChose) {
                                     if (item.isPositive) {
