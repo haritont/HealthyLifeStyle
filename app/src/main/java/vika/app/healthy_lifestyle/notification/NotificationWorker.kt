@@ -63,3 +63,20 @@ fun scheduleNotification(context: Context, meal: String, hour: Int, minute: Int)
 
     WorkManager.getInstance(context).enqueue(workRequest)
 }
+
+fun showNotificationImmediately(context: Context, meal: String) {
+    val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+    val notificationIntent = Intent(context, LoadingActivity::class.java)
+    val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
+
+    val notification = NotificationCompat.Builder(context, "REMINDER_CHANNEL")
+        .setSmallIcon(R.drawable.snackbar)
+        .setContentTitle("Напоминание")
+        .setContentText(meal)
+        .setContentIntent(pendingIntent)
+        .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .build()
+
+    notificationManager.notify(meal.hashCode(), notification)
+}

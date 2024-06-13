@@ -20,6 +20,7 @@ import vika.app.healthy_lifestyle.bean.sport.Training
 import vika.app.healthy_lifestyle.calculation.CreateAdvice
 import vika.app.healthy_lifestyle.calculation.DateToday
 import vika.app.healthy_lifestyle.calculation.PersonalTarget
+import vika.app.healthy_lifestyle.notification.showNotificationImmediately
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.navigation.Navigation
 
@@ -34,6 +35,12 @@ class SportActivity : ComponentActivity() {
     }
 
     fun add(context: Context, name: String, value: Double, date: String){
+        if (value >= 30) {
+            showNotificationImmediately(
+                context,
+                "Восполните водный баланс"
+            )
+        }
         ActivismRepository(context).insertActivism(
             Activism(
                 name = name,
