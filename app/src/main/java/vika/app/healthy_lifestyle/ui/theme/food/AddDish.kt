@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -112,113 +111,112 @@ fun AddDish(
                     .padding(8.dp),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Column(
+                LazyColumn(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(8.dp)
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Dropdown(
-                            options,
-                            options[0]
-                        ) { currentOption ->
-                            typeState.value = currentOption
-                        }
+                    item {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Dropdown(
+                                options,
+                                options[0]
+                            ) { currentOption ->
+                                typeState.value = currentOption
+                            }
 
-                        Text(
-                            text = "Добавить блюдо",
-                            modifier = Modifier.padding(8.dp),
-                            fontWeight = FontWeight.Bold,
-                            color = Black
-                        )
-                    }
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Surface(
-                            shape = RoundedCornerShape(10.dp),
-                            modifier = Modifier
-                                .border(3.dp, colorAdd, RoundedCornerShape(10.dp))
-                        )
-                        {
-                            TextFieldBlue(
-                                value = nameState.value,
-                                label = {
-                                    Text(
-                                        LocalContext.current.getString(R.string.input_name),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                },
-                                onValueChange = { newLogin -> nameState.value = newLogin },
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                                leadingIcon = {
-                                    Image(
-                                        painterResource(R.drawable.dish),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(25.dp)
-                                    )
-                                }
+                            Text(
+                                text = "Добавить блюдо",
+                                modifier = Modifier.padding(8.dp),
+                                fontWeight = FontWeight.Bold,
+                                color = Black
                             )
                         }
-
-                        Search(
-                            itemList = itemListIngredient,
-                            onSearchResults = {
-                                filteredListIngredient = it.toMutableList()
-                            }
-                        )
-
                         LazyColumn(
-                            modifier = Modifier
-                                .width(300.dp)
-                                .height(200.dp)
+                            modifier = Modifier.height(400.dp)
                         ) {
-                            items(filteredListIngredient) { item ->
-                                key(item.title) {
-                                    ItemListText(
-                                        title = item.title,
-                                        textInDialog = "Введите вес в гр.",
-                                        add = { title, value ->
-                                            selectListIngredient.add(ItemText(title, value))
+                            item {
+                                Surface(
+                                    shape = RoundedCornerShape(10.dp),
+                                    modifier = Modifier
+                                        .border(3.dp, colorAdd, RoundedCornerShape(10.dp))
+                                )
+                                {
+                                    TextFieldBlue(
+                                        value = nameState.value,
+                                        label = {
+                                            Text(
+                                                LocalContext.current.getString(R.string.input_name),
+                                                style = MaterialTheme.typography.bodySmall
+                                            )
+                                        },
+                                        onValueChange = { newLogin -> nameState.value = newLogin },
+                                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                                        leadingIcon = {
+                                            Image(
+                                                painterResource(R.drawable.dish),
+                                                contentDescription = null,
+                                                modifier = Modifier
+                                                    .size(25.dp)
+                                            )
                                         }
                                     )
                                 }
-                            }
-                        }
 
-                        Text(
-                            text = "Добавленные ингредиенты",
-                            modifier = Modifier.padding(8.dp),
-                            fontWeight = FontWeight.Bold,
-                            color = Black
-                        )
+                                Search(
+                                    itemList = itemListIngredient,
+                                    onSearchResults = {
+                                        filteredListIngredient = it.toMutableList()
+                                    }
+                                )
 
-                        Surface(
-                            shape = RoundedCornerShape(10.dp),
-                            modifier = Modifier
-                                .border(3.dp, colorAdd, RoundedCornerShape(10.dp))
-                        ) {
-                            LazyColumn(
-                                modifier = Modifier
-                                    .width(300.dp)
-                                    .height(200.dp)
-                            ) {
-                                items(selectListIngredient) { item ->
-                                    key(item) {
-                                        ItemListDelete(
-                                            title = item.title,
-                                            value = item.value,
-                                            delete = { title ->
-                                                selectListIngredient.remove(
-                                                    selectListIngredient.find { it.title == title }
+                                LazyColumn(
+                                    modifier = Modifier.height(150.dp)
+                                ) {
+                                    items(filteredListIngredient) { item ->
+                                        key(item.title) {
+                                            ItemListText(
+                                                title = item.title,
+                                                textInDialog = LocalContext.current.getString(R.string.input_add_product),
+                                                add = { title, value ->
+                                                    selectListIngredient.add(ItemText(title, value))
+                                                }
+                                            )
+                                        }
+                                    }
+                                }
+
+                                Text(
+                                    text = "Добавленные ингредиенты",
+                                    modifier = Modifier.padding(8.dp),
+                                    fontWeight = FontWeight.Bold,
+                                    color = Black
+                                )
+
+                                Surface(
+                                    shape = RoundedCornerShape(10.dp),
+                                    modifier = Modifier
+                                        .border(3.dp, colorAdd, RoundedCornerShape(10.dp))
+                                ) {
+                                    LazyColumn(
+                                        modifier = Modifier.height(150.dp)
+                                    ) {
+                                        items(selectListIngredient) { item ->
+                                            key(item) {
+                                                ItemListDelete(
+                                                    title = item.title,
+                                                    value = item.value,
+                                                    delete = { title ->
+                                                        selectListIngredient.remove(
+                                                            selectListIngredient.find { it.title == title }
+                                                        )
+                                                    }
                                                 )
                                             }
-                                        )
+                                        }
                                     }
                                 }
                             }
@@ -231,11 +229,11 @@ fun AddDish(
                             TextButton(
                                 onClick = {
                                     var check = true
-                                    if (nameState.value == ""){
+                                    if (nameState.value == "") {
                                         check = false
                                         colorName = RedLight
                                     }
-                                    if (selectListIngredient.size == 0){
+                                    if (selectListIngredient.size == 0) {
                                         check = false
                                         colorAdd = RedLight
                                     }
@@ -248,13 +246,17 @@ fun AddDish(
                                         )
                                         openDialog = !openDialog
                                         onOpenChange(openDialog)
-                                        Toast.makeText(context, "Создано: ".plus(nameState.value), Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            context,
+                                            "Создано: ".plus(nameState.value),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                         getAdd(nameState.value, typeState.value)
                                     }
                                 },
                                 modifier = Modifier.padding(8.dp),
                             ) {
-                                Text("Добавить")
+                                Text("Создать")
                             }
                             TextButton(
                                 onClick = {

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -46,7 +45,6 @@ import vika.app.healthy_lifestyle.ui.theme.app.Black
 import vika.app.healthy_lifestyle.ui.theme.app.RedLight
 import vika.app.healthy_lifestyle.ui.theme.general.Dropdown
 import vika.app.healthy_lifestyle.ui.theme.general.TextFieldBlue
-import vika.app.healthy_lifestyle.ui.theme.general.defaultOptionPhys
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListDelete
 import vika.app.healthy_lifestyle.ui.theme.general.list.ItemListText
 import vika.app.healthy_lifestyle.ui.theme.general.list.Search
@@ -118,8 +116,7 @@ fun AddTraining(
             }
         ) {
             Card(
-                modifier = Modifier
-                    .padding(8.dp),
+                modifier = Modifier.padding(8.dp),
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Column(
@@ -191,9 +188,7 @@ fun AddTraining(
                                     .border(3.dp, colorAdd, RoundedCornerShape(10.dp))
                             ) {
                                 LazyColumn(
-                                    modifier = Modifier
-                                        .width(300.dp)
-                                        .height(200.dp)
+                                    modifier = Modifier.height(150.dp)
                                 ) {
                                     items(selectListPhysicalExercise) { item ->
                                         key(item) {
@@ -225,9 +220,7 @@ fun AddTraining(
                             )
 
                             LazyColumn(
-                                modifier = Modifier
-                                    .width(300.dp)
-                                    .height(200.dp)
+                                modifier = Modifier.height(150.dp)
                             ) {
                                 items(filteredListPhysicalExercise) { item ->
                                     key(item.title) {
@@ -256,11 +249,11 @@ fun AddTraining(
                         TextButton(
                             onClick = {
                                 var check = true
-                                if (nameState.value == ""){
+                                if (nameState.value == "") {
                                     check = false
                                     colorName = RedLight
                                 }
-                                if (selectListPhysicalExercise.size == 0){
+                                if (selectListPhysicalExercise.size == 0) {
                                     check = false
                                     colorAdd = RedLight
                                 }
@@ -274,13 +267,17 @@ fun AddTraining(
                                     )
                                     openDialog = false
                                     onOpenChange(openDialog)
-                                    Toast.makeText(context, "Создано: ".plus(nameState.value), Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        "Создано: ".plus(nameState.value),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                     getAdd(nameState.value, typeState.value)
                                 }
                             },
                             modifier = Modifier.padding(8.dp),
                         ) {
-                            Text("Ок")
+                            Text("Создать")
                         }
                         TextButton(
                             onClick = {
