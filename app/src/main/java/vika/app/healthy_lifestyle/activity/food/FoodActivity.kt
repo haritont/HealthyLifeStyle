@@ -197,6 +197,13 @@ class FoodActivity : ComponentActivity() {
                 )
             }
         }
+
+        if ((ingredient.type.type == "Вода" || ingredient.type.type == "Напиток")) {
+            RecordRepository(context).updateProgressWaterRecord(
+                DateToday().getToday(),
+                value.toInt() + RecordRepository(context).progressWater(DateToday().getToday())
+            )
+        }
     }
 
     fun updateFavoriteIngredient(context: Context, name: String, favorite: Boolean) {
