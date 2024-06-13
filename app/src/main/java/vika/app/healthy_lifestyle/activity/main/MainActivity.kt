@@ -7,8 +7,6 @@ import androidx.activity.compose.setContent
 import vika.app.healthy_lifestyle.base.data.repository.main.PersonalDataRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.RecordRepository
 import vika.app.healthy_lifestyle.base.data.repository.main.WeightRepository
-import vika.app.healthy_lifestyle.bean.main.PersonalData
-import vika.app.healthy_lifestyle.bean.main.Record
 import vika.app.healthy_lifestyle.calculation.DateToday
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.navigation.Navigation
@@ -21,14 +19,6 @@ class MainActivity : ComponentActivity() {
                 Navigation()
             }
         }
-    }
-
-    fun updateProgressStep(context: Context, stepValue: Int) {
-        RecordRepository(context).updateProgressStepsRecord(DateToday().getToday(), stepValue)
-    }
-
-    fun getProgressStep(context: Context):Int {
-        return RecordRepository(context).getRecordByDate(DateToday().getToday())!!.progressSteps
     }
 
     fun saveWeight(value: Double, context: Context) {
@@ -78,14 +68,6 @@ class MainActivity : ComponentActivity() {
     }
     fun getProgressCarbohydrates(context: Context):Double {
         return RecordRepository(context).progressCarbohydrates(DateToday().getToday())
-    }
-
-    private fun getRecord(context: Context): Record{
-        return RecordRepository(context).getRecordByDate(DateToday().getToday())!!
-    }
-
-    private fun getPersonalData(context: Context): PersonalData{
-        return PersonalDataRepository(context).getPersonalData()!!
     }
 
     fun getBurnedKilocalories(context: Context): Double {
