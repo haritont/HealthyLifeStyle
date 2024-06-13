@@ -93,7 +93,7 @@ fun ProfileScreen() {
                     modifier = Modifier.weight(1f)
                 ) {
                     TextFieldBlue(
-                        value = if (heightState.value.length > 4) heightState.value.take(4) else heightState.value,
+                        value = if (heightState.value.length > 5) heightState.value.take(5) else heightState.value,
                         label = {
                             Text(
                                 LocalContext.current.getString(R.string.height),
