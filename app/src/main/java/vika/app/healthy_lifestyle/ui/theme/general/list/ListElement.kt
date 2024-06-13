@@ -20,7 +20,7 @@ import vika.app.healthy_lifestyle.ui.theme.sport.AddPhysicalExercise
 
 
 @Composable
-fun List(
+fun ListElement(
     itemList: List<Item>,
     add: (name: String, value: Double, date: String, option: String) -> Unit,
     updateException: (name: String, exception: Boolean) -> Unit,
