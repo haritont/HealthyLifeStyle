@@ -31,6 +31,7 @@ import vika.app.healthy_lifestyle.ui.theme.food.Header
 import vika.app.healthy_lifestyle.ui.theme.food.LastAdded
 import vika.app.healthy_lifestyle.ui.theme.general.Advice
 import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
+import vika.app.healthy_lifestyle.ui.theme.general.list.ListElement
 import vika.app.healthy_lifestyle.ui.theme.instruction.InstructionSport
 import vika.app.healthy_lifestyle.ui.theme.sport.AddTraining
 import vika.app.healthy_lifestyle.ui.theme.tracker.step.StepTracker
@@ -126,7 +127,7 @@ fun SportScreen () {
                         .padding(8.dp)
                         .height(450.dp)
                 ) {
-                    vika.app.healthy_lifestyle.ui.theme.general.list.ListElement(
+                   ListElement(
                         itemList = filteredListPhysicalExercises,
                         add = { name, value, date, _ ->
                             SportActivity().add(
