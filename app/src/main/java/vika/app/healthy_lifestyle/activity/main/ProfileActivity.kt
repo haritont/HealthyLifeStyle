@@ -29,18 +29,26 @@ class ProfileActivity : ComponentActivity(){
         PersonalDataRepository(context).insertPersonalData(personalData)
         val newTarget = PersonalTarget()
         newTarget.count(personalData, context)
-        val record = RecordRepository(context).getRecordByDate(DateToday().getToday())!!
-        RecordRepository(this).insertRecord(
-            Record(
-                id = record.id,
-                date = DateToday().getToday(), targetKilocalories = newTarget.kilocalories,
-                targetProteins = newTarget.proteins, targetFats = newTarget.fats,
-                targetCarbohydrates = newTarget.carbohydrates, targetWater = newTarget.water,
-                progressKilocalories = record.progressKilocalories, progressProteins = record.progressProteins,
-                progressFats = record.progressFats, progressCarbohydrates = record.progressCarbohydrates,
-                progressWater = record.progressWater, progressSteps = record.progressSteps,
-                burnedKilocalories = record.burnedKilocalories
+        val record = RecordRepository(context).getRecordByDate(DateToday().getToday())
+        if (record != null) {
+            RecordRepository(this).insertRecord(
+                Record(
+                    id = record.id,
+                    date = DateToday().getToday(),
+                    targetKilocalories = newTarget.kilocalories,
+                    targetProteins = newTarget.proteins,
+                    targetFats = newTarget.fats,
+                    targetCarbohydrates = newTarget.carbohydrates,
+                    targetWater = newTarget.water,
+                    progressKilocalories = record.progressKilocalories,
+                    progressProteins = record.progressProteins,
+                    progressFats = record.progressFats,
+                    progressCarbohydrates = record.progressCarbohydrates,
+                    progressWater = record.progressWater,
+                    progressSteps = record.progressSteps,
+                    burnedKilocalories = record.burnedKilocalories
+                )
             )
-        )
+        }
     }
 }

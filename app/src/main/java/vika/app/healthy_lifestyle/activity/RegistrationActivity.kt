@@ -1,7 +1,9 @@
 package vika.app.healthy_lifestyle.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -19,12 +21,16 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -34,6 +40,7 @@ import vika.app.healthy_lifestyle.base.data.repository.main.WeightRepository
 import vika.app.healthy_lifestyle.bean.main.PersonalData
 import vika.app.healthy_lifestyle.bean.main.Weight
 import vika.app.healthy_lifestyle.calculation.DateToday
+import vika.app.healthy_lifestyle.server.api.DefaultApiServiceRepository
 import vika.app.healthy_lifestyle.ui.theme.app.Healthy_LifestyleTheme
 import vika.app.healthy_lifestyle.ui.theme.general.ButtonBlue
 import vika.app.healthy_lifestyle.ui.theme.general.DatePickerWithDialog
@@ -54,6 +61,8 @@ class RegistrationActivity: ComponentActivity()  {
                 val targetState = remember { mutableStateOf(0) }
                 val activityRateState = remember { mutableStateOf(1.0) }
                 val genderState = remember { mutableStateOf(0) }
+                var loginState by remember { mutableStateOf("") }
+                var passwordState by remember { mutableStateOf("") }
 
                 LazyColumn(
                     modifier = Modifier.padding(8.dp),
@@ -65,6 +74,15 @@ class RegistrationActivity: ComponentActivity()  {
                             text = "Заполните свои данные",
                             fontWeight = FontWeight.Bold
                         )
+
+                        TextFieldLogin(loginState) { newLogin ->
+                            loginState = newLogin
+                        }
+
+                        TextFieldPassword(passwordState) { newPassword ->
+                            passwordState = newPassword
+                        }
+
                         TextFieldBlue(
                             value = nameState.value,
                             label = {
@@ -111,7 +129,9 @@ class RegistrationActivity: ComponentActivity()  {
                                             style = MaterialTheme.typography.bodySmall
                                         )
                                     },
-                                    onValueChange = { heightName -> heightState.value = heightName },
+                                    onValueChange = { heightName ->
+                                        heightState.value = heightName
+                                    },
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                                     leadingIcon = {
                                         Image(
@@ -135,7 +155,9 @@ class RegistrationActivity: ComponentActivity()  {
                                             style = MaterialTheme.typography.bodySmall
                                         )
                                     },
-                                    onValueChange = { weightName -> weightState.value = weightName },
+                                    onValueChange = { weightName ->
+                                        weightState.value = weightName
+                                    },
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                                     leadingIcon = {
                                         Image(
@@ -221,7 +243,8 @@ class RegistrationActivity: ComponentActivity()  {
                             1.5 to "Высокая активность"
                         )
 
-                        val selectedActivity = remember { mutableStateOf(activities[activityRateState.value]) }
+                        val selectedActivity =
+                            remember { mutableStateOf(activities[activityRateState.value]) }
 
                         Column {
                             Text(text = "Активность")
@@ -244,9 +267,8 @@ class RegistrationActivity: ComponentActivity()  {
                         }
 
                         ButtonBlue(text = "Сохранить данные") {
-                            ProfileActivity().insertPersonalData(
-                                context,
-                                PersonalData(
+                            if (heightState.value.toDoubleOrNull() != null && weightState.value.toDoubleOrNull() != null) {
+                                val personalData = PersonalData(
                                     genderId = genderState.value + 1,
                                     height = heightState.value.toDouble(),
                                     weight = weightState.value.toDouble(),
@@ -255,19 +277,89 @@ class RegistrationActivity: ComponentActivity()  {
                                     name = nameState.value,
                                     target = targetState.value
                                 )
-                            )
-                            WeightRepository(context).insertWeight(
-                                Weight(
-                                    date = DateToday().getToday(),
-                                    value = weightState.value.toDouble()
+                                ProfileActivity().insertPersonalData(
+                                    context,
+                                    personalData
                                 )
-                            )
-                            startActivity(Intent(this@RegistrationActivity, LoadingActivity::class.java))
-                            finish()
+                                WeightRepository(context).insertWeight(
+                                    Weight(
+                                        date = DateToday().getToday(),
+                                        value = weightState.value.toDouble()
+                                    )
+                                )
+                                val token = DefaultApiServiceRepository().registration(
+                                    loginState,
+                                    passwordState,
+                                    personalData
+                                )
+                                if (token != null) {
+                                    showToast("Ваши данные успешно сохранены!")
+                                    setToken(context, token)
+                                } else {
+                                    showToast("Ваши данные не сохранены! Работа продолжится в офлайн режиме")
+                                    setToken(context,"local_token")
+                                }
+                                startActivity(
+                                    Intent(
+                                        this@RegistrationActivity,
+                                        LoadingActivity::class.java
+                                    )
+                                )
+                                finish()
+                            }
                         }
                     }
                 }
             }
         }
     }
+    private fun setToken(context: Context, token: String) {
+        val sharedPreferences = context.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("token", token)
+        editor.apply()
+    }
+    private fun showToast(message: String) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+    }
+}
+
+@Composable
+fun TextFieldLogin(login: String, onValueChange: (String) -> Unit) {
+    TextFieldBlue(
+        value = login,
+        onValueChange = { newLogin -> onValueChange(newLogin) },
+        label = {
+            Text(stringResource(id = R.string.login))
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        leadingIcon = {
+            Image(
+                painterResource(R.drawable.login),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(25.dp)
+            )
+        }
+    )
+}
+
+@Composable
+fun TextFieldPassword(password: String, onValueChange: (String) -> Unit) {
+    TextFieldBlue(
+        value = password,
+        label = {
+            Text(stringResource(id = R.string.password))
+        },
+        onValueChange = { newPassword -> onValueChange(newPassword) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        leadingIcon = {
+            Image(
+                painterResource(R.drawable.password),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(25.dp)
+            )
+        }
+    )
 }

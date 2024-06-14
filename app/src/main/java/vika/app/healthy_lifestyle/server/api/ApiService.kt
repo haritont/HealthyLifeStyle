@@ -1,7 +1,9 @@
 package vika.app.healthy_lifestyle.server.api
 
 import retrofit2.http.GET
+import retrofit2.http.Query
 import vika.app.healthy_lifestyle.bean.food.Ingredient
+import vika.app.healthy_lifestyle.bean.main.PersonalData
 import vika.app.healthy_lifestyle.bean.mood.Emotion
 import vika.app.healthy_lifestyle.bean.mood.Habit
 import vika.app.healthy_lifestyle.bean.sport.PhysicalExercise
@@ -18,4 +20,14 @@ interface ApiService {
 
     @GET("/getAllEmotions")
     suspend fun getAllEmotions(): List<Emotion>
+
+    @GET("/authorization")
+    suspend fun authorization(@Query("login") login: String, @Query("password") password: String): String
+
+    @GET("/getPersonalData")
+    suspend fun getPersonalData(@Query("token") token: String): PersonalData
+
+    @GET("/registration")
+    suspend fun registration(@Query("login") login: String, @Query("password") password: String,
+                             @Query("personalData") personalData: PersonalData): String
 }

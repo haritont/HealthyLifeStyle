@@ -135,15 +135,13 @@ class LoadingActivity : ComponentActivity() {
 
                 val service = DefaultApiServiceRepository()
 
-                if (IngredientRepository(this@LoadingActivity).getAllProduct()!!.isEmpty()) {
+                if (getToken(this@LoadingActivity) != "local_token") {
                     val ingredients = service.getAllIngredients()
                     for (ingredient in ingredients) {
                         IngredientRepository(this@LoadingActivity).insertIngredient(ingredient)
                         TypeRepository(this@LoadingActivity).insert(ingredient.type)
                     }
-                }
 
-                if (PhysicalExerciseRepository(this@LoadingActivity).getAll()!!.isEmpty()) {
                     val physicalExercises = service.getAllPhysicalExercise()
                     for (physicalExercise in physicalExercises) {
                         PhysicalExerciseRepository(this@LoadingActivity).insertPhysicalExercise(
@@ -151,23 +149,20 @@ class LoadingActivity : ComponentActivity() {
                         )
                         TypeRepository(this@LoadingActivity).insert(physicalExercise.type)
                     }
-                }
 
-                if (HabitRepository(this@LoadingActivity).getAllHabits()!!.isEmpty()) {
                     val habits = service.getAllHabits()
                     for (habit in habits) {
                         HabitRepository(this@LoadingActivity).insertHabit(habit)
                     }
-                }
 
-                if (EmotionRepository(this@LoadingActivity).getAllEmotions()!!.isEmpty()) {
                     val emotions = service.getAllEmotions()
                     for (emotion in emotions) {
                         EmotionRepository(this@LoadingActivity).insertEmotion(emotion)
                     }
                 }
-
-                parseData(this@LoadingActivity)
+                else {
+                    parseData(this@LoadingActivity)
+                }
 
                 withContext(Dispatchers.Main) {
                     onSuccess()
@@ -267,6 +262,11 @@ class LoadingActivity : ComponentActivity() {
 
     private fun getPersonalData(): PersonalData {
         return PersonalDataRepository(this).getPersonalData()!!
+    }
+
+    private fun getToken(context: Context) : String? {
+        val sharedPreferences = context.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("token", null)
     }
 
     @Composable
