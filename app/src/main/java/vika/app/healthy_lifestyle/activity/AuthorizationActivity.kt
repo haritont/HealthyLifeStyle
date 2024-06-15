@@ -74,6 +74,10 @@ class AuthorizationActivity : ComponentActivity() {
                         )
                     }
                 }
+                else {
+                    startActivity(Intent(this@AuthorizationActivity, LoadingActivity::class.java))
+                    finish()
+                }
             }
         }
     }
