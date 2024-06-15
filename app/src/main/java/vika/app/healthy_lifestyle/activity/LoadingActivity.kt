@@ -136,28 +136,36 @@ class LoadingActivity : ComponentActivity() {
                 val service = DefaultApiServiceRepository()
 
                 if (getToken(this@LoadingActivity) != "local_token") {
-                    val ingredients = service.getAllIngredients()
-                    for (ingredient in ingredients) {
-                        IngredientRepository(this@LoadingActivity).insertIngredient(ingredient)
-                        TypeRepository(this@LoadingActivity).insert(ingredient.type)
+                    if (IngredientRepository(this@LoadingActivity).getAllProduct()!!.isEmpty()) {
+                        val ingredients = service.getAllIngredients()
+                        for (ingredient in ingredients) {
+                            IngredientRepository(this@LoadingActivity).insertIngredient(ingredient)
+                            TypeRepository(this@LoadingActivity).insert(ingredient.type)
+                        }
                     }
 
-                    val physicalExercises = service.getAllPhysicalExercise()
-                    for (physicalExercise in physicalExercises) {
-                        PhysicalExerciseRepository(this@LoadingActivity).insertPhysicalExercise(
-                            physicalExercise
-                        )
-                        TypeRepository(this@LoadingActivity).insert(physicalExercise.type)
+                    if (PhysicalExerciseRepository(this@LoadingActivity).getAll()!!.isEmpty()) {
+                        val physicalExercises = service.getAllPhysicalExercise()
+                        for (physicalExercise in physicalExercises) {
+                            PhysicalExerciseRepository(this@LoadingActivity).insertPhysicalExercise(
+                                physicalExercise
+                            )
+                            TypeRepository(this@LoadingActivity).insert(physicalExercise.type)
+                        }
                     }
 
-                    val habits = service.getAllHabits()
-                    for (habit in habits) {
-                        HabitRepository(this@LoadingActivity).insertHabit(habit)
+                    if (HabitRepository(this@LoadingActivity).getAllHabits()!!.isEmpty()) {
+                        val habits = service.getAllHabits()
+                        for (habit in habits) {
+                            HabitRepository(this@LoadingActivity).insertHabit(habit)
+                        }
                     }
 
-                    val emotions = service.getAllEmotions()
-                    for (emotion in emotions) {
-                        EmotionRepository(this@LoadingActivity).insertEmotion(emotion)
+                    if (EmotionRepository(this@LoadingActivity).getAllEmotions()!!.isEmpty()) {
+                        val emotions = service.getAllEmotions()
+                        for (emotion in emotions) {
+                            EmotionRepository(this@LoadingActivity).insertEmotion(emotion)
+                        }
                     }
                 }
                 else {
