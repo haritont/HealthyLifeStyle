@@ -293,7 +293,7 @@ private fun registration(context: Context, login: String, password: String, pers
             showToast(context, "Ошибка подключения к серверу.")
         }
 
-        "" -> {
+        "error" -> {
             showToast(context, "Ошибка регистрации. Такой логин уже существует")
         }
 

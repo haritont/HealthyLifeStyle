@@ -97,7 +97,7 @@ class AuthorizationActivity : ComponentActivity() {
             null -> {
                 showToast("Ошибка подключения к серверу.")
             }
-            "" -> {
+            "error" -> {
                 showToast("Ошибка авторизации. Неправильный логин или пароль")
             }
             else -> {

@@ -302,7 +302,7 @@ class RegistrationActivity: ComponentActivity()  {
                                         )
                                         finish()
                                     }
-                                    "" -> {
+                                    "error" -> {
                                         showToast("Ошибка регистрации. Такой логин уже существует")
                                     }
                                     else -> {
