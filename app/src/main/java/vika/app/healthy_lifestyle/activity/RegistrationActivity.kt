@@ -21,7 +21,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -295,17 +293,26 @@ class RegistrationActivity: ComponentActivity()  {
                                 if (token != null) {
                                     showToast("Ваши данные успешно сохранены!")
                                     setToken(context, token)
+                                    startActivity(
+                                        Intent(
+                                            this@RegistrationActivity,
+                                            LoadingActivity::class.java
+                                        )
+                                    )
+                                    finish()
+                                } else if (token == "") {
+                                    showToast("Ошибка регистрации. Такой логин уже существует")
                                 } else {
                                     showToast("Ваши данные не сохранены! Работа продолжится в офлайн режиме")
-                                    setToken(context,"local_token")
-                                }
-                                startActivity(
-                                    Intent(
-                                        this@RegistrationActivity,
-                                        LoadingActivity::class.java
+                                    setToken(context, "local_token")
+                                    startActivity(
+                                        Intent(
+                                            this@RegistrationActivity,
+                                            LoadingActivity::class.java
+                                        )
                                     )
-                                )
-                                finish()
+                                    finish()
+                                }
                             }
                         }
                     }
@@ -322,44 +329,4 @@ class RegistrationActivity: ComponentActivity()  {
     private fun showToast(message: String) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
-}
-
-@Composable
-fun TextFieldLogin(login: String, onValueChange: (String) -> Unit) {
-    TextFieldBlue(
-        value = login,
-        onValueChange = { newLogin -> onValueChange(newLogin) },
-        label = {
-            Text(stringResource(id = R.string.login))
-        },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        leadingIcon = {
-            Image(
-                painterResource(R.drawable.login),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(25.dp)
-            )
-        }
-    )
-}
-
-@Composable
-fun TextFieldPassword(password: String, onValueChange: (String) -> Unit) {
-    TextFieldBlue(
-        value = password,
-        label = {
-            Text(stringResource(id = R.string.password))
-        },
-        onValueChange = { newPassword -> onValueChange(newPassword) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        leadingIcon = {
-            Image(
-                painterResource(R.drawable.password),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(25.dp)
-            )
-        }
-    )
 }
