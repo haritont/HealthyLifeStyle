@@ -12,8 +12,8 @@ android {
         applicationId = "vika.app.healthy_lifestyle"
         minSdk = 26
         targetSdk = 34
-        versionCode = 8
-        versionName = "8"
+        versionCode = 10
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
