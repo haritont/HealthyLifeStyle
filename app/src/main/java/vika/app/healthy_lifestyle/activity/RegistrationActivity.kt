@@ -290,28 +290,32 @@ class RegistrationActivity: ComponentActivity()  {
                                     passwordState,
                                     personalData
                                 )
-                                if (token != null) {
-                                    showToast("Ваши данные успешно сохранены!")
-                                    setToken(context, token)
-                                    startActivity(
-                                        Intent(
-                                            this@RegistrationActivity,
-                                            LoadingActivity::class.java
+                                when (token) {
+                                    null -> {
+                                        showToast("Ваши данные не сохранены! Работа продолжится в офлайн режиме")
+                                        setToken(context, "local_token")
+                                        startActivity(
+                                            Intent(
+                                                this@RegistrationActivity,
+                                                LoadingActivity::class.java
+                                            )
                                         )
-                                    )
-                                    finish()
-                                } else if (token == "") {
-                                    showToast("Ошибка регистрации. Такой логин уже существует")
-                                } else {
-                                    showToast("Ваши данные не сохранены! Работа продолжится в офлайн режиме")
-                                    setToken(context, "local_token")
-                                    startActivity(
-                                        Intent(
-                                            this@RegistrationActivity,
-                                            LoadingActivity::class.java
+                                        finish()
+                                    }
+                                    "" -> {
+                                        showToast("Ошибка регистрации. Такой логин уже существует")
+                                    }
+                                    else -> {
+                                        showToast("Ваши данные успешно сохранены!")
+                                        setToken(context, token)
+                                        startActivity(
+                                            Intent(
+                                                this@RegistrationActivity,
+                                                LoadingActivity::class.java
+                                            )
                                         )
-                                    )
-                                    finish()
+                                        finish()
+                                    }
                                 }
                             }
                         }
