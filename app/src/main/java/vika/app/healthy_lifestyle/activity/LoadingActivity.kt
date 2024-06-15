@@ -1,10 +1,15 @@
 package vika.app.healthy_lifestyle.activity
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,6 +62,13 @@ import vika.app.healthy_lifestyle.ui.theme.general.defaultOptionProduct
 
 class LoadingActivity : ComponentActivity() {
     private val scope = CoroutineScope(Dispatchers.Main)
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+        if (isGranted) {
+            insertNotifications()
+        } else {
+            Toast.makeText(this, "Уведомления отключены", Toast.LENGTH_LONG).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +120,9 @@ class LoadingActivity : ComponentActivity() {
                     saveDream(Dream(date = DateToday().getToday()))
                 }
 
-                insertNotifications()
+                checkNotificationPermission {
+                    insertNotifications()
+                }
                 setRecordTarget()
 
                 var options = TypeRepository(this@LoadingActivity).getAllByProduct()
@@ -216,6 +231,21 @@ class LoadingActivity : ComponentActivity() {
 
     private fun saveDream(dream: Dream) {
         DreamRepository(this).saveDream(dream)
+    }
+
+    private fun checkNotificationPermission(onPermissionGranted: () -> Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            when (PackageManager.PERMISSION_GRANTED) {
+                ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) -> {
+                    onPermissionGranted()
+                }
+                else -> {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+        } else {
+            onPermissionGranted()
+        }
     }
 
     private fun insertNotifications() {

@@ -1,8 +1,5 @@
 package vika.app.healthy_lifestyle.ui.theme.navigation.screens
 
-import android.Manifest
-import android.app.Activity
-import android.content.pm.PackageManager
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
@@ -11,13 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import vika.app.healthy_lifestyle.R
 import vika.app.healthy_lifestyle.activity.main.MainActivity
 import vika.app.healthy_lifestyle.bean.KPFC
@@ -29,26 +23,6 @@ import vika.app.healthy_lifestyle.ui.theme.tracker.weight.WeightTracker
 @Composable
 fun MainScreen () {
     val context = LocalContext.current
-
-    LaunchedEffect(Unit) {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
-            != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                context as Activity,
-                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                1
-            )
-        }
-
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.SCHEDULE_EXACT_ALARM)
-            != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                context as Activity,
-                arrayOf(Manifest.permission.SCHEDULE_EXACT_ALARM),
-                1
-            )
-        }
-    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
