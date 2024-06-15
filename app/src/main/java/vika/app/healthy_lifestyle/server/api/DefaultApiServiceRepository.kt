@@ -88,14 +88,19 @@ class DefaultApiServiceRepository : ApiServiceRepository {
         login: String,
         password: String,
         personalData: PersonalData,
-    ): String? = runBlocking{
+    ): String? = runBlocking {
         try {
             val response = withContext(Dispatchers.IO) {
-                ApiServiceHelper.apiService.registration(login, password, personalData)
+                ApiServiceHelper.apiService.registration(
+                    login, password, personalData.id, personalData.token,
+                    personalData.genderId, personalData.height, personalData.weight,
+                    personalData.birthDate, personalData.activityRate, personalData.name,
+                    personalData.target
+                )
             }
             response
         } catch (e: Exception) {
-            Log.e("ConnectionError", "Ошибка регитрации. Код: ${e.message}")
+            Log.e("ConnectionError", "Ошибка регистрации. Код: ${e.message}")
             null
         }
     }

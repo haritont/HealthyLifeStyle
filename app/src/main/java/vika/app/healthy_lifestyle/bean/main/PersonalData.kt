@@ -2,6 +2,7 @@ package vika.app.healthy_lifestyle.bean.main
 
 class PersonalData (
      val id: Long = 0,
+     val token: String = "",
      val genderId: Int,
      val height: Double,
      val weight: Double,
