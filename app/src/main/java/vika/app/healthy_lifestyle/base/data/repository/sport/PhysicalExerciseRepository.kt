@@ -55,4 +55,12 @@ class PhysicalExerciseRepository(context: Context) {
         physicalExerciseDao.getPhysicalExerciseByTarget(value, kilo, weight)
             ?.let { physicalExerciseMapper.toPhysicalExerciseList(it, appContext) }
     }
+
+    fun insertIfNotExists(physicalExercise: PhysicalExercise) = runBlocking{
+        val existingPhys = physicalExerciseDao.getByName(physicalExercise.name)
+
+        if (existingPhys == null) {
+            physicalExerciseDao.insert(physicalExerciseMapper.toPhysicalExerciseEntity(physicalExercise))
+        }
+    }
 }

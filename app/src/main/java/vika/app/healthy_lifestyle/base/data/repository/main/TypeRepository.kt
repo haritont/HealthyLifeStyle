@@ -33,4 +33,12 @@ class TypeRepository(context: Context) {
     fun getByName(type: String): Type? = runBlocking{
         typeDao.getAllByName(type)?.let { typeMapper.toType(it) }
     }
+
+    fun insertIfNotExists(type: Type) = runBlocking{
+        val existingType = typeDao.getAllByName(type.type)
+
+        if (existingType == null) {
+            typeDao.insert(typeMapper.toTypeEntity(type))
+        }
+    }
 }

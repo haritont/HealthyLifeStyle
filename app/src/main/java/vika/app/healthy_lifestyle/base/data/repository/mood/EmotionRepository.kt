@@ -26,10 +26,18 @@ class EmotionRepository (context: Context){
     }
 
     fun getByName(name: String): Emotion = runBlocking{
-        emotionMapper.toEmotion(emotionDao.getByName(name))
+        emotionMapper.toEmotion(emotionDao.getByName(name)!!)
     }
 
     fun getById(id: Long): Emotion = runBlocking{
         emotionMapper.toEmotion(emotionDao.getById(id))
+    }
+
+    fun insertIfNotExists(emotion: Emotion) = runBlocking{
+        val existingEmotion = emotionDao.getByName(emotion.name)
+
+        if (existingEmotion == null) {
+            emotionDao.insert(emotionMapper.toEmotionEntity(emotion))
+        }
     }
 }

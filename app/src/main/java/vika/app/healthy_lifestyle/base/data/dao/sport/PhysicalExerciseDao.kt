@@ -41,4 +41,6 @@ interface PhysicalExerciseDao {
     suspend fun getAllByType(type: String): List<PhysicalExerciseEntity>
     @Query("SELECT * FROM PhysicalExercise WHERE met * :value * :weight <= :kilo AND exception = 0")
     suspend fun getPhysicalExerciseByTarget(value: Double, kilo: Double, weight: Double): List<PhysicalExerciseEntity>?
+    @Query("SELECT * FROM PhysicalExercise WHERE name =:name")
+    suspend fun getByName(name: String): PhysicalExerciseEntity?
 }

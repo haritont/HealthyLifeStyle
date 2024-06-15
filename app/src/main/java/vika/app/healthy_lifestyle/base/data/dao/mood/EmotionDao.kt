@@ -13,7 +13,7 @@ interface EmotionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(emotionEntity: EmotionEntity)
     @Query("SELECT * fROM Emotion WHERE name =:name")
-    suspend fun getByName(name: String): EmotionEntity
+    suspend fun getByName(name: String): EmotionEntity?
     @Query("SELECT * fROM Emotion WHERE id =:id")
     suspend fun getById(id: Long): EmotionEntity
 }

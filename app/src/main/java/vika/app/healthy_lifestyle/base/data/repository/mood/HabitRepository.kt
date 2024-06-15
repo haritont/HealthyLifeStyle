@@ -36,4 +36,12 @@ class HabitRepository (context: Context){
     fun delete(habit: Habit) = runBlocking{
         habitDao.delete(habitMapper.toHabitEntity(habit))
     }
+
+    fun insertIfNotExists(habit: Habit) = runBlocking{
+        val existingHabit = habitDao.getByName(habit.name)
+
+        if (existingHabit == null) {
+            habitDao.insert(habitMapper.toHabitEntity(habit))
+        }
+    }
 }

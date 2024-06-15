@@ -19,4 +19,6 @@ interface HabitDao {
     suspend fun getById(idHabit: Long):HabitEntity
     @Delete
     suspend fun delete(habitEntity: HabitEntity)
+    @Query("SELECT * FROM Habit WHERE name =:name")
+    suspend fun getByName(name: String): HabitEntity?
 }

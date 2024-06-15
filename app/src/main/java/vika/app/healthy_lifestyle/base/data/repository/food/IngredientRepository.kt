@@ -32,7 +32,7 @@ class IngredientRepository(context: Context) {
     }
 
     fun getIngredientByName(name: String): Ingredient = runBlocking{
-        ingredientMapper.toIngredient(ingredientDao.getByName(name), appContext)
+        ingredientMapper.toIngredient(ingredientDao.getByName(name)!!, appContext)
     }
 
     fun getIngredientById(id: Long): Ingredient = runBlocking{
@@ -61,5 +61,13 @@ class IngredientRepository(context: Context) {
 
     fun getAllFavoriteProducts(): List<Ingredient>? = runBlocking{
         ingredientDao.getAllFavoriteProducts()?.let { ingredientMapper.toIngredientList(it, appContext) }
+    }
+
+    fun insertIfNotExists(ingredient: Ingredient) = runBlocking{
+        val existingIngredient = ingredientDao.getByName(ingredient.name)
+
+        if (existingIngredient == null) {
+            ingredientDao.insert(ingredientMapper.toIngredientEntity(ingredient))
+        }
     }
 }
