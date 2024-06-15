@@ -83,46 +83,6 @@ class AuthorizationActivity : ComponentActivity() {
     }
 
     @Composable
-    fun TextFieldLogin(login: String, onValueChange: (String) -> Unit) {
-        TextFieldBlue(
-            value = login,
-            onValueChange = { newLogin -> onValueChange(newLogin) },
-            label = {
-                Text(stringResource(id = R.string.login))
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            leadingIcon = {
-                Image(
-                    painterResource(R.drawable.login),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(25.dp)
-                )
-            }
-        )
-    }
-
-    @Composable
-    fun TextFieldPassword(password: String, onValueChange: (String) -> Unit) {
-        TextFieldBlue(
-            value = password,
-            label = {
-                Text(stringResource(id = R.string.password))
-            },
-            onValueChange = { newPassword -> onValueChange(newPassword) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            leadingIcon = {
-                Image(
-                    painterResource(R.drawable.password),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(25.dp)
-                )
-            }
-        )
-    }
-
-    @Composable
     fun TextEntrance() {
         Text(
             text = stringResource(id = R.string.entrance),
@@ -175,4 +135,44 @@ class AuthorizationActivity : ComponentActivity() {
     private fun showToast(message: String) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
+}
+
+@Composable
+fun TextFieldLogin(login: String, onValueChange: (String) -> Unit) {
+    TextFieldBlue(
+        value = login,
+        onValueChange = { newLogin -> onValueChange(newLogin) },
+        label = {
+            Text(stringResource(id = R.string.login))
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        leadingIcon = {
+            Image(
+                painterResource(R.drawable.login),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(25.dp)
+            )
+        }
+    )
+}
+
+@Composable
+fun TextFieldPassword(password: String, onValueChange: (String) -> Unit) {
+    TextFieldBlue(
+        value = password,
+        label = {
+            Text(stringResource(id = R.string.password))
+        },
+        onValueChange = { newPassword -> onValueChange(newPassword) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        leadingIcon = {
+            Image(
+                painterResource(R.drawable.password),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(25.dp)
+            )
+        }
+    )
 }
